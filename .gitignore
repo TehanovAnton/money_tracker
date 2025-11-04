@@ -9,6 +9,8 @@
 
 /.sandbox
 
+/.ruby_script
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-*
@@ -38,3 +40,6 @@
 
 # Ignore Qodo artifacts and workspace
 .qodo/history.sqlite
+
+# Ignore config/settings
+/config/settings/
