@@ -74,7 +74,6 @@ GEM
     ast (2.4.3)
     backport (1.2.0)
     base64 (0.2.0)
-    bcrypt (3.1.20)
     benchmark (0.4.1)
     bigdecimal (3.3.1)
     bootsnap (1.18.4)
@@ -90,12 +89,6 @@ GEM
     date (3.4.1)
     declarative (0.0.20)
     deep_merge (1.2.2)
-    devise (4.9.4)
-      bcrypt (~> 3.0)
-      orm_adapter (~> 0.1)
-      railties (>= 4.1.0)
-      responders
-      warden (~> 1.2.3)
     diff-lcs (1.6.1)
     dotenv (3.1.8)
     dry-core (1.1.0)
@@ -229,13 +222,13 @@ GEM
     nokogiri (1.18.7-x86_64-linux-musl)
       racc (~> 1.4)
     observer (0.1.2)
-    orm_adapter (0.5.0)
     os (1.1.4)
     ostruct (0.6.3)
     parallel (1.27.0)
     parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
+    parslet (2.0.0)
     pg (1.5.9)
     prism (1.6.0)
     pry (0.15.2)
@@ -290,9 +283,6 @@ GEM
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
-    responders (3.1.1)
-      actionpack (>= 5.2)
-      railties (>= 5.2)
     retriable (3.1.2)
     reverse_markdown (3.0.0)
       nokogiri
@@ -388,8 +378,6 @@ GEM
       unicode-emoji (~> 4.1)
     unicode-emoji (4.1.0)
     uri (1.1.0)
-    warden (1.2.9)
-      rack (>= 2.0.9)
     websocket-driver (0.7.7)
       base64
       websocket-extensions (>= 0.1.0)
@@ -418,7 +406,6 @@ DEPENDENCIES
   active_interaction (~> 5.5)
   bootsnap
   config (~> 5.6, >= 5.6.1)
-  devise (~> 4.9)
   dotenv (~> 3.1)
   factory_bot_rails (~> 6.4)
   faker (~> 3.5)
@@ -426,6 +413,7 @@ DEPENDENCIES
   google-apis-sheets_v4 (~> 0.45.0)
   importmap-rails
   jbuilder
+  parslet (~> 2.0)
   pg (~> 1.5)
   pry-byebug (~> 3.11)
   pry-rails (~> 0.3.11)

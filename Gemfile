@@ -57,9 +57,9 @@ gem 'google-apis-sheets_v4', '~> 0.45.0'
 # Configuration
 gem 'config', '~> 5.6', '>= 5.6.1'
 
-gem 'devise', '~> 4.9'
-
 gem 'active_interaction', '~> 5.5'
+
+gem 'parslet', '~> 2.0'
 
 # Telegram integration
 gem 'telegram-bot-ruby', '~> 2.4'
