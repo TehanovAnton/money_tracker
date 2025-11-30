@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'devise'
 require_relative 'factory_bot'
-require_relative 'shared_contexts/devise_login'
+
+# Load all support dir
+Dir['./spec/support/**/*.rb'].sort.each { |file| require file }
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
