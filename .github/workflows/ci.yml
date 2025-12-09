@@ -113,12 +113,7 @@ jobs:
 
           echo "(INFO) Start DB init"
 
-          # Создать БД и загрузить схему (используется config/database.yml из репо)
-          if [ -f bin/rails ]; then
-            bin/rails db:create db:schema:load --trace
-          else
-            bundle exec rails db:create db:schema:load --trace
-          fi
+          bundle exec rails db:create db:schema:load --trace
 
       - name: Run specs
         run: |
