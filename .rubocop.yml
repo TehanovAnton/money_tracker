@@ -1,6 +1,3 @@
-inherit_gem:
-  rubocop-discourse: default.yml
-
 plugins:
   - rubocop-factory_bot
   - rubocop-rails
@@ -29,7 +26,4 @@ RSpec/NestedGroups:
   Enabled: false
 
 RSpec/LeakyLocalVariable:
-  Enabled: false
-
-Discourse/Plugins/CallRequiresPlugin:
   Enabled: false

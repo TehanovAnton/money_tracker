@@ -1,12 +1,12 @@
 default: &default
-  adapter: <%= Settings.app.db.postgresql.adapter %>
-  pool: <%= Settings.app.db.postgresql.poolr %>
-  username: <%= Settings.app.db.postgresql.username %>
-  timeout: <%= Settings.app.db.postgresql.timeout %>
-  encoding: <%= Settings.app.db.postgresql.encoding %>
-  reconnect: <%= Settings.app.db.postgresql.reconnect %>
-  host: <%= Settings.app.db.postgresql.host %>
-  database: <%= Settings.app.db.postgresql.db_name %>
+  adapter: <%= ENV['DB_ADAPTER'] %>
+  pool: <%= ENV['DB_POOL'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  timeout: <%= ENV['DB_TIMEOUT'] %>
+  encoding: <%= ENV['DB_ENCODING'] %>
+  reconnect: <%= ENV['DB_RECONNECT'] %>
+  host: <%= ENV['DB_HOST'] %>
+  database: <%= ENV['DB_NAME'] %>
 
 development:
   <<: *default
