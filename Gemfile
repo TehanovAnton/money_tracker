@@ -57,15 +57,19 @@ gem 'google-apis-sheets_v4', '~> 0.45.0'
 # Configuration
 gem 'config', '~> 5.6', '>= 5.6.1'
 
-gem 'devise', '~> 4.9'
-
 gem 'active_interaction', '~> 5.5'
+
+gem 'parslet', '~> 2.0'
 
 # Telegram integration
 gem 'telegram-bot-ruby', '~> 2.4'
 
 group :development, :test do
   gem 'rubocop', '~> 1.81', '>= 1.81.1'
+  gem 'rubocop-factory_bot', '~> 2.28'
+  gem 'rubocop-rails', '~> 2.34', '>= 2.34.2'
+  gem 'rubocop-rspec', '~> 3.8', require: false
+  gem 'rubocop-rspec_rails', '~> 2.32'
 
   gem 'solargraph', '~> 0.57.0'
   gem 'solargraph-rails', '~> 1.2', '>= 1.2.4'
@@ -80,4 +84,8 @@ group :development, :test do
 
   gem 'pry-byebug', '~> 3.11'
   gem 'pry-rails', '~> 0.3.11'
+end
+
+group :test do
+  gem 'webmock', '~> 3.26', '>= 3.26.1'
 end

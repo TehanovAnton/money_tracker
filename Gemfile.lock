@@ -74,7 +74,6 @@ GEM
     ast (2.4.3)
     backport (1.2.0)
     base64 (0.2.0)
-    bcrypt (3.1.20)
     benchmark (0.4.1)
     bigdecimal (3.3.1)
     bootsnap (1.18.4)
@@ -86,16 +85,13 @@ GEM
     config (5.6.1)
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
+    crack (1.0.1)
+      bigdecimal
+      rexml
     crass (1.0.6)
     date (3.4.1)
     declarative (0.0.20)
     deep_merge (1.2.2)
-    devise (4.9.4)
-      bcrypt (~> 3.0)
-      orm_adapter (~> 0.1)
-      railties (>= 4.1.0)
-      responders
-      warden (~> 1.2.3)
     diff-lcs (1.6.1)
     dotenv (3.1.8)
     dry-core (1.1.0)
@@ -164,6 +160,7 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
+    hashdiff (1.2.1)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
@@ -229,13 +226,13 @@ GEM
     nokogiri (1.18.7-x86_64-linux-musl)
       racc (~> 1.4)
     observer (0.1.2)
-    orm_adapter (0.5.0)
     os (1.1.4)
     ostruct (0.6.3)
     parallel (1.27.0)
     parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
+    parslet (2.0.0)
     pg (1.5.9)
     prism (1.6.0)
     pry (0.15.2)
@@ -290,9 +287,6 @@ GEM
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
-    responders (3.1.1)
-      actionpack (>= 5.2)
-      railties (>= 5.2)
     retriable (3.1.2)
     reverse_markdown (3.0.0)
       nokogiri
@@ -328,6 +322,22 @@ GEM
     rubocop-ast (1.47.1)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
+    rubocop-factory_bot (2.28.0)
+      lint_roller (~> 1.1)
+      rubocop (~> 1.72, >= 1.72.1)
+    rubocop-rails (2.34.2)
+      activesupport (>= 4.2.0)
+      lint_roller (~> 1.1)
+      rack (>= 1.1)
+      rubocop (>= 1.75.0, < 2.0)
+      rubocop-ast (>= 1.44.0, < 2.0)
+    rubocop-rspec (3.8.0)
+      lint_roller (~> 1.1)
+      rubocop (~> 1.81)
+    rubocop-rspec_rails (2.32.0)
+      lint_roller (~> 1.1)
+      rubocop (~> 1.72, >= 1.72.1)
+      rubocop-rspec (~> 3.5)
     ruby-progressbar (1.13.0)
     signet (0.21.0)
       addressable (~> 2.8)
@@ -388,8 +398,10 @@ GEM
       unicode-emoji (~> 4.1)
     unicode-emoji (4.1.0)
     uri (1.1.0)
-    warden (1.2.9)
-      rack (>= 2.0.9)
+    webmock (3.26.1)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     websocket-driver (0.7.7)
       base64
       websocket-extensions (>= 0.1.0)
@@ -418,7 +430,6 @@ DEPENDENCIES
   active_interaction (~> 5.5)
   bootsnap
   config (~> 5.6, >= 5.6.1)
-  devise (~> 4.9)
   dotenv (~> 3.1)
   factory_bot_rails (~> 6.4)
   faker (~> 3.5)
@@ -426,6 +437,7 @@ DEPENDENCIES
   google-apis-sheets_v4 (~> 0.45.0)
   importmap-rails
   jbuilder
+  parslet (~> 2.0)
   pg (~> 1.5)
   pry-byebug (~> 3.11)
   pry-rails (~> 0.3.11)
@@ -433,6 +445,10 @@ DEPENDENCIES
   rails (~> 7.0.8, >= 7.0.8.7)
   rspec-rails (~> 7.0.0)
   rubocop (~> 1.81, >= 1.81.1)
+  rubocop-factory_bot (~> 2.28)
+  rubocop-rails (~> 2.34, >= 2.34.2)
+  rubocop-rspec (~> 3.8)
+  rubocop-rspec_rails (~> 2.32)
   solargraph (~> 0.57.0)
   solargraph-rails (~> 1.2, >= 1.2.4)
   solargraph-rspec (~> 0.5.5)
@@ -440,6 +456,7 @@ DEPENDENCIES
   stimulus-rails
   telegram-bot-ruby (~> 2.4)
   turbo-rails
+  webmock (~> 3.26, >= 3.26.1)
 
 RUBY VERSION
    ruby 3.3.6p108
