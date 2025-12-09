@@ -37,11 +37,13 @@ jobs:
             echo "Нет измененных Ruby-файлов для проверки. Проверка пропущена."
             exit 0
           fi
+
+          CHANGED_FILES=$(bundle exec rubocop --list-target-files | grep -Fxf <(echo "$CHANGED_FILES") || true)
           
           echo "Проверка RuboCop для следующих файлов относительно $BASE_BRANCH: $CHANGED_FILES"
-          
+
           # 4. Запускаем RuboCop только для этих файлов
-          bundle exec rubocop $CHANGED_FILES
+          echo "$CHANGED_FILES" | xargs bundle exec rubocop --force-exclusion
 
   test:
     name: tests
