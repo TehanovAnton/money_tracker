@@ -6,7 +6,6 @@ shared_examples 'parsed exactly' do |elements|
       let(:expression) { element }
 
       it do
-        # binding.pry
         expect(subject[expression_key]).to eq(expected_element)
       end
     end

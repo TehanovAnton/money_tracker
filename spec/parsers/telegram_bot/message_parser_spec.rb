@@ -18,7 +18,14 @@ describe TelegramBot::MessageParser do
       context 'when valid' do
         let(:message_method) { 'method: post;' }
         let(:action) { 'action: upsert;' }
-        let(:body) { 'body: [01.01.2025; 12,01; Продукты];' }
+        let(:body) do
+          <<-TEXT
+            body:
+              spreadsheet_id: asdfasd;
+              sheet_range: Октябрь!L30:N37;
+              [01.01.2025; 12,01; Продукты];
+          TEXT
+        end
 
         it do
           expect { subject }.not_to raise_error

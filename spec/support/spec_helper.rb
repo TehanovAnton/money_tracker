@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'factory_bot'
+require 'webmock/rspec'
 
 # Load all support dir
 Dir['./spec/support/**/*.rb'].sort.each { |file| require file }

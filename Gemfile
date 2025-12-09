@@ -81,3 +81,7 @@ group :development, :test do
   gem 'pry-byebug', '~> 3.11'
   gem 'pry-rails', '~> 0.3.11'
 end
+
+group :test do
+  gem 'webmock', '~> 3.26', '>= 3.26.1'
+end
