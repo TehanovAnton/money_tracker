@@ -39,7 +39,14 @@ jobs:
           CHANGED_FILES=$(bundle exec rubocop --list-target-files | grep -Fxf <(echo "$CHANGED_FILES") || true)
           echo "(INFO) Отфильтрованные по rubocop.yml: $CHANGED_FILES"
 
-          if [ -z "$CHANGED_FILES" ]; then
+          CHANGED_FILES=$(git diff --name-only --diff-filter=AM $BASE_BRANCH | grep '\.rb$' || true)
+          echo "$CHANGED_FILES" > changed.txt
+          bundle exec rubocop --list-target-files > all_targets.txt
+          TARGET_FILES=$(grep -Fxf changed.txt all_targets.txt || true)
+
+          echo "(INFO) Отфильтрованные по rubocop.yml: $TARGET_FILES"
+
+          if [ -z "$TARGET_FILES" ]; then
             echo "Нет измененных Ruby-файлов для проверки. Проверка пропущена."
             exit 0
           fi
@@ -47,7 +54,7 @@ jobs:
           echo "(INFO) Проверка RuboCop для следующих файлов относительно $BASE_BRANCH: $CHANGED_FILES"
 
           # 4. Запускаем RuboCop только для этих файлов
-          echo "$CHANGED_FILES" | xargs bundle exec rubocop --force-exclusion
+          echo "$TARGET_FILES" | xargs bundle exec rubocop --force-exclusion
 
   test:
     name: tests
