@@ -66,6 +66,11 @@ gem 'telegram-bot-ruby', '~> 2.4'
 
 group :development, :test do
   gem 'rubocop', '~> 1.81', '>= 1.81.1'
+  gem 'rubocop-factory_bot', '~> 2.28'
+  gem 'rubocop-rails', '~> 2.34', '>= 2.34.2'
+  gem 'rubocop-rspec', '~> 3.8', require: false
+  gem 'rubocop-rspec_rails', '~> 2.32'
+  gem 'rubocop-discourse', '~> 3.13', '>= 3.13.3'
 
   gem 'solargraph', '~> 0.57.0'
   gem 'solargraph-rails', '~> 1.2', '>= 1.2.4'

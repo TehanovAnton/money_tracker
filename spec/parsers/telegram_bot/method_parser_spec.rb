@@ -19,7 +19,7 @@ describe TelegramBot::MethodParser do
           'method:  '
         ]
 
-        include_examples 'parsed exactly', elements
+        it_behaves_like 'parsed exactly', elements
       end
 
       context 'when invalid' do
@@ -32,7 +32,7 @@ describe TelegramBot::MethodParser do
           'method'
         ]
 
-        include_examples 'parsing error', elements
+        it_behaves_like 'parsing error', elements
       end
     end
 
@@ -47,7 +47,7 @@ describe TelegramBot::MethodParser do
           'get;'
         ]
 
-        include_examples 'parsed exactly', elements
+        it_behaves_like 'parsed exactly', elements
       end
 
       context 'when invalid' do
@@ -60,7 +60,7 @@ describe TelegramBot::MethodParser do
           '12324;'
         ]
 
-        include_examples 'parsing error', elements
+        it_behaves_like 'parsing error', elements
       end
     end
   end

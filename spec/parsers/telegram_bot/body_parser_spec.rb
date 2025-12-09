@@ -23,11 +23,13 @@ describe TelegramBot::BodyParser do
           '01.01.2025; 12,01; Продукты'
         ]
 
-        include_examples 'parsed succesfully', elements
+        it_behaves_like 'parsed succesfully', elements
       end
     end
 
     describe '.rule spreadsheet_id' do
+      subject(:spreadsheet_id) { described_class.new.parse(message)[:spreadsheet_id] }
+
       let(:message) do
         <<-TEXT.strip
           body:
@@ -41,12 +43,14 @@ describe TelegramBot::BodyParser do
         let(:expression) { '1CJ7WjtT3U0vZiO7l3cBCGYIQcwPbTAG46LjZrNO02nI' }
 
         it do
-          expect(subject[:spreadsheet_id]).to eq(expression)
+          expect(spreadsheet_id).to eq(expression)
         end
       end
     end
 
     describe '.rule sheet_range' do
+      subject(:sheet_range) { described_class.new.parse(message)[:sheet_range] }
+
       let(:message) do
         <<-TEXT.strip
           body:
@@ -60,12 +64,14 @@ describe TelegramBot::BodyParser do
         let(:expression) { 'Октябрь!L30:N37' }
 
         it do
-          expect(subject[:sheet_range]).to eq(expression)
+          expect(sheet_range).to eq(expression)
         end
       end
     end
 
     describe '.rule comment' do
+      subject(:comment) { described_class.new.parse(message)[:comment] }
+
       let(:message) do
         <<-TEXT.strip
           body:
@@ -79,7 +85,7 @@ describe TelegramBot::BodyParser do
         let(:expression) { 'Немного коментов' }
 
         it do
-          expect(subject[:comment]).to eq(expression)
+          expect(comment).to eq(expression)
         end
       end
     end

@@ -2,7 +2,7 @@
 
 shared_examples 'parsed exactly' do |elements|
   elements.each do |element|
-    context "Try: `#{element}`" do
+    context "when try: `#{element}`" do
       let(:expression) { element }
 
       it do
@@ -14,7 +14,7 @@ end
 
 shared_examples 'parsed succesfully' do |elements|
   elements.each do |element|
-    context "Try: `#{element}`" do
+    context "when try: `#{element}`" do
       let(:expression) { element }
 
       it do
@@ -26,11 +26,11 @@ end
 
 shared_examples 'parsing error' do |elements|
   elements.each do |element|
-    context "Try: `#{element}`" do
+    context "when try: `#{element}`" do
       let(:expression) { element }
 
       it do
-        expect { subject }.to raise_error
+        expect { subject }.to raise_error(Parslet::ParseFailed)
       end
     end
   end

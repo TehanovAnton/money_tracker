@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe TelegramBot::MessageParser do
   describe '#parse' do
-    subject { described_class.new.parse(message) }
+    subject(:message_parser) { described_class.new.parse(message) }
 
     let(:message) do
       <<-TEXT.strip
@@ -28,7 +28,7 @@ describe TelegramBot::MessageParser do
         end
 
         it do
-          expect { subject }.not_to raise_error
+          expect { message_parser }.not_to raise_error
         end
       end
     end
