@@ -2,6 +2,7 @@
 
 require_relative 'factory_bot'
 require 'webmock/rspec'
+require 'telegram/bot'
 
 # Load all support dir
 Dir['./spec/support/**/*.rb'].each { |file| require file }

@@ -27,3 +27,9 @@ RSpec/NestedGroups:
 
 RSpec/LeakyLocalVariable:
   Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false

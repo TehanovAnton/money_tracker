@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe TelegramBot::MethodParser do
+describe MethodParser do
   describe '#parse' do
     subject { described_class.new.parse(message) }
 
