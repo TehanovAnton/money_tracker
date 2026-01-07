@@ -11,7 +11,9 @@ namespace :money_tracker do
       puts 'Start bot'
 
       bot.listen do |message|
-        Telegram::MessageHandlerService.run!(bot: bot, message_text: message.text, chat_id: message.chat.id)
+        if message.text == '/start'
+          
+        end
       end
     end
   end
