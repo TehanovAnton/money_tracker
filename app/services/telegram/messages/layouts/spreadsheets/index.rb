@@ -4,7 +4,7 @@ module Telegram
   module Messages
     module Layouts
       module Spreadsheets
-        class Index < ActiveInteraction::Base
+        class Index < Base
           class IndexError < StandardError; end
           class UnknownAction < IndexError; end
           class NoLayoutCursorsAction < IndexError; end
@@ -17,27 +17,18 @@ module Telegram
             delete_table: { number: '3', text: 'Удалить таблицу', method: :delete_table }
           }.freeze
 
-          object :bot, class: BotDecorators::BotDecorator
-          record :user
-          string :action_number, default: nil
-
           def execute
             raise NoLayoutCursorsAction unless user_layout_cursor_action
 
-            send(action_method)
+            super
           rescue UnknownAction
-            bot.send_message('Неизвестная команда')
-            bot.send_message(message)
+            messages << 'Неизвестная команда'
+            messages << list_actions_text
           rescue NoLayoutCursorsAction
-            bot.send_message('Начните работу командой /start')
+            messages << 'Начните работу командой /start'
           end
 
           private
-
-          def list_all_actions
-            cursor_action
-            bot.send_message(message)
-          end
 
           def list_tables
             spreadsheets = Spreadsheet.where(user: user)
@@ -45,8 +36,8 @@ module Telegram
 
             spreadsheets_ids = spreadsheets.map(&:spreadsheet_id).join("\n")
 
-            bot.send_message(spreadsheets_ids)
-            bot.send_message(message)
+            messages << spreadsheets_ids
+            messages << list_actions_text
           end
 
           def add_table
@@ -57,22 +48,8 @@ module Telegram
             Delete.run!(bot: bot, user: user)
           end
 
-          def action_method
-            AVAILABLE_ACTIONS[action][:method]
-          end
-
-          def message
-            @message ||= build_message
-          end
-
-          def build_message
-            text = ''
-
-            AVAILABLE_ACTIONS.each_value do |layout_action|
-              text += "#{layout_action[:number]}) #{layout_action[:text]}\n"
-            end
-
-            text
+          def available_actions
+            AVAILABLE_ACTIONS
           end
 
           def cursor_action
@@ -87,16 +64,6 @@ module Telegram
 
           def user_layout_cursor_action
             user.layout_cursor_action
-          end
-
-          def action
-            layout_action = AVAILABLE_ACTIONS.filter_map do |la|
-              { name: la.first, number: la.last[:number] } if action_number == la.last[:number]
-            end.last
-
-            raise UnknownAction unless layout_action
-
-            layout_action[:name]
           end
         end
       end

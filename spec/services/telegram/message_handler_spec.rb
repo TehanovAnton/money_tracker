@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 Index = Telegram::Messages::Layouts::Spreadsheets::Index
+New = Telegram::Messages::Layouts::Spreadsheets::New
 
 describe Telegram::MessageHandler do
   subject { described_class.run(bot: bot) }
@@ -41,6 +42,16 @@ describe Telegram::MessageHandler do
     it do
       subject
       expect(layout).to have_received(:run!)
+    end
+
+    context 'when layout_cursor_action receives inputs' do
+      let(:user) { FactoryBot.create(:user, :with_layout_cursor_action, layout: New, action: 'enter_spreadsheet_id') }
+      let(:message_text) { '1) dvbnmnbvcxcvbj' }
+
+      it do
+        subject
+        expect(layout).to have_received(:run!)
+      end
     end
   end
 end

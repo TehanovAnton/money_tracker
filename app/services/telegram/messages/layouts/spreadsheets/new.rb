@@ -4,56 +4,57 @@ module Telegram
   module Messages
     module Layouts
       module Spreadsheets
-        class New < ActiveInteraction::Base
+        class New < Base
           class NewError < StandardError; end
           class UnknownAction < NewError; end
           class NoSpreadsheetId < NewError; end
           class NoActionNumber < NewError; end
 
           AVAILABLE_ACTIONS = {
-            list_all_actions: { number: '0' },
-            enter_spreadsheet_id: { number: '1', text: 'Ввести id таблицы' }
+            list_all_actions: { number: '0', method: :list_all_actions },
+            enter_spreadsheet_id: { number: '1', text: 'Ввести id таблицы', method: :enter_spreadsheet_id }
           }.freeze
 
-          object :bot, class: BotDecorators::BotDecorator
-          record :user
-          string :action_number, default: nil
           string :spreadsheet_id, default: nil
 
           def execute
-            case action
-            when :list_all_actions
-              cursor_action
-              bot.send_message(message)
-            when :enter_spreadsheet_id
-              raise NoSpreadsheetId if action == :enter_spreadsheet_id && !spreadsheet_id
-
-              spreadsheet
-              bot.send_message('Таблица добавлена')
-              Index.run!(bot: bot, user: user)
-            end
+            super
           rescue NoSpreadsheetId
-            bot.send_message('Пустой id таблицы')
-            bot.send_message(message)
+            messages << 'Пустой id таблицы'
+            messages << list_actions_text
           rescue UnknownAction
-            bot.send_message('Неизвестная команда')
-            bot.send_message(message)
+            messages << 'Неизвестная команда'
+            messages << list_actions_text
+          end
+
+          class << self
+            def may_receive_inputs?
+              true
+            end
           end
 
           private
+
+          def enter_spreadsheet_id
+            raise NoSpreadsheetId unless spreadsheet_id
+
+            spreadsheet
+            messages << 'Таблица добавлена'
+            Index.run!(bot: bot, user: user)
+          end
 
           def spreadsheet
             Spreadsheet.create!(user: user, spreadsheet_id: spreadsheet_id)
           end
 
-          def message
-            @message ||= build_message
+          def available_actions
+            AVAILABLE_ACTIONS
           end
 
           def build_message
             text = ''
 
-            AVAILABLE_ACTIONS.each_value do |layout_action|
+            available_actions.each_value do |layout_action|
               next unless layout_action[:text]
 
               text += "#{layout_action[:number]}) #{layout_action[:text]}\n"
@@ -73,17 +74,7 @@ module Telegram
           end
 
           def action_method
-            AVAILABLE_ACTIONS[action][:method]
-          end
-
-          def action
-            layout_action = AVAILABLE_ACTIONS.filter_map do |la|
-              { name: la.first, number: la.last[:number] } if action_number == la.last[:number]
-            end.last
-
-            raise UnknownAction unless layout_action
-
-            layout_action[:name]
+            available_actions[action][:method]
           end
         end
       end

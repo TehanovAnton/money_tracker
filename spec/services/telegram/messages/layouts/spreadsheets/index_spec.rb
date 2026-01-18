@@ -6,8 +6,9 @@ New = Telegram::Messages::Layouts::Spreadsheets::New
 Delete = Telegram::Messages::Layouts::Spreadsheets::Delete
 
 describe Telegram::Messages::Layouts::Spreadsheets::Index do
-  subject(:index) { described_class.run(user: user, bot: bot, action_number: action_number) }
+  subject { described_class.run(user: user, bot: bot, action_number: action_number) }
 
+  let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }
   let(:action_number) { '0' }
   let(:bot) { Telegram::BotDecorators::BotDecorator.new({}, nil) }
@@ -18,11 +19,11 @@ describe Telegram::Messages::Layouts::Spreadsheets::Index do
 
   context 'when list_all_actions' do
     it do
-      index
+      subject
 
       expect(user.layout_cursor_action.layout).to eq(described_class.name)
       expect(user.layout_cursor_action.action).to eq('list_all_actions')
-      expect(bot).to have_received(:send_message)
+      expect(messages).to include(subject.send(:list_actions_text))
     end
   end
 
@@ -30,7 +31,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Index do
     let(:action_number) { '1' }
 
     it do
-      expect(index).to be_valid
+      expect(subject).to be_valid
     end
   end
 
@@ -42,7 +43,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Index do
     end
 
     it do
-      index
+      subject
       expect(New).to have_received(:run)
     end
   end
@@ -55,7 +56,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Index do
     end
 
     it do
-      index
+      subject
       expect(Delete).to have_received(:run!)
     end
   end
