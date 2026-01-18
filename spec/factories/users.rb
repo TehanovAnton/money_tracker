@@ -12,8 +12,7 @@ FactoryBot.define do
 
       after(:create) do |user, evaluator|
         user.update(
-          layout_cursor_action: FactoryBot.create(:layout_action, layout: evaluator.layout, action: evaluator.action)
-        )
+          layout_cursor_action: FactoryBot.create(:layout_action, layout: evaluator.layout, action: evaluator.action))
         user.reload
       end
     end

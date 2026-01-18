@@ -32,9 +32,11 @@ module Telegram
 
           def list_tables
             spreadsheets = Spreadsheet.where(user: user)
-            return bot.send_message('Таблиц нет') unless spreadsheets.any?
+            return messages << 'Таблиц нет' unless spreadsheets.any?
 
-            spreadsheets_ids = spreadsheets.map(&:spreadsheet_id).join("\n")
+            spreadsheets_ids = spreadsheets.map.with_index do |spreadsheet, idx|
+              "#{idx + 1}) #{spreadsheet.spreadsheet_id}"
+            end.join("\n")
 
             messages << spreadsheets_ids
             messages << list_actions_text

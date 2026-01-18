@@ -28,10 +28,13 @@ describe Telegram::Messages::Layouts::Spreadsheets::Index do
   end
 
   context 'when list_tables' do
+    let!(:spreadsheet) { FactoryBot.create(:spreadsheet, user: user) }
     let(:action_number) { '1' }
+    let(:spreadsheet_text_line) { "1) #{spreadsheet.spreadsheet_id}" }
 
     it do
-      expect(subject).to be_valid
+      subject
+      expect(messages).to include(spreadsheet_text_line)
     end
   end
 
