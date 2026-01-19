@@ -21,7 +21,7 @@ class BodyParser < Parslet::Parser
     exact('spreadsheet_id') >> exact(':') >> space? >> match(/[^\s;]/).repeat.as(:spreadsheet_id) >> exact(';')
   end
 
-  rule(:sheet_range ) do
+  rule(:sheet_range) do
     exact('sheet_range') >> exact(':') >> space? >> match(/[^\s;]/).repeat.as(:sheet_range) >> exact(';')
   end
 
