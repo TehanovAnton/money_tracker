@@ -6,10 +6,10 @@ module Telegram
       module Spreadsheets
         class Index < Base
           AVAILABLE_ACTIONS = {
-            list_all_actions: { number: 0, method: :list_all_actions },
-            list_tables: { number: 1, text: 'Мои таблицы', method: :list_tables },
-            add_table: { number: 2, text: 'Добавить таблицу', method: :add_table },
-            delete_table: { number: 3, text: 'Удалить таблицу', method: :delete_table }
+            0 => { method: :list_all_actions },
+            1 => { method: :list_tables, text: 'Мои таблицы' },
+            2 => { method: :add_table, text: 'Добавить таблицу' },
+            3 => { method: :delete_table, text: 'Удалить таблицу' }
           }.freeze
 
           private

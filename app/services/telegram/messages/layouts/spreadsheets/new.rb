@@ -6,9 +6,9 @@ module Telegram
       module Spreadsheets
         class New < Base
           AVAILABLE_ACTIONS = {
-            list_all_actions: { number: 0, method: :list_all_actions },
-            enter_spreadsheet_id: { number: 1, text: 'Ввести id таблицы', method: :enter_spreadsheet_id },
-            back_to_index: { number: 2, text: 'Назад', method: :back_to_index }
+            0 => { method: :list_all_actions },
+            1 => { method: :enter_spreadsheet_id, text: 'Ввести id таблицы' },
+            2 => { method: :back_to_index, text: 'Назад' }
           }.freeze
 
           string :spreadsheet_id, default: nil
@@ -33,26 +33,6 @@ module Telegram
 
           def available_actions
             AVAILABLE_ACTIONS
-          end
-
-          def build_message
-            text = ''
-
-            available_actions.each_value do |layout_action|
-              next unless layout_action[:text]
-
-              text += "#{layout_action[:number]}) #{layout_action[:text]}\n"
-            end
-
-            text
-          end
-
-          def action_method
-            available_actions[action][:method]
-          end
-
-          def input_parser
-            NewInputParser
           end
         end
       end

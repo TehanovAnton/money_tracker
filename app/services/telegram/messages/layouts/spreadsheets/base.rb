@@ -25,7 +25,7 @@ module Telegram
           end
 
           def check_action_number
-            return if action_number.in?(available_actions.values.map { |v| v[:number] })
+            return if action_number.in?(available_actions.keys)
 
             errors.add(:action_number, 'Неизвестная команда')
           end
@@ -36,21 +36,8 @@ module Telegram
             errors.add(:layout_cursor_action, 'Пользователь не имеет курсора')
           end
 
-          def action
-            layout_action = available_actions.filter_map do |la|
-              if action_number == la.last[:number]
-                {
-                  name: la.first,
-                  number: la.last[:number]
-                }
-              end
-            end.last
-
-            layout_action[:name]
-          end
-
           def action_method
-            available_actions[action][:method]
+            available_actions[action_number][:method]
           end
 
           def available_actions
