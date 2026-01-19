@@ -10,7 +10,7 @@ describe Telegram::MessageHandler do
 
   let(:bot) { Telegram::BotDecorators::BotDecorator.new({}, nil) }
   let(:user) { FactoryBot.create(:user) }
-  let(:message_text) { nil }
+  let(:message_text) { '0' }
 
   before do
     allow(bot).to receive(:send_message)
@@ -45,7 +45,7 @@ describe Telegram::MessageHandler do
     end
 
     context 'when layout_cursor_action receives inputs' do
-      let(:user) { FactoryBot.create(:user, :with_layout_cursor_action, layout: New, action: 'enter_spreadsheet_id') }
+      let(:user) { FactoryBot.create(:user, :with_layout_cursor_action, layout: New) }
       let(:message_text) { '1) dvbnmnbvcxcvbj' }
 
       it do

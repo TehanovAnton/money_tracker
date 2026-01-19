@@ -5,42 +5,26 @@ module Telegram
     module Layouts
       module Spreadsheets
         class New < Base
-          class NewError < StandardError; end
-          class UnknownAction < NewError; end
-          class NoSpreadsheetId < NewError; end
-          class NoActionNumber < NewError; end
-
           AVAILABLE_ACTIONS = {
-            list_all_actions: { number: '0', method: :list_all_actions },
-            enter_spreadsheet_id: { number: '1', text: 'Ввести id таблицы', method: :enter_spreadsheet_id }
+            list_all_actions: { number: 0, method: :list_all_actions },
+            enter_spreadsheet_id: { number: 1, text: 'Ввести id таблицы', method: :enter_spreadsheet_id },
+            back_to_index: { number: 2, text: 'Назад', method: :back_to_index }
           }.freeze
 
           string :spreadsheet_id, default: nil
 
-          def execute
-            super
-          rescue NoSpreadsheetId
-            messages << 'Пустой id таблицы'
-            messages << list_actions_text
-          rescue UnknownAction
-            messages << 'Неизвестная команда'
-            messages << list_actions_text
-          end
-
-          class << self
-            def may_receive_inputs?
-              true
-            end
-          end
-
           private
 
-          def enter_spreadsheet_id
-            raise NoSpreadsheetId unless spreadsheet_id
+          def back_to_index
+            messages << Index.run!(bot: bot, user: user, action_number: '0')
+            messages.flatten!
+          end
 
+          def enter_spreadsheet_id
             spreadsheet
             messages << 'Таблица добавлена'
-            Index.run!(bot: bot, user: user)
+            messages << Index.run!(bot: bot, user: user, action_number: 0)
+            messages.flatten!
           end
 
           def spreadsheet
@@ -63,18 +47,12 @@ module Telegram
             text
           end
 
-          def cursor_action
-            user.update!(layout_cursor_action: layout_cursor_action)
-          rescue StandardError => _e
-            # ignore
-          end
-
-          def layout_cursor_action
-            LayoutAction.create!(user: user, layout: self.class.name, action: action)
-          end
-
           def action_method
             available_actions[action][:method]
+          end
+
+          def input_parser
+            NewInputParser
           end
         end
       end

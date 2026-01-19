@@ -10,7 +10,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Index do
 
   let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }
-  let(:action_number) { '0' }
+  let(:action_number) { 0 }
   let(:bot) { Telegram::BotDecorators::BotDecorator.new({}, nil) }
 
   before do
@@ -19,10 +19,8 @@ describe Telegram::Messages::Layouts::Spreadsheets::Index do
 
   context 'when list_all_actions' do
     it do
-      subject
-
+      expect(subject).to be_valid
       expect(user.layout_cursor_action.layout).to eq(described_class.name)
-      expect(user.layout_cursor_action.action).to eq('list_all_actions')
       expect(messages).to include(subject.send(:list_actions_text))
     end
   end

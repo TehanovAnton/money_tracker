@@ -5,26 +5,36 @@ module Telegram
     module Layouts
       module Spreadsheets
         class Base < ActiveInteraction::Base
-          string :action_number, default: nil
+          integer :action_number
           record :user
           object :bot, class: BotDecorators::BotDecorator
+
+          validate :check_action_number
+          validate :check_user_layout_cursor_action
 
           def execute
             send(action_method)
             messages
           end
 
-          class << self
-            def may_receive_inputs?
-              false
-            end
+          private
 
-            def inputs_parser
-              LayoutInputParser
-            end
+          def list_all_actions
+            cursor_action
+            messages << list_actions_text
           end
 
-          private
+          def check_action_number
+            return if action_number.in?(available_actions.values.map { |v| v[:number] })
+
+            errors.add(:action_number, 'Неизвестная команда')
+          end
+
+          def check_user_layout_cursor_action
+            return if user.layout_cursor_action
+
+            errors.add(:layout_cursor_action, 'Пользователь не имеет курсора')
+          end
 
           def action
             layout_action = available_actions.filter_map do |la|
@@ -35,8 +45,6 @@ module Telegram
                 }
               end
             end.last
-
-            raise UnknownAction unless layout_action
 
             layout_action[:name]
           end
@@ -49,20 +57,24 @@ module Telegram
             raise StandardError, 'Not implemented'
           end
 
-          def messages
-            @messages ||= []
+          def cursor_action
+            user.update!(layout_cursor_action: layout_cursor_action(layout: self.class.name))
           end
 
-          def list_all_actions
-            cursor_action
+          def layout_cursor_action(layout:)
+            LayoutAction.create!(user: user, layout: layout)
+          end
 
-            messages << list_actions_text
+          def messages
+            @messages ||= []
           end
 
           def list_actions_text
             text = ''
 
             available_actions.each_value do |layout_action|
+              next if layout_action[:number] == '0'
+
               text += "#{layout_action[:number]}) #{layout_action[:text]}\n"
             end
 

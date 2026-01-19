@@ -11,7 +11,7 @@ namespace :money_tracker do
       puts 'Start bot'
 
       bot.listen do |message|
-        Telegram::MessageHandler.run!(bot: BotDecorator.new(bot, message))
+        Telegram::MessageHandler.run!(bot: Telegram::BotDecorators::BotDecorator.new(bot, message))
       end
     end
   end

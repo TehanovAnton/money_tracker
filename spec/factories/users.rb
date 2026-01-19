@@ -7,12 +7,12 @@ FactoryBot.define do
     trait :with_layout_cursor_action do
       transient do
         layout { Telegram::Messages::Layouts::Spreadsheets::Index.name }
-        action { Telegram::Messages::Layouts::Spreadsheets::Index::AVAILABLE_ACTIONS.keys.first }
       end
 
       after(:create) do |user, evaluator|
         user.update(
-          layout_cursor_action: FactoryBot.create(:layout_action, layout: evaluator.layout, action: evaluator.action))
+          layout_cursor_action: FactoryBot.create(:layout_action, layout: evaluator.layout)
+        )
         user.reload
       end
     end

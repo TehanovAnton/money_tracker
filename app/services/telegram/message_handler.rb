@@ -5,7 +5,7 @@ module Telegram
     object :bot, class: BotDecorators::BotDecorator
 
     def execute
-      messages = \
+      layout_messages = \
         if layout_cursor_action
           layout.run!(bot: bot, user: user, **layout_inputs)
         elsif bot.message_text == '/start'
@@ -13,22 +13,17 @@ module Telegram
         else
           "Здравствуйте #{user.telegram_username}. Начните работу командой /start"
         end
+      return unless layout_messages&.any?
 
-      return unless messages&.any?
-
-      messages.each { |message| bot.send_message(message) }
+      layout_messages.each { |message| bot.send_message(message) }
     end
 
     private
 
     def layout_inputs
-      return { action_number: bot.message_text } unless layout.may_receive_inputs?
-
-      layout
-        .inputs_parser
-        .new
-        .parse(bot.message_text.gsub(/\s/, ''))
-        .transform_values(&:to_s)
+      Messages::Layouts::Spreadsheets
+        .input_parsers(layout)
+        .run!(text: bot.message_text)
     end
 
     def layout_cursor_action
@@ -41,6 +36,10 @@ module Telegram
 
     def user
       @user ||= User.find_or_create_by(telegram_username: bot.username)
+    end
+
+    def messages
+      @messages ||= []
     end
   end
 end
