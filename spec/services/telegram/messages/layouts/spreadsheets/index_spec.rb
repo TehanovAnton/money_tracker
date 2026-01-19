@@ -40,12 +40,12 @@ describe Telegram::Messages::Layouts::Spreadsheets::Index do
     let(:action_number) { '2' }
 
     before do
-      allow(New).to receive(:run)
+      allow(New).to receive(:run!)
     end
 
     it do
-      subject
-      expect(New).to have_received(:run)
+      expect(subject).to be_valid
+      expect(New).to have_received(:run!)
     end
   end
 
