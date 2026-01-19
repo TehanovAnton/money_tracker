@@ -2,8 +2,19 @@
 
 FactoryBot.define do
   factory :user do
-    sequence(:email) { |n| "user#{n}@example.com" }
-    password { 'password123' }
-    password_confirmation { 'password123' }
+    telegram_username { 'best_user' }
+
+    trait :with_layout_cursor_action do
+      transient do
+        layout { Telegram::Messages::Layouts::Spreadsheets::Index.name }
+      end
+
+      after(:create) do |user, evaluator|
+        user.update(
+          layout_cursor_action: FactoryBot.create(:layout_action, layout: evaluator.layout)
+        )
+        user.reload
+      end
+    end
   end
 end

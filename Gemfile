@@ -64,6 +64,9 @@ gem 'parslet', '~> 2.0'
 # Telegram integration
 gem 'telegram-bot-ruby', '~> 2.4'
 
+# Dry
+gem 'dry-monads', '~> 1.9'
+
 group :development, :test do
   gem 'rubocop', '~> 1.81', '>= 1.81.1'
   gem 'rubocop-factory_bot', '~> 2.28'
@@ -71,7 +74,7 @@ group :development, :test do
   gem 'rubocop-rspec', '~> 3.8', require: false
   gem 'rubocop-rspec_rails', '~> 2.32'
 
-  gem 'solargraph', '~> 0.57.0'
+  gem 'solargraph', '~> 0.58.1'
   gem 'solargraph-rails', '~> 1.2', '>= 1.2.4'
   gem 'solargraph-rspec', '~> 0.5.5'
 

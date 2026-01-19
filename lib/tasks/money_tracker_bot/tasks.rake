@@ -11,29 +11,7 @@ namespace :money_tracker do
       puts 'Start bot'
 
       bot.listen do |message|
-        parsed_message = TelegramBot::MessageParser.new.parse(message.text)
-
-        if parsed_message[:message_action][:value] == 'upsert'
-          message_body = parsed_message[:message_body]
-          upsert_params = {
-            spreadsheet_id: message_body[:spreadsheet_id].to_s,
-            sheet: {
-              range: message_body[:sheet_range].to_s,
-              values: [
-                [
-                  message_body[:date].to_s,
-                  message_body[:money].to_s,
-                  message_body[:category].to_s,
-                  message_body.fetch(:comment, '').to_s
-                ]
-              ]
-            }
-          }
-
-          Spreadsheets::UpsertService.run!(params: upsert_params)
-        else
-          bot.api.send_message(chat_id: message.chat.id, text: 'Unsupported action')
-        end
+        Telegram::MessageHandler.run!(bot: Telegram::BotDecorators::BotDecorator.new(bot, message))
       end
     end
   end

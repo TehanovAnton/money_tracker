@@ -2,6 +2,7 @@
 
 require_relative 'factory_bot'
 require 'webmock/rspec'
+require 'telegram/bot'
 
 # Load all support dir
 Dir['./spec/support/**/*.rb'].each { |file| require file }
@@ -16,4 +17,7 @@ RSpec.configure do |config|
   end
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
+
+  Rails.logger = Logger.new($stdout)
+  Rails.logger.level = Logger::UNKNOWN
 end
