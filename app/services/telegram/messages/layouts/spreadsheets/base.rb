@@ -59,10 +59,10 @@ module Telegram
           def list_actions_text
             text = ''
 
-            available_actions.each_value do |layout_action|
-              next if layout_action[:number] == '0'
+            available_actions.each do |number, options|
+              next if number.zero?
 
-              text += "#{layout_action[:number]}) #{layout_action[:text]}\n"
+              text += "#{number}) #{options[:text]}\n"
             end
 
             text

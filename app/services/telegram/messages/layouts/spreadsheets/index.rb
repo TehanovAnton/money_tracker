@@ -27,7 +27,8 @@ module Telegram
           end
 
           def add_table
-            New.run(bot: bot, user: user, action_number: '0')
+            messages << New.run!(bot: bot, user: user, action_number: '0')
+            messages.flatten!
           end
 
           def delete_table
