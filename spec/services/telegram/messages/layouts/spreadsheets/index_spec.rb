@@ -4,13 +4,17 @@ require 'rails_helper'
 
 New = Telegram::Messages::Layouts::Spreadsheets::New
 Delete = Telegram::Messages::Layouts::Spreadsheets::Delete
+Spreadsheets = Telegram::Messages::Layouts::Spreadsheets
 
 describe Telegram::Messages::Layouts::Spreadsheets::Index do
-  subject { described_class.run(user: user, bot: bot, action_number: action_number) }
+  subject { described_class.run(user: user, bot: bot, **layout_inputs) }
 
+  let(:message_text) { '0' }
+  let(:layout_inputs) do
+    Spreadsheets.input_parsers(described_class).run!(text: message_text)
+  end
   let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }
-  let(:action_number) { 0 }
   let(:bot) { Telegram::BotDecorators::BotDecorator.new({}, nil) }
 
   before do
@@ -27,7 +31,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Index do
 
   context 'when list_tables' do
     let!(:spreadsheet) { FactoryBot.create(:spreadsheet, user: user) }
-    let(:action_number) { '1' }
+    let(:message_text) { '1' }
     let(:spreadsheet_text_line) { "1) #{spreadsheet.spreadsheet_id}" }
 
     it do
@@ -37,7 +41,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Index do
   end
 
   context 'when add_table' do
-    let(:action_number) { '2' }
+    let(:message_text) { '2' }
 
     before do
       allow(New).to receive(:run!)
@@ -49,8 +53,9 @@ describe Telegram::Messages::Layouts::Spreadsheets::Index do
     end
   end
 
-  context 'when delete_action_table' do
-    let(:action_number) { '3' }
+  context 'when delete_table' do
+    let!(:spreadsheet) { FactoryBot.create(:spreadsheet, user: user) }
+    let(:message_text) { "3) #{spreadsheet.spreadsheet_id}" }
 
     before do
       allow(Delete).to receive(:run!)
