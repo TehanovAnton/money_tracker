@@ -4,20 +4,17 @@ module Telegram
   module Messages
     module Layouts
       module Spreadsheets
-        class IndexInputParser < ActiveInteraction::Base
-          class InvalidInputError < StandardError; end
-
+        class InputParserBase < ActiveInteraction::Base
           string :text
 
           def execute
             layout_params
           end
 
+          private
+
           def layout_params
-            {
-              action_number: parsed_input.fetch(:action_number, nil),
-              spreadsheet_id: parsed_input.fetch(:spreadsheet_id, nil)
-            }.compact
+            raise StandardError, 'Not implemented'
           end
 
           def input_parser(kind = :value_input)

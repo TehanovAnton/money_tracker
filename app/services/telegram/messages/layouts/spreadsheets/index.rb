@@ -12,6 +12,8 @@ module Telegram
             3 => { method: :delete_table, text: 'Удалить таблицу' }
           }.freeze
 
+          string :spreadsheet_id, default: nil
+
           private
 
           def list_tables
@@ -32,7 +34,10 @@ module Telegram
           end
 
           def delete_table
-            Delete.run!(bot: bot, user: user)
+            return messages << 'Пустой id таблицы' unless spreadsheet_id
+
+            messages << Delete.run!(bot: bot, user: user, spreadsheet_id: spreadsheet_id)
+            messages.flatten!
           end
 
           def available_actions

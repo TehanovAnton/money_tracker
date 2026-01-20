@@ -6,7 +6,8 @@ module Telegram
       module Spreadsheets
         LAYOUT_INPUT_PARSER = {
           New.name => NewInputParser,
-          Index.name => IndexInputParser
+          Index.name => IndexInputParser,
+          Delete.name => DeleteInputParser
         }.freeze
 
         def self.input_parsers(layout)
