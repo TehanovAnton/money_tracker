@@ -22,9 +22,7 @@ module Telegram
     private
 
     def layout_inputs
-      Messages::Layouts::Spreadsheets
-        .input_parsers(layout)
-        .run!(text: bot.message_text)
+      input_parsers_factory(parser_name: :base).run!(text: bot.message_text)
     end
 
     def layout_cursor_action
@@ -45,6 +43,10 @@ module Telegram
 
     def layouts_factory(layout_name:)
       ::Telegram::Messages::Layouts::Spreadsheets::LayoutsFactory.run!(layout_name: layout_name)
+    end
+
+    def input_parsers_factory(parser_name:)
+      Messages::Layouts::Spreadsheets::InputParsersFactory.run!(parser_name: parser_name)
     end
   end
 end
