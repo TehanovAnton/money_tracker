@@ -14,19 +14,22 @@ module Telegram
           private
 
           def back_to_index
-            messages << Index.run!(bot: bot, user: user, action_name: :list_all_actions)
+            messages << layouts_factory(layout_name: :index)
+                        .run!(bot: bot, user: user, action_name: :list_all_actions)
             messages.flatten!
           end
 
           def enter_spreadsheet_id
             unless spreadsheet
               messages << 'Пустой Id таблицы'
-              messages << New.run!(bot: bot, user: user, action_name: :enter_spreadsheet_id)
+              messages << layouts_factory(layout_name: :new)
+                          .run!(bot: bot, user: user, action_name: :enter_spreadsheet_id)
               return messages.flatten!
             end
 
             messages << 'Таблица добавлена'
-            messages << Index.run!(bot: bot, user: user, action_name: :list_tables)
+            messages << layouts_factory(layout_name: :index)
+                        .run!(bot: bot, user: user, action_name: :list_tables)
             messages.flatten!
           end
 

@@ -12,12 +12,14 @@ module Telegram
           private
 
           def list_tables
-            messages << ListTables.run!(bot: bot, user: user, action_name: :list_tables)
+            messages << layouts_factory(layout_name: :list_tables)
+                        .run!(bot: bot, user: user, action_name: :list_tables)
             messages.flatten!
           end
 
           def add_table
-            messages << New.run!(bot: bot, user: user, action_number: :enter_spreadsheet_id)
+            messages << layouts_factory(layout_name: :new)
+                        .run!(bot: bot, user: user, action_number: :enter_spreadsheet_id)
             messages.flatten!
           end
         end

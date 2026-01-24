@@ -14,7 +14,8 @@ module Telegram
           def delete_table
             spreadsheet.destroy
 
-            messages << Index.run!(bot: bot, user: user, action_name: :list_all_actions)
+            messages << layouts_factory(layout_name: :index)
+                        .run!(bot: bot, user: user, action_name: :list_all_actions)
             messages.flatten!
           end
 

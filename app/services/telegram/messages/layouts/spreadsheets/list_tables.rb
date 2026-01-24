@@ -32,12 +32,14 @@ module Telegram
           def delete_table
             return messages << 'Пустой id таблицы' unless spreadsheet_id
 
-            messages << Delete.run!(bot: bot, user: user, spreadsheet_id: spreadsheet_id)
+            messages << layouts_factory(layout_name: :delete)
+                        .run!(bot: bot, user: user, spreadsheet_id: spreadsheet_id)
             messages.flatten!
           end
 
           def back_to_index
-            messages << Index.run!(bot: bot, user: user, action_name: :list_all_actions)
+            messages << layouts_factory(layout_name: :delete)
+                        .run!(bot: bot, user: user, action_name: :list_all_actions)
             messages.flatten!
           end
         end

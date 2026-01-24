@@ -89,6 +89,10 @@ module Telegram
 
             text
           end
+
+          def layouts_factory(layout_name:)
+            LayoutsFactory.run!(layout_name: layout_name)
+          end
         end
       end
     end
