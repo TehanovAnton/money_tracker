@@ -7,7 +7,8 @@ module Telegram
     def execute
       layout_messages = \
         if layout_cursor_action
-          layout.run!(bot: bot, user: user, **layout_inputs)
+          layout.run(bot: bot, user: user, **layout_inputs)
+                .messages
         elsif bot.message_text == '/start'
           Telegram::Messages::Layouts::Spreadsheets::Index.run!(bot: bot, user: user)
         else

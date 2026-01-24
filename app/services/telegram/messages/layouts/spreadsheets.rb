@@ -4,14 +4,14 @@ module Telegram
   module Messages
     module Layouts
       module Spreadsheets
-        LAYOUT_INPUT_PARSER = {
-          New.name => NewInputParser,
-          Index.name => IndexInputParser,
-          Delete.name => DeleteInputParser
-        }.freeze
+        LAYOUT_INPUT_PARSER = {}.freeze
 
         def self.input_parsers(layout)
-          LAYOUT_INPUT_PARSER[layout.name]
+          LAYOUT_INPUT_PARSER[layout.name] || default_input_parser
+        end
+
+        def self.default_input_parser
+          InputParserBase
         end
       end
     end

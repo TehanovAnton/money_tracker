@@ -4,10 +4,33 @@ module Telegram
   module Messages
     module Layouts
       module Spreadsheets
+        module IDefineAction
+          def define_action(method_name, text = nil)
+            layout_actions[method_name] = { text: text }
+          end
+
+          def layout_actions
+            @layout_actions ||= {}
+          end
+        end
+
+        module IChooseAction
+          def action_method
+            return available_actions.keys[action_number - 1] if action_number
+
+            action_name
+          end
+        end
+
         class Base < ActiveInteraction::Base
-          integer :action_number
+          extend IDefineAction
+          include IChooseAction
+
+          integer :action_number, default: nil
+          symbol :action_name, default: nil
           record :user
           object :bot, class: BotDecorators::BotDecorator
+          string :spreadsheet_id, default: nil
 
           validate :check_action_number
           validate :check_user_layout_cursor_action
@@ -15,6 +38,10 @@ module Telegram
           def execute
             send(action_method)
             messages
+          end
+
+          def messages
+            @messages ||= []
           end
 
           private
@@ -25,9 +52,12 @@ module Telegram
           end
 
           def check_action_number
-            return if action_number.in?(available_actions.keys)
+            return if available_actions[action_method].present?
+            return if available_actions[action_name].present?
 
             errors.add(:action_number, 'Неизвестная команда')
+            messages << self.class.run!(bot: bot, user: user, action_number: 0)
+            messages.flatten!
           end
 
           def check_user_layout_cursor_action
@@ -36,12 +66,8 @@ module Telegram
             errors.add(:layout_cursor_action, 'Пользователь не имеет курсора')
           end
 
-          def action_method
-            available_actions[action_number][:method]
-          end
-
           def available_actions
-            raise StandardError, 'Not implemented'
+            @available_actions ||= self.class.layout_actions
           end
 
           def cursor_action
@@ -52,17 +78,13 @@ module Telegram
             LayoutAction.create!(user: user, layout: layout)
           end
 
-          def messages
-            @messages ||= []
-          end
-
           def list_actions_text
             text = ''
 
-            available_actions.each do |number, options|
-              next if number.zero?
+            available_actions.each_value.with_index do |options, idx|
+              next unless options[:text]
 
-              text += "#{number}) #{options[:text]}\n"
+              text += "#{idx + 1}) #{options[:text]}\n"
             end
 
             text

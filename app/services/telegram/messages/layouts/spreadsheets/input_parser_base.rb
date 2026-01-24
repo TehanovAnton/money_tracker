@@ -14,7 +14,10 @@ module Telegram
           private
 
           def layout_params
-            raise StandardError, 'Not implemented'
+            {
+              action_number: parsed_input.fetch(:action_number, nil),
+              spreadsheet_id: parsed_input.fetch(:spreadsheet_id, nil)
+            }.compact
           end
 
           def input_parser(kind = :value_input)

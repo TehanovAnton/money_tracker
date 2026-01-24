@@ -5,43 +5,20 @@ module Telegram
     module Layouts
       module Spreadsheets
         class Index < Base
-          AVAILABLE_ACTIONS = {
-            0 => { method: :list_all_actions },
-            1 => { method: :list_tables, text: 'Мои таблицы' },
-            2 => { method: :add_table, text: 'Добавить таблицу' },
-            3 => { method: :delete_table, text: 'Удалить таблицу' }
-          }.freeze
-
-          string :spreadsheet_id, default: nil
+          define_action(:list_all_actions)
+          define_action(:list_tables, 'Мои таблицы')
+          define_action(:add_table, text: 'Добавить таблицу')
 
           private
 
           def list_tables
-            spreadsheets = Spreadsheet.where(user: user)
-            return messages << 'Таблиц нет' unless spreadsheets.any?
-
-            spreadsheets_ids = spreadsheets.map.with_index do |spreadsheet, idx|
-              "#{idx + 1}) #{spreadsheet.spreadsheet_id}"
-            end.join("\n")
-
-            messages << spreadsheets_ids
-            messages << list_actions_text
+            messages << ListTables.run!(bot: bot, user: user, action_name: :list_tables)
+            messages.flatten!
           end
 
           def add_table
-            messages << New.run!(bot: bot, user: user, action_number: '0')
+            messages << New.run!(bot: bot, user: user, action_number: :enter_spreadsheet_id)
             messages.flatten!
-          end
-
-          def delete_table
-            return messages << 'Пустой id таблицы' unless spreadsheet_id
-
-            messages << Delete.run!(bot: bot, user: user, spreadsheet_id: spreadsheet_id)
-            messages.flatten!
-          end
-
-          def available_actions
-            AVAILABLE_ACTIONS
           end
         end
       end

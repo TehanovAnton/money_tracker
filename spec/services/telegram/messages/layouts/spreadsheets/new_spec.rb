@@ -13,7 +13,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::New do
   let(:bot) { Telegram::BotDecorators::BotDecorator.new({}, nil) }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action, layout: described_class) }
   let(:spreadsheet_id) { nil }
-  let(:message_text) { '0' }
+  let(:message_text) { '1' }
   let(:layout_inputs) do
     Spreadsheets.input_parsers(described_class).run!(text: message_text)
   end
@@ -32,7 +32,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::New do
 
   context 'when enter_spreadsheet_id' do
     let(:spreadsheet) { Spreadsheet.find_by(user_id: user) }
-    let(:message_text) { '1)kjhjkpkjhhj' }
+    let(:message_text) { '2)kjhjkpkjhhj' }
 
     before do
       allow(Index).to receive(:run!)
@@ -46,7 +46,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::New do
   end
 
   context 'when back_to_index' do
-    let(:message_text) { '2' }
+    let(:message_text) { '3' }
     let(:messages) { subject.send(:messages) }
     let(:index_list_actions_text) { Index.new(bot: bot, user: user).send(:list_actions_text) }
 

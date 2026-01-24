@@ -9,7 +9,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Delete do
 
   let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }
-  let(:action_number) { 0 }
+  let(:action_number) { 1 }
   let(:bot) { Telegram::BotDecorators::BotDecorator.new({}, nil) }
   let!(:spreadsheet) { FactoryBot.create(:spreadsheet, user: user) }
   let(:spreadsheet_id) { spreadsheet.spreadsheet_id }

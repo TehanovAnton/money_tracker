@@ -7,16 +7,14 @@ module Telegram
         class Delete < Base
           string :spreadsheet_id
 
-          def available_actions
-            { 0 => { method: :delete_table } }
-          end
+          define_action(:delete_table)
 
           private
 
           def delete_table
             spreadsheet.destroy
 
-            messages << Index.run!(bot: bot, user: user, action_number: 0)
+            messages << Index.run!(bot: bot, user: user, action_name: :list_all_actions)
             messages.flatten!
           end
 

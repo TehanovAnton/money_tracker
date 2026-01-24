@@ -6,7 +6,7 @@ New = Telegram::Messages::Layouts::Spreadsheets::New
 Delete = Telegram::Messages::Layouts::Spreadsheets::Delete
 Spreadsheets = Telegram::Messages::Layouts::Spreadsheets
 
-describe Telegram::Messages::Layouts::Spreadsheets::Index do
+describe Telegram::Messages::Layouts::Spreadsheets::ListTables do
   subject { described_class.run(user: user, bot: bot, **layout_inputs) }
 
   let(:message_text) { '1' }
@@ -40,16 +40,17 @@ describe Telegram::Messages::Layouts::Spreadsheets::Index do
     end
   end
 
-  context 'when add_table' do
-    let(:message_text) { '3' }
+  context 'when delete_table' do
+    let!(:spreadsheet) { FactoryBot.create(:spreadsheet, user: user) }
+    let(:message_text) { "4) #{spreadsheet.spreadsheet_id}" }
 
     before do
-      allow(New).to receive(:run!)
+      allow(Delete).to receive(:run!)
     end
 
     it do
-      expect(subject).to be_valid
-      expect(New).to have_received(:run!)
+      subject
+      expect(Delete).to have_received(:run!)
     end
   end
 end
