@@ -91,7 +91,7 @@ module Telegram
           end
 
           def layouts_factory(layout_name:)
-            LayoutsFactory.run!(layout_name: layout_name)
+            LayoutsFactory.run!(factory_name: layout_name)
           end
         end
       end

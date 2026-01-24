@@ -42,11 +42,11 @@ module Telegram
     end
 
     def layouts_factory(layout_name:)
-      ::Telegram::Messages::Layouts::Spreadsheets::LayoutsFactory.run!(layout_name: layout_name)
+      ::Telegram::Messages::Layouts::Spreadsheets::LayoutsFactory.run!(factory_name: layout_name)
     end
 
     def input_parsers_factory(parser_name:)
-      Messages::Layouts::Spreadsheets::InputParsersFactory.run!(parser_name: parser_name)
+      Messages::Layouts::Spreadsheets::InputParsersFactory.run!(factory_name: parser_name)
     end
   end
 end
