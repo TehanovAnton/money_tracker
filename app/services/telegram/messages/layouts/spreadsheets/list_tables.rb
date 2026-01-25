@@ -7,7 +7,7 @@ module Telegram
         class ListTables < Base
           string :spreadsheet_id, default: nil
 
-          define_action(:list_all_actions)
+          define_action(:list_all_actions, 'Доступные действия')
           define_action(:list_tables, 'Показать все')
           define_action(:edit_table, 'Изменить табилцу')
           define_action(:delete_table, 'Удалить')
@@ -38,7 +38,7 @@ module Telegram
           end
 
           def back_to_index
-            messages << layouts_factory(layout_name: :delete)
+            messages << layouts_factory(layout_name: :index)
                         .run!(bot: bot, user: user, action_name: :list_all_actions)
             messages.flatten!
           end

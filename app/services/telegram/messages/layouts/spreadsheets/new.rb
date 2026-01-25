@@ -7,7 +7,7 @@ module Telegram
         class New < Base
           string :spreadsheet_id, default: nil
 
-          define_action(:list_all_actions)
+          define_action(:list_all_actions, 'Доступные действия')
           define_action(:enter_spreadsheet_id, 'Ввести id таблицы')
           define_action(:back_to_index, 'Назад')
 
@@ -23,7 +23,7 @@ module Telegram
             unless spreadsheet
               messages << 'Пустой Id таблицы'
               messages << layouts_factory(layout_name: :new)
-                          .run!(bot: bot, user: user, action_name: :enter_spreadsheet_id)
+                          .run!(bot: bot, user: user, action_name: :list_all_actions)
               return messages.flatten!
             end
 

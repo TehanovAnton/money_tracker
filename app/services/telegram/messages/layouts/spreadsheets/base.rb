@@ -82,8 +82,6 @@ module Telegram
             text = ''
 
             available_actions.each_value.with_index do |options, idx|
-              next unless options[:text]
-
               text += "#{idx + 1}) #{options[:text]}\n"
             end
 

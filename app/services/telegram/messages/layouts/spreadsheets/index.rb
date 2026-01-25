@@ -5,9 +5,9 @@ module Telegram
     module Layouts
       module Spreadsheets
         class Index < Base
-          define_action(:list_all_actions)
+          define_action(:list_all_actions, 'Доступные действия')
           define_action(:list_tables, 'Мои таблицы')
-          define_action(:add_table, text: 'Добавить таблицу')
+          define_action(:add_table, 'Добавить таблицу')
 
           private
 
@@ -19,7 +19,7 @@ module Telegram
 
           def add_table
             messages << layouts_factory(layout_name: :new)
-                        .run!(bot: bot, user: user, action_number: :enter_spreadsheet_id)
+                        .run!(bot: bot, user: user, action_name: :enter_spreadsheet_id)
             messages.flatten!
           end
         end
