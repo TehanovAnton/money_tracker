@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :spreadsheet do
-    document_id { 'jnkjbjkjhgfg' }
+  factory :chat_context do
     association :user
+    spreadsheet_id {}
   end
 end

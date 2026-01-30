@@ -4,7 +4,7 @@ module Telegram
   module Messages
     module Layouts
       module Spreadsheets
-        class InputParserBase < ActiveInteraction::Base
+        class AddExpenseInputParser < InputParserBase
           string :text
 
           def execute
@@ -16,20 +16,19 @@ module Telegram
           def layout_params
             {
               action_number: parsed_input.fetch(:action_number, nil),
-              document_id: parsed_input.fetch(:spreadsheet_id, nil)
+              date: parsed_input.fetch(:date, nil),
+              money: parsed_input.fetch(:money, nil)&.to_f
             }.compact
           end
 
-          def input_parser(kind = :value_input)
-            return LayoutInputParser.new(:spreadsheet_id) if kind == :value_input
-
-            ActionInputParser.new
+          def parsed_input
+            @parsed_input ||= parse(input_parser(:date, kind: :date_input), prepared_text) ||
+                              parse(input_parser(:money, kind: :money_input), prepared_text) ||
+                              {}
           end
 
-          def parsed_input
-            @parsed_input ||= parse(input_parser, prepared_text) ||
-                              parse(input_parser(:action_input), prepared_text) ||
-                              {}
+          def input_parser(value_alias, **options)
+            Telegram::AddExpenseInputParser.new(value_alias, **options)
           end
 
           def parse(parser, txt)

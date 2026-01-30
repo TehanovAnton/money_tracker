@@ -5,7 +5,7 @@ module Telegram
     module Layouts
       module Spreadsheets
         class Delete < Base
-          string :spreadsheet_id
+          string :document_id
 
           define_action(:delete_table)
 
@@ -20,7 +20,7 @@ module Telegram
           end
 
           def spreadsheet
-            Spreadsheet.find_by(spreadsheet_id: spreadsheet_id)
+            Spreadsheet.find_by(document_id: document_id)
           end
         end
       end

@@ -10,9 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_01_19_150151) do
+ActiveRecord::Schema[7.0].define(version: 2026_01_30_141840) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "chat_contexts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "spreadsheet_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "form_inputs", force: :cascade do |t|
+    t.bigint "form_id", null: false
+    t.string "type", null: false
+    t.string "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "money", precision: 6, scale: 2
+  end
 
   create_table "layout_actions", force: :cascade do |t|
     t.string "layout", null: false
@@ -21,12 +37,18 @@ ActiveRecord::Schema[7.0].define(version: 2026_01_19_150151) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "spreadsheets", force: :cascade do |t|
-    t.string "spreadsheet_id", null: false
+  create_table "spreadsheet_forms", force: :cascade do |t|
+    t.bigint "spreadsheet_id", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["spreadsheet_id"], name: "index_spreadsheets_on_spreadsheet_id", unique: true
+  end
+
+  create_table "spreadsheets", force: :cascade do |t|
+    t.string "document_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

@@ -5,10 +5,10 @@ module Telegram
     module Layouts
       module Spreadsheets
         class New < Base
-          string :spreadsheet_id, default: nil
+          string :document_id, default: nil
 
           define_action(:list_all_actions, 'Доступные действия')
-          define_action(:enter_spreadsheet_id, 'Ввести id таблицы')
+          define_action(:enter_document_id, 'Ввести id таблицы')
           define_action(:back_to_index, 'Назад')
 
           private
@@ -19,7 +19,7 @@ module Telegram
             messages.flatten!
           end
 
-          def enter_spreadsheet_id
+          def enter_document_id
             unless spreadsheet
               messages << 'Пустой Id таблицы'
               messages << layouts_factory(layout_name: :new)
@@ -34,7 +34,7 @@ module Telegram
           end
 
           def spreadsheet
-            Spreadsheet.create(user: user, spreadsheet_id: spreadsheet_id)
+            Spreadsheet.create(user: user, document_id: document_id)
           rescue StandardError
             nil
           end

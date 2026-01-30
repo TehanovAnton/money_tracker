@@ -5,11 +5,12 @@ module Telegram
     module Layouts
       module Spreadsheets
         class ListTables < Base
-          string :spreadsheet_id, default: nil
+          string :document_id, default: nil
 
           define_action(:list_all_actions, 'Доступные действия')
           define_action(:list_tables, 'Показать все')
           define_action(:edit_table, 'Изменить табилцу')
+          define_action(:data_actions, 'Внести данные в таблицу')
           define_action(:delete_table, 'Удалить')
           define_action(:back_to_index, 'Назад')
 
@@ -20,7 +21,7 @@ module Telegram
             return messages << 'Таблиц нет' unless spreadsheets.any?
 
             spreadsheets_ids = spreadsheets.map.with_index do |spreadsheet, idx|
-              "#{idx + 1}) #{spreadsheet.spreadsheet_id}"
+              "#{idx + 1}) #{spreadsheet.document_id}"
             end.join("\n")
 
             cursor_action
@@ -29,11 +30,19 @@ module Telegram
 
           def edit_table; end
 
+          def data_actions
+            return messages << 'Пустой id таблицы' unless document_id
+
+            messages << layouts_factory(layout_name: :data_actions)
+                        .run!(bot: bot, user: user, document_id: document_id)
+            messages.flatten!
+          end
+
           def delete_table
-            return messages << 'Пустой id таблицы' unless spreadsheet_id
+            return messages << 'Пустой id таблицы' unless document_id
 
             messages << layouts_factory(layout_name: :delete)
-                        .run!(bot: bot, user: user, spreadsheet_id: spreadsheet_id)
+                        .run!(bot: bot, user: user, document_id: document_id)
             messages.flatten!
           end
 

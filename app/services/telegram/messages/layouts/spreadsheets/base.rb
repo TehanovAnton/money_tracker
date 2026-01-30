@@ -12,6 +12,10 @@ module Telegram
           def layout_actions
             @layout_actions ||= {}
           end
+
+          def action_number_for(method_name)
+            layout_actions.keys.index(method_name) + 1
+          end
         end
 
         module IChooseAction

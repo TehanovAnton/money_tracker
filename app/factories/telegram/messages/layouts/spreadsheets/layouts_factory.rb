@@ -20,6 +20,14 @@ module Telegram
           define(:list_tables) do
             ListTables
           end
+
+          define(:data_actions) do
+            DataActionsLayout
+          end
+
+          define(:add_expense) do
+            AddExpenseLayout
+          end
         end
       end
     end
