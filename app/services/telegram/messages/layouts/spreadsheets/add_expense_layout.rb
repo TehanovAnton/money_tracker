@@ -4,45 +4,71 @@ module Telegram
   module Messages
     module Layouts
       module Spreadsheets
-        class AddExpenseLayout < Base
-          integer :spreadsheet_id, default: nil
-          string :date, default: nil
-          float :money, default: nil
+        module IFormInput
+          def form_input(empty_field_message, success_field_entrance_text, field, allow_nil: false)
+            return messages << empty_field_message if !inputs[field] && !allow_nil
 
-          define_action(:list_all_actions, 'Доступные действия')
-          define_action(:enter_date, 'Ввести дату')
-          define_action(:enter_money, 'Ввести сумму')
-
-          private
-
-          def enter_date
-            return messages << 'Пустая дата' unless date
-
-            date_input
-            messages << 'Дата введена'
+            create_form_input(form_input_factory(field), field)
+            messages << success_field_entrance_text
             list_all_actions
             messages.flatten!
           end
 
-          def enter_money
-            return messages << 'Пустая сумма' unless money
+          def create_form_input(form_input_mpdel, field)
+            form_input_mpdel.create(form_id: spreadsheet_form.id, field => inputs[field])
+          end
 
-            money_input
-            messages << 'Сумма введена'
-            list_all_actions
-            messages.flatten!
+          def form_input_factory(_field)
+            raise StandardError, 'Not Implemented'
+          end
+        end
+
+        class AddExpenseLayout < Base
+          include IFormInput
+
+          FIELD_FORM_INPUT_MAP = {
+            date: DateFormInput,
+            money: MoneyFormInput,
+            category: CategoryFormInput,
+            comment: CommentFormInput
+          }.freeze
+
+          integer :spreadsheet_id, default: nil
+          string :date, default: nil
+          float :money, default: nil
+          string :category, default: nil
+          string :comment, default: nil
+
+          define_action(:list_all_actions, 'Доступные действия')
+          define_action(:enter_date, 'Ввести дату')
+          define_action(:enter_money, 'Ввести сумму')
+          define_action(:enter_category, 'Ввести категорию')
+          define_action(:enter_comment, 'Ввести коментарий')
+
+          private
+
+          def enter_date
+            form_input('Пустая дата', 'Дата введена', :date)
+          end
+
+          def enter_money
+            form_input('Пустая сумма', 'Сумма введена', :money)
+          end
+
+          def enter_category
+            form_input('Пустая категория', 'категория введена', :category)
+          end
+
+          def enter_comment
+            form_input(nil, nil, :comment, allow_nil: true)
           end
 
           def spreadsheet_form
             @spreadsheet_form ||= SpreadsheetForm.find_or_create_by(user: user, spreadsheet_id: spreadsheet_id)
           end
 
-          def date_input
-            @date_input ||= DateFormInput.create(form_id: spreadsheet_form.id, date: date)
-          end
-
-          def money_input
-            @money_input ||= MoneyFormInput.create(form_id: spreadsheet_form.id, money: money)
+          def form_input_factory(field)
+            FIELD_FORM_INPUT_MAP[field]
           end
         end
       end

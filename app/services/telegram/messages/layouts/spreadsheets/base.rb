@@ -16,6 +16,10 @@ module Telegram
           def action_number_for(method_name)
             layout_actions.keys.index(method_name) + 1
           end
+
+          def action_name_for(action_number)
+            layout_actions.keys[action_number - 1]
+          end
         end
 
         module IChooseAction

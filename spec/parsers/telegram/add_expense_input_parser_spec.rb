@@ -24,4 +24,14 @@ describe Telegram::AddExpenseInputParser do
       expect(subject[:input_value].to_s).to eq('2.75')
     end
   end
+
+  context 'when category_input' do
+    let(:text) { "3) 'Домашний интернет'" }
+    let(:kind) { :category_input }
+
+    it do
+      expect { subject }.not_to raise_error
+      expect(subject[:input_value].to_s).to eq('Домашний интернет')
+    end
+  end
 end

@@ -21,6 +21,8 @@ module Telegram
         date_input
       when :money_input
         money_input
+      when :category_input, :comment_input
+        quoted_input
       end
     end
 
@@ -36,6 +38,13 @@ module Telegram
       (match('\d').repeat(2) >> str('.') >>
       match('\d').repeat(2) >> str('.') >>
       match('\d').repeat(4)).as(value_alias)
+    end
+
+    rule(:quoted_input) do
+      match('\s').maybe >>
+        str("'") >>
+        match("[^']").repeat.as(value_alias) >>
+        str("'")
     end
   end
 end
