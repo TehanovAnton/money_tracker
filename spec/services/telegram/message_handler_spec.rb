@@ -2,9 +2,6 @@
 
 require 'rails_helper'
 
-Index = Telegram::Messages::Layouts::Spreadsheets::Index
-New = Telegram::Messages::Layouts::Spreadsheets::New
-
 describe Telegram::MessageHandler do
   subject { described_class.run(bot: bot) }
 

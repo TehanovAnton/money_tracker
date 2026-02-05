@@ -8,10 +8,11 @@ require 'telegram/bot'
 Dir['./spec/support/**/*.rb'].each { |file| require file }
 
 Spreadsheets = Telegram::Messages::Layouts::Spreadsheets
-New = Spreadsheets::New
-Delete = Spreadsheets::Delete
-DataActionsLayout = Spreadsheets::DataActionsLayout
-AddExpenseLayout = Spreadsheets::AddExpenseLayout
+Index = Spreadsheets::Layouts::Index
+New = Spreadsheets::Layouts::New
+Delete = Spreadsheets::Layouts::Delete
+DataActionsLayout = Spreadsheets::Layouts::DataActionsLayout
+AddExpenseLayout = Spreadsheets::Layouts::AddExpenseLayout
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

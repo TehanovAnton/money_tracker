@@ -6,27 +6,27 @@ module Telegram
       module Spreadsheets
         class LayoutsFactory < BaseFactory
           define(:index) do
-            Index
+            Layouts::Index
           end
 
           define(:new) do
-            New
+            Layouts::New
           end
 
           define(:delete) do
-            Delete
+            Layouts::Delete
           end
 
           define(:list_tables) do
-            ListTables
+            Layouts::ListTables
           end
 
           define(:data_actions) do
-            DataActionsLayout
+            Layouts::DataActionsLayout
           end
 
           define(:add_expense) do
-            AddExpenseLayout
+            Layouts::AddExpenseLayout
           end
         end
       end

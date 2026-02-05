@@ -2,9 +2,7 @@
 
 require 'rails_helper'
 
-Index = Telegram::Messages::Layouts::Spreadsheets::Index
-
-describe Telegram::Messages::Layouts::Spreadsheets::Delete do
+describe Telegram::Messages::Layouts::Spreadsheets::Layouts::Delete do
   subject { described_class.run(user: user, bot: bot, action_number: action_number, document_id: document_id) }
 
   let(:action_number) { described_class.action_number_for(action_name) }

@@ -41,6 +41,8 @@
 # Ignore Qodo artifacts and workspace
 .qodo/history.sqlite
 
+.codex/*
+
 # Ignore config/settings
 /config/settings/
 config/settings.local.yml
