@@ -21,13 +21,35 @@ module Telegram
         class BaseFactory < ActiveInteraction::Base
           extend IDefineFactory
 
+          STYLES = %i[const_keeper initializer danger_runner].freeze
+
           symbol :factory_name
+          symbol :style, default: :const_keeper
 
           def execute
-            config[:factories][factory_name]
+            case style
+            when :const_keeper
+              factorable
+            when :initializer
+              factorable.new(*inline_options, **named_options)
+            when :danger_runner
+              factorable.run!(*inline_options, **named_options)
+            end
           end
 
           private
+
+          def factorable
+            config[:factories][factory_name]
+          end
+
+          def inline_options
+            config[:options][factory_name][:inline_options]
+          end
+
+          def named_options
+            config[:options][factory_name][:named_options]
+          end
 
           def config
             self.class.config

@@ -4,7 +4,7 @@ module Telegram
   class AddExpenseInputParser < Parslet::Parser
     attr_reader :value_alias, :kind
 
-    def initialize(value_alias = :input_value, kind:)
+    def initialize(kind:, value_alias: :input_value)
       @value_alias = value_alias
       @kind = kind
       super()
