@@ -52,57 +52,46 @@ module Telegram
           end
         end
 
+        class LayoutParamsBuilder
+          attr_reader :with_layout_params, :layout_params
+          attr_accessor :params
+
+          def initialize(with_layout_params)
+            @with_layout_params = with_layout_params
+            @layout_params = {}
+            @params = nil
+          end
+
+          def build
+            with_layout_params.each { |layout_param| add_layout_param(layout_param) }
+            self
+          end
+
+          private
+
+          def add_layout_param(layout_param)
+            layout_params[layout_param[:name]] = params.fetch(
+              layout_param[:name],
+              layout_param[:default_value] || nil
+            )
+          end
+        end
+
         class LayoutParamsFactory < BaseFactory
-          EnterDateLayoutParams = Struct.new(:parsed_input, :default_value) do
-            def params
-              {
-                action_number: parsed_input.fetch(:action_number, nil),
-                date: parsed_input.fetch(:date, nil)
-              }.compact
-            end
+          define(:enter_date, [{ name: :action_number }, { name: :date }]) do
+            LayoutParamsBuilder
           end
 
-          EnterMoneyLayoutParams = Struct.new(:parsed_input, :default_value) do
-            def params
-              {
-                action_number: parsed_input.fetch(:action_number, nil),
-                money: parsed_input.fetch(:money, nil)
-              }.compact
-            end
+          define(:enter_money, [{ name: :action_number }, { name: :money }]) do
+            LayoutParamsBuilder
           end
 
-          EnterCategoryLayoutParams = Struct.new(:parsed_input, :default_value) do
-            def params
-              {
-                action_number: parsed_input.fetch(:action_number, nil),
-                category: parsed_input.fetch(:category, nil)
-              }.compact
-            end
+          define(:enter_category, [{ name: :action_number }, { name: :category }]) do
+            LayoutParamsBuilder
           end
 
-          EnterCommentLayoutParams = Struct.new(:parsed_input, :default_value) do
-            def params
-              {
-                action_number: parsed_input.fetch(:action_number, nil),
-                comment: parsed_input.fetch(:comment, nil)
-              }.compact
-            end
-          end
-
-          define(:enter_date, default_value: nil) do
-            EnterDateLayoutParams
-          end
-
-          define(:enter_money, default_value: nil) do
-            EnterMoneyLayoutParams
-          end
-
-          define(:enter_category, default_value: nil) do
-            EnterCategoryLayoutParams
-          end
-
-          define(:enter_comment, default_value: nil) do
-            EnterCommentLayoutParams
+          define(:enter_comment, [{ name: :action_number }, { name: :comment }]) do
+            LayoutParamsBuilder
           end
         end
 
@@ -126,7 +115,9 @@ module Telegram
           end
 
           def layout_params
-            layout_params_factory(action_name, parsed_input).params
+            layout_params_factory(action_name, parsed_input)
+              .build
+              .layout_params
           end
 
           def parsed_input
@@ -158,7 +149,7 @@ module Telegram
 
           def layout_params_factory(factory_name, parsed_input)
             LayoutParamsFactory.run!(factory_name: factory_name, style: :initializer).tap do |lp|
-              lp.parsed_input = parsed_input
+              lp.params = parsed_input
             end
           end
         end
