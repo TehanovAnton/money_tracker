@@ -25,15 +25,15 @@ module Telegram
             end
 
             def layout_params
-              layout_params_factory(action_name, parsed_input)
-                .build
-                .layout_params
+              factory.layout_params_factory(action_name, parsed_input)
+                     .build
+                     .layout_params
             end
 
             def parsed_input
               parse(
-                input_parser_factory(action_name),
-                text_preparation_factory(action_name).prepared_text
+                factory.input_parser_factory(action_name),
+                factory.text_preparation_factory(action_name).tap { |tp| tp.text = text }.prepared_text
               ) || {}
             end
 
@@ -47,20 +47,8 @@ module Telegram
               nil
             end
 
-            def input_parser_factory(factory_name)
-              InputParserFactory.run!(factory_name: factory_name, style: :initializer)
-            end
-
-            def text_preparation_factory(factory_name)
-              Support::TextPreparationFactory.run!(factory_name: factory_name, style: :initializer).tap do |tp|
-                tp.text = text
-              end
-            end
-
-            def layout_params_factory(factory_name, parsed_input)
-              Builders::LayoutParamsFactory.run!(factory_name: factory_name, style: :initializer).tap do |lp|
-                lp.params = parsed_input
-              end
+            def factory
+              @factory ||= AbstractFactories::ConcreteFactory.run
             end
           end
         end
