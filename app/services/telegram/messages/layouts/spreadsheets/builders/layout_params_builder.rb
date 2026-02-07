@@ -6,13 +6,12 @@ module Telegram
       module Spreadsheets
         module Builders
           class LayoutParamsBuilder
-            attr_reader :with_layout_params, :layout_params
-            attr_accessor :params
+            attr_reader :with_layout_params, :layout_params, :params
 
-            def initialize(with_layout_params)
+            def initialize(with_layout_params, params: {})
               @with_layout_params = with_layout_params
               @layout_params = {}
-              @params = nil
+              @params = params
             end
 
             def build

@@ -4,7 +4,7 @@ module Telegram
   module Messages
     module Layouts
       module Spreadsheets
-        module Parsers
+        module Factories
           class InputParserFactory < BaseFactory
             define(:enter_date, value_alias: :date, kind: :date_input) do
               Telegram::AddExpenseInputParser

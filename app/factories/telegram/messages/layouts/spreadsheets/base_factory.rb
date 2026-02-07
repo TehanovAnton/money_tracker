@@ -25,6 +25,7 @@ module Telegram
 
           symbol :factory_name
           symbol :style, default: :const_keeper
+          hash :additional_named_options, strip: false, default: nil
 
           def execute
             case style
@@ -48,6 +49,17 @@ module Telegram
           end
 
           def named_options
+            options = \
+              if additional_named_options.present?
+                defined_namdde_options.merge(additional_named_options)
+              else
+                defined_namdde_options
+              end
+
+            options.transform_keys(&:to_sym)
+          end
+
+          def defined_namdde_options
             config[:options][factory_name][:named_options]
           end
 

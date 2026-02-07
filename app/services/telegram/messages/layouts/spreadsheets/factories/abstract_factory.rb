@@ -6,7 +6,7 @@ module Telegram
   module Messages
     module Layouts
       module Spreadsheets
-        module AbstractFactories
+        module Factories
           # Абстрактная фабрика для создания парсеров и обработчиков ввода
           class AbstractFactory < ActiveInteraction::Base
             string :factory_name

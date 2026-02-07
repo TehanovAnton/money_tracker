@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Telegram::Messages::Layouts::Spreadsheets::AbstractFactories::AbstractFactory do
+describe Telegram::Messages::Layouts::Spreadsheets::Factories::AbstractFactory do
   subject { described_class.new(factory_name: factory_name, parsed_input: parsed_input) }
 
   let(:factory_name) { 'test_factory' }
@@ -34,7 +34,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::AbstractFactories::AbstractF
   end
 end
 
-describe Telegram::Messages::Layouts::Spreadsheets::AbstractFactories::ConcreteFactory do
+describe Telegram::Messages::Layouts::Spreadsheets::Factories::ConcreteFactory do
   subject { described_class }
 
   describe '.input_parser_factory' do

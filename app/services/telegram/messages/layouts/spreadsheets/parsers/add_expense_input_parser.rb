@@ -33,7 +33,7 @@ module Telegram
             def parsed_input
               parse(
                 factory.input_parser_factory(action_name),
-                factory.text_preparation_factory(action_name).tap { |tp| tp.text = text }.prepared_text
+                factory.text_preparation_factory(action_name, text).prepared_text
               ) || {}
             end
 
@@ -48,7 +48,7 @@ module Telegram
             end
 
             def factory
-              @factory ||= AbstractFactories::ConcreteFactory.run
+              @factory ||= Factories::ConcreteFactory.run
             end
           end
         end
