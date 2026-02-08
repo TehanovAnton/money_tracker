@@ -11,6 +11,7 @@ Spreadsheets = Telegram::Messages::Layouts::Spreadsheets
 Index = Spreadsheets::Layouts::Index
 New = Spreadsheets::Layouts::New
 Delete = Spreadsheets::Layouts::Delete
+ListTables = Spreadsheets::Layouts::ListTables
 DataActionsLayout = Spreadsheets::Layouts::DataActionsLayout
 AddExpenseLayout = Spreadsheets::Layouts::AddExpenseLayout
 

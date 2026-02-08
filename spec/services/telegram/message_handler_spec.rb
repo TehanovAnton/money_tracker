@@ -15,15 +15,16 @@ describe Telegram::MessageHandler do
       username: user.telegram_username,
       message_text: message_text
     )
-    allow(Index).to receive(:run!)
   end
 
   context 'when /start' do
     let(:message_text) { '/start' }
 
     it do
-      subject
-      expect(Index).to have_received(:run!)
+      expect(subject).to be_valid
+
+      user.reload
+      expect(user.layout_cursor_action.layout).to eq(Index.name)
     end
   end
 
@@ -38,6 +39,7 @@ describe Telegram::MessageHandler do
 
     it do
       subject
+
       expect(layout).to have_received(:run)
     end
 

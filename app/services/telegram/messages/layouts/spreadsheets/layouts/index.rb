@@ -20,7 +20,7 @@ module Telegram
 
             def add_table
               messages << layouts_factory(layout_name: :new)
-                          .run!(bot: bot, user: user, action_name: :enter_document_id)
+                          .run!(bot: bot, user: user, action_name: :list_all_actions)
               messages.flatten!
             end
           end

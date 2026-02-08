@@ -71,7 +71,7 @@ module Telegram
           def check_user_layout_cursor_action
             return if user.layout_cursor_action
 
-            errors.add(:layout_cursor_action, 'Пользователь не имеет курсора')
+            cursor_action
           end
 
           def available_actions
@@ -83,7 +83,7 @@ module Telegram
           end
 
           def layout_cursor_action(layout:)
-            LayoutAction.create!(user: user, layout: layout)
+            LayoutAction.find_or_create_by(user: user, layout: layout)
           end
 
           def list_actions_text

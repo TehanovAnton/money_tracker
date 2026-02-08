@@ -10,7 +10,7 @@ module Telegram
           layout.run(bot: bot, user: user, **layout_inputs)
                 .messages
         elsif bot.message_text == '/start'
-          layouts_factory(layout_name: :index).run!(bot: bot, user: user)
+          layouts_factory(layout_name: :index).run!(bot: bot, user: user, action_name: :list_all_actions)
         else
           "Здравствуйте #{user.telegram_username}. Начните работу командой /start"
         end
