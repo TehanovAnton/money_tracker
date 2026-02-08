@@ -15,6 +15,8 @@ end
 
 TestMessage = Struct.new(:username, keyword_init: true)
 
+steps = []
+
 describe Telegram::MessageHandler do
   subject(:run_steps) do
     steps.each do |step|
@@ -24,7 +26,6 @@ describe Telegram::MessageHandler do
   end
 
   let(:user) { FactoryBot.create(:user) }
-  let(:steps) { [] }
 
   context 'when user start dialog' do
     let(:step1_start_dialog) do
@@ -35,7 +36,8 @@ describe Telegram::MessageHandler do
         )
       }
     end
-    let(:steps) { [step1_start_dialog] }
+
+    before { steps << step1_start_dialog }
 
     it do
       run_steps
@@ -53,7 +55,7 @@ describe Telegram::MessageHandler do
         }
       end
 
-      let(:steps) { [step1_start_dialog, step2_choose_add_table] }
+      before { steps << step2_choose_add_table }
 
       it do
         run_steps
@@ -74,18 +76,48 @@ describe Telegram::MessageHandler do
           }
         end
 
-        let(:steps) do
-          [
-            step1_start_dialog,
-            step2_choose_add_table,
-            step3_choose_enter_document_id
-          ]
-        end
+        before { steps << step3_choose_enter_document_id }
 
         it do
           run_steps
           expect(user.layout_cursor_action.layout).to eq(ListTables.name)
           expect(spreadsheet).to be_valid
+        end
+
+        context 'when user call list_tables' do
+          let(:step4_choose_list_tables) do
+            action_number = ListTables.action_number_for(:list_tables)
+            {
+              bot: TestBotDecorator.new(
+                { message_text: action_number.to_s },
+                TestMessage.new(username: user.telegram_username)
+              )
+            }
+          end
+
+          before { steps << step4_choose_list_tables }
+
+          it do
+            run_steps
+            expect(user.layout_cursor_action.layout).to eq(ListTables.name)
+          end
+        end
+
+        context 'when user call data_actions' do
+          let(:step4_choose_data_actions) do
+            action_number = ListTables.action_number_for(:data_actions)
+            {
+              bot: TestBotDecorator.new(
+                { message_text: action_number.to_s },
+                TestMessage.new(username: user.telegram_username)
+              )
+            }
+          end
+
+          it do
+            run_steps
+            expect(user.layout_cursor_action.layout).to eq(ListTables.name)
+          end
         end
       end
     end

@@ -5,7 +5,23 @@ module Telegram
     module Layouts
       module Spreadsheets
         module Layouts
+          module IListTablesLayouts
+            def data_actions_layout
+              layouts_factory(layout_name: :data_actions)
+            end
+
+            def delete_layout
+              layouts_factory(layout_name: :delete)
+            end
+
+            def index_layout
+              layouts_factory(layout_name: :index)
+            end
+          end
+
           class ListTables < Base
+            include IListTablesLayouts
+
             string :document_id, default: nil
 
             define_action(:list_all_actions, 'Доступные действия')
@@ -34,22 +50,21 @@ module Telegram
             def data_actions
               return messages << 'Пустой id таблицы' unless document_id
 
-              messages << layouts_factory(layout_name: :data_actions)
-                          .run!(bot: bot, user: user, document_id: document_id)
-              messages.flatten!
+              handle_messages { data_actions_layout.run!(bot: bot, user: user, document_id: document_id) }
             end
 
             def delete_table
               return messages << 'Пустой id таблицы' unless document_id
 
-              messages << layouts_factory(layout_name: :delete)
-                          .run!(bot: bot, user: user, document_id: document_id)
-              messages.flatten!
+              handle_messages { delete_layout.run!(bot: bot, user: user, document_id: document_id) }
             end
 
             def back_to_index
-              messages << layouts_factory(layout_name: :index)
-                          .run!(bot: bot, user: user, action_name: :list_all_actions)
+              handle_messages { index_layout.run!(bot: bot, user: user, action_name: :list_all_actions) }
+            end
+
+            def handle_messages
+              messages << yield
               messages.flatten!
             end
           end
