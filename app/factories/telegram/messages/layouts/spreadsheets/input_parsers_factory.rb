@@ -9,7 +9,8 @@ module Telegram
             Parsers::InputParserBase
           end
 
-          define(:add_expens) do
+          define(:add_expense) do
+            Parsers::AddExpenseInputParser
           end
         end
       end

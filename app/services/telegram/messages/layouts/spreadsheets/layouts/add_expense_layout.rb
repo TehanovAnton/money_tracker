@@ -65,11 +65,19 @@ module Telegram
             end
 
             def spreadsheet_form
-              @spreadsheet_form ||= SpreadsheetForm.find_or_create_by(user: user, spreadsheet_id: spreadsheet_id)
+              @spreadsheet_form ||= SpreadsheetForm.find_or_create_by(user: user, spreadsheet_id: spreadsheet.id)
             end
 
             def form_input_factory(field)
               FIELD_FORM_INPUT_MAP[field]
+            end
+
+            def spreadsheet
+              @spreadsheet ||= Spreadsheet.find(chat_context.spreadsheet_id)
+            end
+
+            def chat_context
+              @chat_context ||= ChatContext.find_by(user_id: user.id)
             end
           end
         end

@@ -37,9 +37,9 @@ describe Telegram::MessageHandler do
       }
     end
 
-    before { steps << step1_start_dialog }
-
     it do
+      steps << step1_start_dialog
+
       run_steps
       expect(user.layout_cursor_action.layout).to eq(Index.name)
     end
@@ -55,9 +55,9 @@ describe Telegram::MessageHandler do
         }
       end
 
-      before { steps << step2_choose_add_table }
-
       it do
+        steps << step2_choose_add_table
+
         run_steps
         expect(user.layout_cursor_action.layout).to eq(New.name)
       end
@@ -76,9 +76,9 @@ describe Telegram::MessageHandler do
           }
         end
 
-        before { steps << step3_choose_enter_document_id }
-
         it do
+          steps << step3_choose_enter_document_id
+
           run_steps
           expect(user.layout_cursor_action.layout).to eq(ListTables.name)
           expect(spreadsheet).to be_valid
@@ -95,9 +95,9 @@ describe Telegram::MessageHandler do
             }
           end
 
-          before { steps << step4_choose_list_tables }
-
           it do
+            steps << step4_choose_list_tables
+
             run_steps
             expect(user.layout_cursor_action.layout).to eq(ListTables.name)
           end
@@ -108,15 +108,62 @@ describe Telegram::MessageHandler do
             action_number = ListTables.action_number_for(:data_actions)
             {
               bot: TestBotDecorator.new(
-                { message_text: action_number.to_s },
+                { message_text: "#{action_number}) #{document_id}" },
                 TestMessage.new(username: user.telegram_username)
               )
             }
           end
 
+          let(:chat_context) { ChatContext.find_by(user_id: user.id) }
+
           it do
+            steps << step4_choose_data_actions
+
             run_steps
-            expect(user.layout_cursor_action.layout).to eq(ListTables.name)
+            expect(user.layout_cursor_action.layout).to eq(DataActionsLayout.name)
+            expect(chat_context.spreadsheet_id).to eq(spreadsheet.id)
+          end
+
+          context 'when user call add_expense' do
+            let(:step5_choose_add_expense) do
+              action_number = DataActionsLayout.action_number_for(:add_expense)
+              {
+                bot: TestBotDecorator.new(
+                  { message_text: action_number.to_s },
+                  TestMessage.new(username: user.telegram_username)
+                )
+              }
+            end
+
+            it do
+              steps << step5_choose_add_expense
+
+              run_steps
+              expect(user.layout_cursor_action.layout).to eq(AddExpenseLayout.name)
+            end
+
+            context 'when user call enter_date' do
+              let(:step6_choose_enter_date) do
+                action_number = AddExpenseLayout.action_number_for(:enter_date)
+                {
+                  bot: TestBotDecorator.new(
+                    { message_text: "#{action_number}) 01.01.2025" },
+                    TestMessage.new(username: user.telegram_username)
+                  )
+                }
+              end
+
+              let(:spreadsheet_form) { SpreadsheetForm.find_by(user_id: user.id, spreadsheet_id: spreadsheet.id) }
+              let(:date_form_input) { DateFormInput.find_by(form_id: spreadsheet_form.id) }
+
+              it do
+                steps << step6_choose_enter_date
+
+                run_steps
+                expect(user.layout_cursor_action.layout).to eq(AddExpenseLayout.name)
+                expect(date_form_input.date).to eq('01.01.2025')
+              end
+            end
           end
         end
       end

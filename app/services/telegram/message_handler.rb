@@ -2,6 +2,10 @@
 
 module Telegram
   class MessageHandler < ActiveInteraction::Base
+    LAYOUT_INPUT_PARSER = {
+      AddExpenseLayout.name => :add_expense
+    }.freeze
+
     object :bot, class: BotDecorators::BotDecorator
 
     def execute
@@ -22,7 +26,7 @@ module Telegram
     private
 
     def layout_inputs
-      input_parsers_factory(parser_name: :base).run!(text: bot.message_text)
+      input_parsers_factory(parser_name: parser_name).run!(text: bot.message_text)
     end
 
     def layout_cursor_action
@@ -47,6 +51,10 @@ module Telegram
 
     def input_parsers_factory(parser_name:)
       Messages::Layouts::Spreadsheets::InputParsersFactory.run!(factory_name: parser_name)
+    end
+
+    def parser_name
+      LAYOUT_INPUT_PARSER[layout.name] || :base
     end
   end
 end

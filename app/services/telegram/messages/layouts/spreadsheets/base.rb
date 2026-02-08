@@ -99,6 +99,11 @@ module Telegram
           def layouts_factory(layout_name:)
             LayoutsFactory.run!(factory_name: layout_name)
           end
+
+          def handle_messages
+            messages << yield
+            messages.flatten!
+          end
         end
       end
     end

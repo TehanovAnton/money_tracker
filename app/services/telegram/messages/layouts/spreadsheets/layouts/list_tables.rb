@@ -50,7 +50,10 @@ module Telegram
             def data_actions
               return messages << 'Пустой id таблицы' unless document_id
 
-              handle_messages { data_actions_layout.run!(bot: bot, user: user, document_id: document_id) }
+              handle_messages do
+                chat_context
+                data_actions_layout.run!(bot: bot, user: user, document_id: document_id, action_name: :list_all_actions)
+              end
             end
 
             def delete_table
@@ -63,9 +66,8 @@ module Telegram
               handle_messages { index_layout.run!(bot: bot, user: user, action_name: :list_all_actions) }
             end
 
-            def handle_messages
-              messages << yield
-              messages.flatten!
+            def chat_context
+              ChatContext.create!(user: user, spreadsheet_id: Spreadsheet.find_by(document_id: document_id).id)
             end
           end
         end
