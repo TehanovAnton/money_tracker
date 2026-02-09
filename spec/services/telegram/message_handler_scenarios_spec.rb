@@ -15,8 +15,6 @@ end
 
 TestMessage = Struct.new(:username, keyword_init: true)
 
-steps = []
-
 describe Telegram::MessageHandler do
   subject(:run_steps) do
     steps.each do |step|
@@ -26,6 +24,7 @@ describe Telegram::MessageHandler do
   end
 
   let(:user) { FactoryBot.create(:user) }
+  let(:steps) { [] }
 
   context 'when user start dialog' do
     let(:step1_start_dialog) do
@@ -37,9 +36,9 @@ describe Telegram::MessageHandler do
       }
     end
 
-    it do
-      steps << step1_start_dialog
+    let(:steps) { [step1_start_dialog] }
 
+    it do
       run_steps
       expect(user.layout_cursor_action.layout).to eq(Index.name)
     end
@@ -55,9 +54,9 @@ describe Telegram::MessageHandler do
         }
       end
 
-      it do
-        steps << step2_choose_add_table
+      let(:steps) { [step1_start_dialog, step2_choose_add_table] }
 
+      it do
         run_steps
         expect(user.layout_cursor_action.layout).to eq(New.name)
       end
@@ -76,9 +75,9 @@ describe Telegram::MessageHandler do
           }
         end
 
-        it do
-          steps << step3_choose_enter_document_id
+        let(:steps) { [step1_start_dialog, step2_choose_add_table, step3_choose_enter_document_id] }
 
+        it do
           run_steps
           expect(user.layout_cursor_action.layout).to eq(ListTables.name)
           expect(spreadsheet).to be_valid
@@ -95,9 +94,11 @@ describe Telegram::MessageHandler do
             }
           end
 
-          it do
-            steps << step4_choose_list_tables
+          let(:steps) do
+            [step1_start_dialog, step2_choose_add_table, step3_choose_enter_document_id, step4_choose_list_tables]
+          end
 
+          it do
             run_steps
             expect(user.layout_cursor_action.layout).to eq(ListTables.name)
           end
@@ -116,9 +117,11 @@ describe Telegram::MessageHandler do
 
           let(:chat_context) { ChatContext.find_by(user_id: user.id) }
 
-          it do
-            steps << step4_choose_data_actions
+          let(:steps) do
+            [step1_start_dialog, step2_choose_add_table, step3_choose_enter_document_id, step4_choose_data_actions]
+          end
 
+          it do
             run_steps
             expect(user.layout_cursor_action.layout).to eq(DataActionsLayout.name)
             expect(chat_context.spreadsheet_id).to eq(spreadsheet.id)
@@ -135,9 +138,12 @@ describe Telegram::MessageHandler do
               }
             end
 
-            it do
-              steps << step5_choose_add_expense
+            let(:steps) do
+              [step1_start_dialog, step2_choose_add_table, step3_choose_enter_document_id, step4_choose_data_actions,
+               step5_choose_add_expense]
+            end
 
+            it do
               run_steps
               expect(user.layout_cursor_action.layout).to eq(AddExpenseLayout.name)
             end
@@ -156,12 +162,156 @@ describe Telegram::MessageHandler do
               let(:spreadsheet_form) { SpreadsheetForm.find_by(user_id: user.id, spreadsheet_id: spreadsheet.id) }
               let(:date_form_input) { DateFormInput.find_by(form_id: spreadsheet_form.id) }
 
-              it do
-                steps << step6_choose_enter_date
+              let(:steps) do
+                [step1_start_dialog, step2_choose_add_table, step3_choose_enter_document_id, step4_choose_data_actions,
+                 step5_choose_add_expense, step6_choose_enter_date]
+              end
 
+              it do
                 run_steps
                 expect(user.layout_cursor_action.layout).to eq(AddExpenseLayout.name)
                 expect(date_form_input.date).to eq('01.01.2025')
+              end
+            end
+
+            context 'when user call enter_money' do
+              let(:step6_choose_enter_money) do
+                action_number = AddExpenseLayout.action_number_for(:enter_money)
+                {
+                  bot: TestBotDecorator.new(
+                    { message_text: "#{action_number}) 2.75" },
+                    TestMessage.new(username: user.telegram_username)
+                  )
+                }
+              end
+
+              let(:spreadsheet_form) { SpreadsheetForm.find_by(user_id: user.id, spreadsheet_id: spreadsheet.id) }
+              let(:money_form_input) { MoneyFormInput.find_by(form_id: spreadsheet_form.id) }
+
+              let(:steps) do
+                [step1_start_dialog, step2_choose_add_table, step3_choose_enter_document_id, step4_choose_data_actions,
+                 step5_choose_add_expense, step6_choose_enter_money]
+              end
+
+              it do
+                run_steps
+                expect(user.layout_cursor_action.layout).to eq(AddExpenseLayout.name)
+                expect(money_form_input.money).to eq(2.75)
+              end
+            end
+
+            context 'when user call enter_category' do
+              let(:step6_choose_enter_category) do
+                action_number = AddExpenseLayout.action_number_for(:enter_category)
+                {
+                  bot: TestBotDecorator.new(
+                    { message_text: "#{action_number}) 'Домашний интернет'" },
+                    TestMessage.new(username: user.telegram_username)
+                  )
+                }
+              end
+
+              let(:spreadsheet_form) { SpreadsheetForm.find_by(user_id: user.id, spreadsheet_id: spreadsheet.id) }
+              let(:category_form_input) { CategoryFormInput.find_by(form_id: spreadsheet_form.id) }
+
+              let(:steps) do
+                [step1_start_dialog, step2_choose_add_table, step3_choose_enter_document_id, step4_choose_data_actions,
+                 step5_choose_add_expense, step6_choose_enter_category]
+              end
+
+              it do
+                run_steps
+                expect(user.layout_cursor_action.layout).to eq(AddExpenseLayout.name)
+                expect(category_form_input.category).to eq('Домашний интернет')
+              end
+            end
+
+            context 'when user call enter_comment' do
+              let(:step6_choose_enter_comment) do
+                action_number = AddExpenseLayout.action_number_for(:enter_comment)
+                {
+                  bot: TestBotDecorator.new(
+                    { message_text: "#{action_number}) 'Купил тапки'" },
+                    TestMessage.new(username: user.telegram_username)
+                  )
+                }
+              end
+
+              let(:spreadsheet_form) { SpreadsheetForm.find_by(user_id: user.id, spreadsheet_id: spreadsheet.id) }
+              let(:comment_form_input) { CommentFormInput.find_by(form_id: spreadsheet_form.id) }
+
+              let(:steps) do
+                [step1_start_dialog, step2_choose_add_table, step3_choose_enter_document_id, step4_choose_data_actions,
+                 step5_choose_add_expense, step6_choose_enter_comment]
+              end
+
+              it do
+                run_steps
+                expect(user.layout_cursor_action.layout).to eq(AddExpenseLayout.name)
+                expect(comment_form_input.comment).to eq('Купил тапки')
+              end
+            end
+
+            context 'when user call enter_all_params' do
+              let(:step6_choose_enter_date) do
+                action_number = AddExpenseLayout.action_number_for(:enter_date)
+                {
+                  bot: TestBotDecorator.new(
+                    { message_text: "#{action_number}) 01.01.2025" },
+                    TestMessage.new(username: user.telegram_username)
+                  )
+                }
+              end
+
+              let(:step7_choose_enter_money) do
+                action_number = AddExpenseLayout.action_number_for(:enter_money)
+                {
+                  bot: TestBotDecorator.new(
+                    { message_text: "#{action_number}) 2.75" },
+                    TestMessage.new(username: user.telegram_username)
+                  )
+                }
+              end
+
+              let(:step8_choose_enter_category) do
+                action_number = AddExpenseLayout.action_number_for(:enter_category)
+                {
+                  bot: TestBotDecorator.new(
+                    { message_text: "#{action_number}) 'Домашний интернет'" },
+                    TestMessage.new(username: user.telegram_username)
+                  )
+                }
+              end
+
+              let(:step9_choose_enter_comment) do
+                action_number = AddExpenseLayout.action_number_for(:enter_comment)
+                {
+                  bot: TestBotDecorator.new(
+                    { message_text: "#{action_number}) 'Купил тапки'" },
+                    TestMessage.new(username: user.telegram_username)
+                  )
+                }
+              end
+
+              let(:spreadsheet_form) { SpreadsheetForm.find_by(user_id: user.id, spreadsheet_id: spreadsheet.id) }
+              let(:date_form_input) { DateFormInput.find_by(form_id: spreadsheet_form.id) }
+              let(:money_form_input) { MoneyFormInput.find_by(form_id: spreadsheet_form.id) }
+              let(:category_form_input) { CategoryFormInput.find_by(form_id: spreadsheet_form.id) }
+              let(:comment_form_input) { CommentFormInput.find_by(form_id: spreadsheet_form.id) }
+
+              let(:steps) do
+                [step1_start_dialog, step2_choose_add_table, step3_choose_enter_document_id, step4_choose_data_actions,
+                 step5_choose_add_expense, step6_choose_enter_date, step7_choose_enter_money,
+                 step8_choose_enter_category, step9_choose_enter_comment]
+              end
+
+              it do
+                run_steps
+                expect(user.layout_cursor_action.layout).to eq(AddExpenseLayout.name)
+                expect(date_form_input.date).to eq('01.01.2025')
+                expect(money_form_input.money).to eq(2.75)
+                expect(category_form_input.category).to eq('Домашний интернет')
+                expect(comment_form_input.comment).to eq('Купил тапки')
               end
             end
           end
