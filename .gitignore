@@ -42,6 +42,7 @@
 .qodo/history.sqlite
 
 .codex/*
+.notes/*
 
 AGENTS.md
 
