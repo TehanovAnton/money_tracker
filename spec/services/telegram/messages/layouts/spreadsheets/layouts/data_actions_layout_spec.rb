@@ -23,7 +23,6 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::DataActionsLayout d
   context 'when add_expense' do
     let(:action_name) { :add_expense }
     let!(:spreadsheet) { FactoryBot.create(:spreadsheet, user: user) }
-    let!(:chat_context) { FactoryBot.create(:chat_context, user_id: user.id, spreadsheet_id: spreadsheet.id) }
     let(:message_text) { action_number.to_s }
 
     before do
@@ -31,6 +30,8 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::DataActionsLayout d
     end
 
     it do
+      FactoryBot.create(:chat_context, user_id: user.id, spreadsheet_id: spreadsheet.id)
+
       subject
       expect(AddExpenseLayout).to have_received(:run!)
     end

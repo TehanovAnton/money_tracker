@@ -45,3 +45,6 @@ Metrics/CyclomaticComplexity:
 
 RSpec/NamedSubject:
   Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
