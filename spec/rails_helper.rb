@@ -8,7 +8,8 @@ require 'rspec/rails'
 require_relative 'support/spec_helper'
 
 begin
-  ActiveRecord::Migration.maintain_test_schema!
+  # docker_test prepares schema in docker-compose `migrate` service
+  ActiveRecord::Migration.maintain_test_schema! if Rails.env.test?
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end

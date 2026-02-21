@@ -29,6 +29,17 @@ test:
   host: <%= Settings.app.db.postgresql.host %>
   database: <%= Settings.app.db.postgresql.db_name %>
 
+docker_test:
+  adapter: <%= Settings.app.db.postgresql.adapter %>
+  pool: <%= Settings.app.db.postgresql.pool %>
+  username: <%= Settings.app.db.postgresql.username %>
+  password: <%= Settings.app.db.postgresql.password %>
+  timeout: <%= Settings.app.db.postgresql.timeout %>
+  encoding: <%= Settings.app.db.postgresql.encoding %>
+  reconnect: <%= Settings.app.db.postgresql.reconnect %>
+  host: <%= Settings.app.db.postgresql.host %>
+  database: <%= Settings.app.db.postgresql.db_name %>
+
 
 production:
   <<: *default

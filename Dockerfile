@@ -3,6 +3,8 @@ FROM ruby:3.3.6
 
 WORKDIR /app
 
+ENV RAILS_ENV=docker_test
+
 # Синхронизируем Bundler с версией из Gemfile.lock
 ARG BUNDLER_VERSION=2.6.7
 RUN gem install bundler -v "$BUNDLER_VERSION"
@@ -15,4 +17,4 @@ RUN bundle _${BUNDLER_VERSION}_ install
 COPY . .
 
 # Запуск линтера по умолчанию
-CMD ["bundle", "exec", "rubocop"]
+CMD ["bundle", "exec", "rubocop", "-c", ".rubocop.yml"]

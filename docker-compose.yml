@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: money_tracker_test
+      POSTGRES_DB: money_tracker_docker_test
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
@@ -17,7 +17,7 @@ services:
       timeout: 3s
       retries: 20
 
-  rubocop:
+  migrate:
     build:
       context: .
       dockerfile: Dockerfile
@@ -25,8 +25,32 @@ services:
       db:
         condition: service_healthy
     environment:
-      RAILS_ENV: test
+      RAILS_ENV: docker_test
+      SECRET_KEY_BASE: docker_test_secret_key_base
+    command: bundle exec rails db:create db:migrate
+
+  rubocop:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      RAILS_ENV: docker_test
+      SECRET_KEY_BASE: docker_test_secret_key_base
     command: bundle exec rubocop -c .rubocop.yml
 
+  spec:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      rubocop:
+        condition: service_completed_successfully
+    environment:
+      RAILS_ENV: docker_test
+      SECRET_KEY_BASE: docker_test_secret_key_base
+    command: bundle exec rspec
 volumes:
   postgres_data:

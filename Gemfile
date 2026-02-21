@@ -67,7 +67,7 @@ gem 'telegram-bot-ruby', '~> 2.4'
 # Dry
 gem 'dry-monads', '~> 1.9'
 
-group :development, :test do
+group :development, :test, :docker_test do
   gem 'rubocop', '~> 1.81', '>= 1.81.1'
   gem 'rubocop-factory_bot', '~> 2.28'
   gem 'rubocop-rails', '~> 2.34', '>= 2.34.2'
@@ -89,6 +89,6 @@ group :development, :test do
   gem 'pry-rails', '~> 0.3.11'
 end
 
-group :test do
+group :test, :docker_test do
   gem 'webmock', '~> 3.26', '>= 3.26.1'
 end
