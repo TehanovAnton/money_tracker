@@ -1,22 +1,18 @@
-# Используем официальный образ Ruby в качестве базового
-FROM ruby:3.3.6-bullseye
+# syntax=docker/dockerfile:1
+FROM ruby:3.3.6
 
-RUN apt-get update -qq && apt-get install -y libpq-dev
+WORKDIR /app
 
-# Устанавливаем рабочую директорию внутри контейнера
-WORKDIR /myapp
+# Синхронизируем Bundler с версией из Gemfile.lock
+ARG BUNDLER_VERSION=2.6.7
+RUN gem install bundler -v "$BUNDLER_VERSION"
 
-# Копируем Gemfile и Gemfile.lock для установки гемов
+# Устанавливаем зависимости отдельно, чтобы использовать кэш слоев
 COPY Gemfile Gemfile.lock ./
+RUN bundle _${BUNDLER_VERSION}_ install
 
-# Устанавливаем зависимости с Bundler
-RUN bundle install
-
-# Копируем остальную часть приложения
+# Копируем код
 COPY . .
 
-# Указываем, какой порт будет слушать приложение
-EXPOSE 3000
-
-# Запускаем Rails-сервер
-CMD ["rails", "server", "-b", "0.0.0.0"]
+# Запуск линтера по умолчанию
+CMD ["bundle", "exec", "rubocop"]

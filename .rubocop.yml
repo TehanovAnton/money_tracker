@@ -49,3 +49,7 @@ RSpec/NamedSubject:
 
 RSpec/ExampleLength:
   Enabled: false
+
+Rails/Exit:
+  Exclude:
+    - 'spec/rails_helper.rb'
