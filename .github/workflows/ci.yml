@@ -19,6 +19,10 @@ jobs:
       - name: Run rubocop and specs in Docker Compose
         run: docker compose up --build --abort-on-container-exit --exit-code-from spec spec
 
+      - name: Show compose logs on failure
+        if: failure()
+        run: docker compose logs --no-color migrate rubocop spec
+
       - name: Stop containers
         if: always()
         run: docker compose down -v --remove-orphans

@@ -27,7 +27,7 @@ services:
     environment:
       RAILS_ENV: docker_test
       SECRET_KEY_BASE: docker_test_secret_key_base
-    command: bundle exec rails db:create db:migrate
+    command: bundle exec rails db:prepare
 
   rubocop:
     build:
