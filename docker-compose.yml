@@ -27,6 +27,11 @@ services:
     environment:
       RAILS_ENV: docker_test
       SECRET_KEY_BASE: docker_test_secret_key_base
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DOCKER_TEST_DB_NAME: money_tracker_docker_test
     command: bundle exec rails db:prepare
 
   rubocop:
@@ -39,6 +44,11 @@ services:
     environment:
       RAILS_ENV: docker_test
       SECRET_KEY_BASE: docker_test_secret_key_base
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DOCKER_TEST_DB_NAME: money_tracker_docker_test
     command: bundle exec rubocop -c .rubocop.yml
 
   spec:
@@ -51,6 +61,11 @@ services:
     environment:
       RAILS_ENV: docker_test
       SECRET_KEY_BASE: docker_test_secret_key_base
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DOCKER_TEST_DB_NAME: money_tracker_docker_test
     command: bundle exec rspec
 volumes:
   postgres_data:
