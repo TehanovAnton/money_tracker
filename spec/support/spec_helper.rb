@@ -7,6 +7,14 @@ require 'telegram/bot'
 # Load all support dir
 Dir['./spec/support/**/*.rb'].each { |file| require file }
 
+TelegramSpreadsheets = Telegram::Messages::Layouts::Spreadsheets
+Index = TelegramSpreadsheets::Layouts::Index
+New = TelegramSpreadsheets::Layouts::New
+Delete = TelegramSpreadsheets::Layouts::Delete
+ListTables = TelegramSpreadsheets::Layouts::ListTables
+DataActionsLayout = TelegramSpreadsheets::Layouts::DataActionsLayout
+AddExpenseLayout = TelegramSpreadsheets::Layouts::AddExpenseLayout
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true

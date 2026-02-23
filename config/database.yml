@@ -1,34 +1,26 @@
 default: &default
-  adapter: <%= Settings.app.db.postgresql.adapter %>
-  pool: <%= Settings.app.db.postgresql.poolr %>
-  username: <%= Settings.app.db.postgresql.username %>
-  timeout: <%= Settings.app.db.postgresql.timeout %>
-  encoding: <%= Settings.app.db.postgresql.encoding %>
-  reconnect: <%= Settings.app.db.postgresql.reconnect %>
-  host: <%= Settings.app.db.postgresql.host %>
-  database: <%= Settings.app.db.postgresql.db_name %>
-  # adapter: <%= ENV['DB_ADAPTER'] %>
-  # pool: <%= ENV['DB_POOL'] %>
-  # username: <%= ENV['DB_USERNAME'] %>
-  # timeout: <%= ENV['DB_TIMEOUT'] %>
-  # encoding: <%= ENV['DB_ENCODING'] %>
-  # reconnect: <%= ENV['DB_RECONNECT'] %>
-  # host: <%= ENV['DB_HOST'] %>
-  # database: <%= ENV['DB_NAME'] %>
+  adapter: <%= ENV.fetch('DB_ADAPTER', 'postgresql') %>
+  pool: <%= ENV.fetch('DB_POOL', 5) %>
+  username: <%= ENV.fetch('DB_USERNAME', 'postgres') %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  timeout: <%= ENV.fetch('DB_TIMEOUT', 5000) %>
+  encoding: <%= ENV.fetch('DB_ENCODING', 'utf8') %>
+  reconnect: <%= ENV.fetch('DB_RECONNECT', false) %>
+  host: <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
+  port: <%= ENV.fetch('DATABASE_PORT', 5432) %>
 
 development:
   <<: *default
+  database: <%= ENV.fetch('DEV_DB_NAME', 'money_tracker_development') %>
 
 test:
-  adapter: <%= Settings.app.db.postgresql.adapter %>
-  pool: <%= Settings.app.db.postgresql.poolr %>
-  username: <%= Settings.app.db.postgresql.username %>
-  timeout: <%= Settings.app.db.postgresql.timeout %>
-  encoding: <%= Settings.app.db.postgresql.encoding %>
-  reconnect: <%= Settings.app.db.postgresql.reconnect %>
-  host: <%= Settings.app.db.postgresql.host %>
-  database: <%= Settings.app.db.postgresql.db_name %>
+  <<: *default
+  database: <%= ENV.fetch('TEST_DB_NAME', 'money_tracker_test') %>
 
+docker_test:
+  <<: *default
+  database: <%= ENV.fetch('DOCKER_TEST_DB_NAME', 'money_tracker_docker_test') %>
 
 production:
   <<: *default
+  database: <%= ENV.fetch('PROD_DB_NAME', 'money_tracker_production') %>

@@ -1,111 +1,25 @@
-name: RuboCop Lint # Имя рабочего процесса
+name: CI
+
 on:
-  pull_request: # Запускается при создании PR или пуше в ветку с открытым PR
+  push:
     branches:
-      - '*'
+      - "**"
 
 jobs:
-  lint:
-    name: lint
-    runs-on: ubuntu-latest # Виртуальная машина
-    steps:
-      - name: Checkout code # 1. Получаем код
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Загружаем всю историю для сравнения с базовой веткой
-
-      - name: Set up Ruby # 2. Настраиваем окружение
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.3.6' # Замените на вашу версию Ruby
-          bundler-cache: true # Ускоряет установку Gem'ов, включая RuboCop
-
-      - name: Run RuboCop only on changed files # 3. Основная логика
-        id: rubocop_check
-        run: |
-          # 1. Определяем базовую ветку (ветка, в которую вливается PR)
-          BASE_BRANCH=${{ github.event.pull_request.base.ref }}
-          echo "(INFO) Базовая ветка: $BASE_BRANCH"
-
-          # 2. Убедимся, что базовая ветка существует локально
-          git fetch origin $BASE_BRANCH:$BASE_BRANCH
-
-          # 3. Определяем измененные файлы относительно базовой ветки
-          echo "(INFO) Определяем измененные файлы"
-
-          CHANGED_FILES=$(git diff --name-only --diff-filter=AM $BASE_BRANCH | grep '\.rb$' || true)
-          echo "(INFO) Измененные файлы: $CHANGED_FILES"
-
-          if [ -z "$CHANGED_FILES" ]; then
-            echo "Нет измененных Ruby-файлов для проверки. Проверка пропущена."
-            exit 0
-          fi
-
-          echo "(INFO) Проверка RuboCop для следующих файлов относительно $BASE_BRANCH: $CHANGED_FILES"
-
-          # 4. Запускаем RuboCop только для этих файлов
-          echo "$CHANGED_FILES" | xargs bundle exec rubocop --force-exclusion 
-
-  test:
-    name: tests
+  checks:
     runs-on: ubuntu-latest
-    needs: lint
-    services:
-      postgres:
-        image: postgres:17.5
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    env:
-      RAILS_ENV: test
-      DB_ADAPTER: postgresql
-      DB_POOL: 5
-      DB_USERNAME: postgres
-      DB_TIMEOUT: 5000
-      DB_ENCODING: utf8
-      DB_RECONNECT: false
-      DB_HOST: localhost
-      DB_NAME: money_tracker_test
-      DB_PORT: 5432
-      DB_PASSWORD: postgres
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.3.6'
-          bundler-cache: true
+      - name: Run rubocop and specs in Docker Compose
+        run: docker compose up --build --abort-on-container-exit --exit-code-from spec spec
 
-      - name: Install dependencies
-        run: |
-          gem --version
-          bundle install --jobs 4 --retry 3
+      - name: Show compose logs on failure
+        if: failure()
+        run: docker compose logs --no-color migrate rubocop spec
 
-      - name: Wait for Postgres & Prepare DB
-        run: |
-          # Подождать пока postgres станет готов
-          until pg_isready -h $DB_HOST -p $DB_PORT -U $DB_USERNAME; do
-            echo "Waiting for postgres..."
-            sleep 1
-          done
-
-          echo "(INFO) Start DB init"
-          bundle exec rails db:create db:schema:load --trace
-
-      - name: Run specs
-        run: |
-          echo "Запуск тестов (RSpec)..."
-          bundle exec rspec --format documentation
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v --remove-orphans

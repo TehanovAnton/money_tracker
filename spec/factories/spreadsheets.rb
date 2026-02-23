@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :spreadsheet do
-    spreadsheet_id { 'jnkjbjkjhgfg' }
+    document_id { 'jnkjbjkjhgfg' }
     association :user
   end
 end

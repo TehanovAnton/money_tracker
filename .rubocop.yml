@@ -7,7 +7,8 @@ plugins:
 AllCops:
   NewCops: disable
   Exclude:
-    - './**'
+    - 'vendor/bundle/**/*'
+    - 'vendor/**/*'
     - 'bin/**/*'
     - 'config/**/*'
     - 'db/**/*'
@@ -45,3 +46,13 @@ Metrics/CyclomaticComplexity:
 
 RSpec/NamedSubject:
   Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
+
+Rails/Exit:
+  Exclude:
+    - 'spec/rails_helper.rb'

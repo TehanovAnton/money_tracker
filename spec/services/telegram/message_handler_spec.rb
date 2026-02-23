@@ -2,15 +2,12 @@
 
 require 'rails_helper'
 
-Index = Telegram::Messages::Layouts::Spreadsheets::Index
-New = Telegram::Messages::Layouts::Spreadsheets::New
-
 describe Telegram::MessageHandler do
   subject { described_class.run(bot: bot) }
 
   let(:bot) { Telegram::BotDecorators::BotDecorator.new({}, nil) }
   let(:user) { FactoryBot.create(:user) }
-  let(:message_text) { '0' }
+  let(:message_text) { '1' }
 
   before do
     allow(bot).to receive(:send_message)
@@ -18,15 +15,16 @@ describe Telegram::MessageHandler do
       username: user.telegram_username,
       message_text: message_text
     )
-    allow(Index).to receive(:run!)
   end
 
   context 'when /start' do
     let(:message_text) { '/start' }
 
     it do
-      subject
-      expect(Index).to have_received(:run!)
+      expect(subject).to be_valid
+
+      user.reload
+      expect(user.layout_cursor_action.layout).to eq(Index.name)
     end
   end
 
@@ -36,12 +34,13 @@ describe Telegram::MessageHandler do
     let(:layout) { layout_cursor_action.layout.constantize }
 
     before do
-      allow(layout).to receive(:run!)
+      allow(layout).to receive(:run).and_call_original
     end
 
     it do
       subject
-      expect(layout).to have_received(:run!)
+
+      expect(layout).to have_received(:run)
     end
 
     context 'when layout_cursor_action receives inputs' do
@@ -50,7 +49,7 @@ describe Telegram::MessageHandler do
 
       it do
         subject
-        expect(layout).to have_received(:run!)
+        expect(layout).to have_received(:run)
       end
     end
   end

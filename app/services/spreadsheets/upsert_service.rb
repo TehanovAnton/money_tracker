@@ -2,25 +2,31 @@
 
 module Spreadsheets
   class UpsertService < ActiveInteraction::Base
-    hash :params, strip: false
+    object :params, class: Spreadsheets::ParamsBuilder::Payload
 
     def execute
       spreadsheets.append_spreadsheet_value(
-        spreadsheet_id,
-        params[:sheet][:range],
-        values_object,
+        document_id,
+        range,
+        values,
         value_input_option: 'USER_ENTERED'
       )
+    rescue Google::Apis::Error => e
+      errors.add(:base, e.message)
     end
 
     private
 
-    def spreadsheet_id
-      params[:spreadsheet_id]
+    def range
+      params.sheet.range
     end
 
-    def values_object
-      ::Google::Apis::SheetsV4::ValueRange.new(values: params[:sheet][:values])
+    def document_id
+      params.document_id
+    end
+
+    def values
+      ::Google::Apis::SheetsV4::ValueRange.new(values: params.sheet.values)
     end
 
     def spreadsheets
