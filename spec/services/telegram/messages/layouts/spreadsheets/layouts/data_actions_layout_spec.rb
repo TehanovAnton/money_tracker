@@ -6,8 +6,11 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::DataActionsLayout d
   subject { described_class.run(user: user, bot: bot, **layout_inputs) }
 
   let(:message_text) { nil }
+  let(:expense_data_input) { :field_by_field }
   let(:layout_inputs) do
-    TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text)
+    TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text).merge(
+      expense_data_input: expense_data_input
+    )
   end
   let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }
@@ -29,11 +32,21 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::DataActionsLayout d
       allow(AddExpenseLayout).to receive(:run!)
     end
 
-    it do
+    it 'runs default field-by-field layout' do
       FactoryBot.create(:chat_context, user_id: user.id, spreadsheet_id: spreadsheet.id)
 
       subject
       expect(AddExpenseLayout).to have_received(:run!)
+    end
+
+    context 'when expense_data_input is unsupported' do
+      let(:expense_data_input) { :single_message }
+
+      it 'raises an argument error' do
+        FactoryBot.create(:chat_context, user_id: user.id, spreadsheet_id: spreadsheet.id)
+
+        expect { subject }.to raise_error(ArgumentError, 'Unknown expense_data_input: single_message')
+      end
     end
   end
 end
