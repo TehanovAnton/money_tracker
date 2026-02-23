@@ -9,7 +9,7 @@ module Telegram
         end
 
         def self.default_input_parser
-          Parsers::InputParserBase
+          Parsers::DefaultInputParaser
         end
 
         def self.layout_input_parser
