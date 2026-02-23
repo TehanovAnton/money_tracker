@@ -10,10 +10,6 @@ module Telegram
           class AddExpenseLayoutFactory < AbstractFactory
             def execute; end
 
-            def log_factory_creation(factory_type, factory_name)
-              Rails.logger.debug "[AddExpenseLayoutFactory] Creating #{factory_type} for: #{factory_name}"
-            end
-
             def input_parser_factory(factory_name)
               Telegram::Messages::Layouts::Spreadsheets::Factories::InputParserFactory.run!(
                 factory_name: factory_name, style: :initializer
