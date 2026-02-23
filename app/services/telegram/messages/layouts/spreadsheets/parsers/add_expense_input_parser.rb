@@ -9,6 +9,7 @@ module Telegram
             string :text
             string :layout_klass, default: 'Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout'
 
+            DEFAULT_ABSTRACT_FACTORY = Factories::DefaultLayoutFactory
             ABSTRACT_FACTORY_BY_LAYOUT = {
               'Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout' =>
                 Factories::AddExpenseLayoutFactory
@@ -69,9 +70,7 @@ module Telegram
             end
 
             def abstract_factory_for_layout
-              ABSTRACT_FACTORY_BY_LAYOUT.fetch(layout.name) do
-                raise ArgumentError, "Unsupported layout_klass: #{layout_klass}"
-              end
+              ABSTRACT_FACTORY_BY_LAYOUT.fetch(layout.name, DEFAULT_ABSTRACT_FACTORY)
             end
           end
         end

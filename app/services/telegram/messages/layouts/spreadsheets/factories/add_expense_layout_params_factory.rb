@@ -5,7 +5,7 @@ module Telegram
     module Layouts
       module Spreadsheets
         module Factories
-          class LayoutParamsFactory < BaseFactory
+          class AddExpenseLayoutParamsFactory < BaseFactory
             define(:action_input, [{ name: :action_number }]) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end

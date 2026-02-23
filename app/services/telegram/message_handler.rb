@@ -28,7 +28,7 @@ module Telegram
     private
 
     def layout_inputs
-      input_parser(parser_name: parser_name).run!(text: bot.message_text)
+      input_parser(parser_name: parser_name).run!(text: bot.message_text, layout_klass: layout_klass)
     end
 
     def layout_cursor_action
@@ -36,7 +36,11 @@ module Telegram
     end
 
     def layout
-      layout_cursor_action.layout.constantize
+      layout_klass.constantize
+    end
+
+    def layout_klass
+      layout_cursor_action.layout
     end
 
     def user

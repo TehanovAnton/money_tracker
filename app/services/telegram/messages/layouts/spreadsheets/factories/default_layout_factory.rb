@@ -7,17 +7,17 @@ module Telegram
     module Layouts
       module Spreadsheets
         module Factories
-          class AddExpenseLayoutFactory < AbstractFactory
+          class DefaultLayoutFactory < AbstractFactory
             def execute; end
 
             def input_parser_factory(factory_name)
-              Telegram::Messages::Layouts::Spreadsheets::Factories::AddExpenseLayoutInputParserFactory.run!(
+              Telegram::Messages::Layouts::Spreadsheets::Factories::DefaultLayoutInputParserFactory.run!(
                 factory_name: factory_name, style: :initializer
               )
             end
 
             def text_preparation_factory(factory_name, text)
-              Telegram::Messages::Layouts::Spreadsheets::Factories::AddExpenseLayoutTextPreparationFactory.run!(
+              Telegram::Messages::Layouts::Spreadsheets::Factories::DefaultLayoutTextPreparationFactory.run!(
                 factory_name: factory_name,
                 additional_named_options: { text: text },
                 style: :initializer
@@ -25,7 +25,7 @@ module Telegram
             end
 
             def layout_params_factory(factory_name, parsed_input)
-              Telegram::Messages::Layouts::Spreadsheets::Factories::AddExpenseLayoutParamsFactory.run!(
+              Telegram::Messages::Layouts::Spreadsheets::Factories::DefaultLayoutParamsFactory.run!(
                 factory_name: factory_name,
                 additional_named_options: { params: parsed_input },
                 style: :initializer

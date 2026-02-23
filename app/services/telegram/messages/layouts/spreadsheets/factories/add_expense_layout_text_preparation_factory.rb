@@ -5,7 +5,7 @@ module Telegram
     module Layouts
       module Spreadsheets
         module Factories
-          class TextPreparationFactory < BaseFactory
+          class AddExpenseLayoutTextPreparationFactory < BaseFactory
             define(:action_input, clean_white_space: true) do
               Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
             end
