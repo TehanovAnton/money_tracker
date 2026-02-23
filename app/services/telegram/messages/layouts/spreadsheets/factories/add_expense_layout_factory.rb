@@ -7,11 +7,11 @@ module Telegram
     module Layouts
       module Spreadsheets
         module Factories
-          class ConcreteFactory < AbstractFactory
+          class AddExpenseLayoutFactory < AbstractFactory
             def execute; end
 
             def log_factory_creation(factory_type, factory_name)
-              Rails.logger.debug "[ConcreteFactory] Creating #{factory_type} for: #{factory_name}"
+              Rails.logger.debug "[AddExpenseLayoutFactory] Creating #{factory_type} for: #{factory_name}"
             end
 
             def input_parser_factory(factory_name)

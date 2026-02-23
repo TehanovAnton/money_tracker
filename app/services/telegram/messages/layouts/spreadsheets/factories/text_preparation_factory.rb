@@ -6,6 +6,14 @@ module Telegram
       module Spreadsheets
         module Factories
           class TextPreparationFactory < BaseFactory
+            define(:action_input, clean_white_space: true) do
+              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
+            end
+
+            define(:value_input, clean_white_space: true) do
+              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
+            end
+
             define(:enter_date, clean_white_space: true) do
               Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
             end

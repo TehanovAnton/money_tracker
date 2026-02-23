@@ -6,6 +6,14 @@ module Telegram
       module Spreadsheets
         module Factories
           class LayoutParamsFactory < BaseFactory
+            define(:action_input, [{ name: :action_number }]) do
+              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
+            end
+
+            define(:value_input, [{ name: :action_number }, { name: :document_id }]) do
+              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
+            end
+
             define(:enter_date, [{ name: :action_number }, { name: :date }]) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
