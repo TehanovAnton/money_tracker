@@ -10,6 +10,10 @@ module Telegram
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
 
+            define(:enter_range, [{ name: :action_number }, { name: :range }]) do
+              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
+            end
+
             define(:enter_money, [{ name: :action_number }, { name: :money }]) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
@@ -19,6 +23,10 @@ module Telegram
             end
 
             define(:enter_comment, [{ name: :action_number }, { name: :comment }]) do
+              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
+            end
+
+            define(:publish_expense, [{ name: :action_number }]) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
           end

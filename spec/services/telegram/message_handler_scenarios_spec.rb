@@ -174,6 +174,32 @@ describe Telegram::MessageHandler do
               end
             end
 
+            context 'when user call enter_range' do
+              let(:step6_choose_enter_range) do
+                action_number = AddExpenseLayout.action_number_for(:enter_range)
+                {
+                  bot: TestBotDecorator.new(
+                    { message_text: "#{action_number}) Sheet1!A:D" },
+                    TestMessage.new(username: user.telegram_username)
+                  )
+                }
+              end
+
+              let(:spreadsheet_form) { SpreadsheetForm.find_by(user_id: user.id, spreadsheet_id: spreadsheet.id) }
+              let(:range_form_input) { RangeFormInput.find_by(form_id: spreadsheet_form.id) }
+
+              let(:steps) do
+                [step1_start_dialog, step2_choose_add_table, step3_choose_enter_document_id, step4_choose_data_actions,
+                 step5_choose_add_expense, step6_choose_enter_range]
+              end
+
+              it do
+                run_steps
+                expect(user.layout_cursor_action.layout).to eq(AddExpenseLayout.name)
+                expect(range_form_input.range).to eq('Sheet1!A:D')
+              end
+            end
+
             context 'when user call enter_money' do
               let(:step6_choose_enter_money) do
                 action_number = AddExpenseLayout.action_number_for(:enter_money)

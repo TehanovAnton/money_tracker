@@ -3,7 +3,7 @@
 module Telegram
   class MessageHandler < ActiveInteraction::Base
     LAYOUT_INPUT_PARSER = {
-      AddExpenseLayout.name => :add_expense
+      Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout.name => :add_expense
     }.freeze
 
     object :bot, class: BotDecorators::BotDecorator
@@ -16,11 +16,13 @@ module Telegram
         elsif bot.message_text == '/start'
           layouts_factory(layout_name: :index).run!(bot: bot, user: user, action_name: :list_all_actions)
         else
-          "Здравствуйте #{user.telegram_username}. Начните работу командой /start"
+          ["Здравствуйте #{user.telegram_username}. Начните работу командой /start"]
         end
       return unless layout_messages&.any?
 
       layout_messages.each { |message| bot.send_message(message) }
+    rescue StandardError => e
+      bot.send_message(e.message)
     end
 
     private

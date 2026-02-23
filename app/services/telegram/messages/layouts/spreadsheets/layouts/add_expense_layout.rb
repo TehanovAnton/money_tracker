@@ -29,6 +29,7 @@ module Telegram
 
             FIELD_FORM_INPUT_MAP = {
               date: DateFormInput,
+              range: RangeFormInput,
               money: MoneyFormInput,
               category: CategoryFormInput,
               comment: CommentFormInput
@@ -36,20 +37,28 @@ module Telegram
 
             integer :spreadsheet_id, default: nil
             string :date, default: nil
+            string :range, default: nil
             float :money, default: nil
             string :category, default: nil
             string :comment, default: nil
 
             define_action(:list_all_actions, 'Доступные действия')
             define_action(:enter_date, 'Ввести дату')
+            define_action(:enter_range, 'Ввести диапазон')
             define_action(:enter_money, 'Ввести сумму')
             define_action(:enter_category, 'Ввести категорию')
             define_action(:enter_comment, 'Ввести коментарий')
+            define_action(:publish_expense, 'Опубликовать рассход')
+            define_action(:back_to_index, 'Опубликовать рассход')
 
             private
 
             def enter_date
               form_input('Пустая дата', 'Дата введена', :date)
+            end
+
+            def enter_range
+              form_input('Пустой диапазон', 'Диапазон введен', :range)
             end
 
             def enter_money
@@ -62,6 +71,21 @@ module Telegram
 
             def enter_comment
               form_input(nil, nil, :comment, allow_nil: true)
+            end
+
+            def publish_expense
+              params = ::Spreadsheets::ParamsBuilder.run!(spreadsheet_form: spreadsheet_form)
+              upsert_result = ::Spreadsheets::UpsertService.run(params: params)
+
+              handle_messages do
+                upsert_result.valid? ? 'Расход опубликован' : 'Не удалось опубликовать расход'
+              end
+
+              list_all_actions
+            end
+
+            def back_to_index
+              handle_messages { layouts_factory(layout_name: :index).run!(bot: bot, user: user) }
             end
 
             def spreadsheet_form

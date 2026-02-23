@@ -50,6 +50,9 @@ RSpec/NamedSubject:
 RSpec/ExampleLength:
   Enabled: false
 
+RSpec/LetSetup:
+  Enabled: false
+
 Rails/Exit:
   Exclude:
     - 'spec/rails_helper.rb'

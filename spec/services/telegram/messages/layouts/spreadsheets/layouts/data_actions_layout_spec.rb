@@ -7,7 +7,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::DataActionsLayout d
 
   let(:message_text) { nil }
   let(:layout_inputs) do
-    Spreadsheets.input_parsers(described_class).run!(text: message_text)
+    TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text)
   end
   let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }

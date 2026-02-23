@@ -10,7 +10,7 @@ module Telegram
               Telegram::AddExpenseInputParser
             end
 
-            define(:enter_money, value_alias: :money, kind: :money_input) do
+            define(:enter_range, value_alias: :range, kind: :range_input) do
               Telegram::AddExpenseInputParser
             end
 
@@ -24,6 +24,10 @@ module Telegram
 
             define(:enter_comment, value_alias: :comment, kind: :comment_input) do
               Telegram::AddExpenseInputParser
+            end
+
+            define(:publish_expense) do
+              Telegram::ActionInputParser
             end
           end
         end

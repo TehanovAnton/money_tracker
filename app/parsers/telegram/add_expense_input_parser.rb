@@ -19,6 +19,8 @@ module Telegram
       case kind
       when :date_input
         date_input
+      when :range_input
+        range_input
       when :money_input
         money_input
       when :category_input, :comment_input
@@ -38,6 +40,10 @@ module Telegram
       (match('\d').repeat(2) >> str('.') >>
       match('\d').repeat(2) >> str('.') >>
       match('\d').repeat(4)).as(value_alias)
+    end
+
+    rule(:range_input) do
+      match('[^\s]').repeat(1).as(value_alias)
     end
 
     rule(:quoted_input) do

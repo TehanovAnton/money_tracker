@@ -8,7 +8,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::Index do
   let(:action_number) { described_class.action_number_for(action_name) }
 
   let(:layout_inputs) do
-    Spreadsheets.input_parsers(described_class).run!(text: message_text)
+    TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text)
   end
   let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }

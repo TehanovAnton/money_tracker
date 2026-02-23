@@ -7,7 +7,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
 
   let(:message_text) { nil }
   let(:layout_inputs) do
-    Spreadsheets.input_parsers(described_class).run!(text: message_text)
+    TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text)
   end
   let(:chat_context_inputs) do
     { spreadsheet_id: chat_context.spreadsheet_id }
@@ -74,6 +74,30 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
       subject
       expect(spreadsheet_form).to be_valid
       expect(comment_form_input.comment).to eq('Купил тапки')
+    end
+  end
+
+  context 'when publish_expense and upsert is unsuccessful' do
+    let(:action_name) { :publish_expense }
+    let(:message_text) { action_number.to_s }
+    let(:params_payload) do
+      ::Spreadsheets::ParamsBuilder::Payload.new(
+        document_id: 'document-id',
+        sheet: ::Spreadsheets::ParamsBuilder::SheetPayload.new(
+          range: 'Sheet1!A:D',
+          values: [['01.01.2026', BigDecimal('250.75'), 'Food', 'Lunch']]
+        )
+      )
+    end
+    let(:upsert_result) { instance_double(::Spreadsheets::UpsertService, valid?: false) }
+
+    before do
+      allow(::Spreadsheets::ParamsBuilder).to receive(:run!).and_return(params_payload)
+      allow(::Spreadsheets::UpsertService).to receive(:run).and_return(upsert_result)
+    end
+
+    it 'adds failure message for user' do
+      expect(messages).to include('Не удалось опубликовать расход')
     end
   end
 end

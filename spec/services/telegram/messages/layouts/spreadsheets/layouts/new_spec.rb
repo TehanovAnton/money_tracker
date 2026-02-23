@@ -14,7 +14,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::New do
   let(:spreadsheet_id) { nil }
   let(:message_text) { '1' }
   let(:layout_inputs) do
-    Spreadsheets.input_parsers(described_class).run!(text: message_text)
+    TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text)
   end
 
   before do

@@ -66,6 +66,7 @@ gem 'telegram-bot-ruby', '~> 2.4'
 
 # Dry
 gem 'dry-monads', '~> 1.9'
+gem 'dry-types', '~> 1.9', '>= 1.9.1'
 
 group :development, :test, :docker_test do
   gem 'rubocop', '~> 1.81', '>= 1.81.1'
