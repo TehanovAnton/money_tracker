@@ -6,6 +6,14 @@ module Telegram
       module Spreadsheets
         module Factories
           class AddExpenseLayoutTextPreparationFactory < BaseFactory
+            define(:list_all_actions) do
+              Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
+            end
+
+            define(:back_to_index) do
+              Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
+            end
+
             define(:action_input, clean_white_space: true) do
               Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
             end

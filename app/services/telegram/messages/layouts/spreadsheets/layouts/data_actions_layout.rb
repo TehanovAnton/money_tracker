@@ -24,6 +24,7 @@ module Telegram
 
             define_action(:list_all_actions, 'Доступные действия')
             define_action(:add_expense, 'Добавить расход')
+            define_action(:back, 'Назад')
 
             private
 
@@ -38,6 +39,14 @@ module Telegram
                   action_name: :list_all_actions
                 )
               end
+            end
+
+            def back
+              handle_messages { list_tables_layout.run!(bot: bot, user: user, action_name: :list_all_actions) }
+            end
+
+            def list_tables_layout
+              layouts_factory(layout_name: :list_tables)
             end
 
             def spreadsheet_id

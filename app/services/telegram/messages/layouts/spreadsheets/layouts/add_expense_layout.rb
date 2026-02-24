@@ -49,7 +49,7 @@ module Telegram
             define_action(:enter_category, 'Ввести категорию')
             define_action(:enter_comment, 'Ввести коментарий')
             define_action(:publish_expense, 'Опубликовать рассход')
-            define_action(:back_to_index, 'Опубликовать рассход')
+            define_action(:back_to_index, 'Назад')
 
             private
 
@@ -85,7 +85,11 @@ module Telegram
             end
 
             def back_to_index
-              handle_messages { layouts_factory(layout_name: :index).run!(bot: bot, user: user) }
+              handle_messages { index_layout.run!(bot: bot, user: user, action_name: :list_all_actions) }
+            end
+
+            def index_layout
+              layouts_factory(layout_name: :list_tables)
             end
 
             def spreadsheet_form

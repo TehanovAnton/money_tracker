@@ -19,6 +19,8 @@ module Telegram
         end
 
         class BaseFactory < ActiveInteraction::Base
+          class UnknonwnFactoryError < StandardError; end
+
           extend IDefineFactory
 
           STYLES = %i[const_keeper initializer danger_runner].freeze
@@ -45,6 +47,11 @@ module Telegram
           end
 
           def inline_options
+            unless config[:options][factory_name]
+              raise UnknonwnFactoryError,
+                    "#{factory_name} is not defined in #{self.class}. Available factories - #{config[:options].keys}"
+            end
+
             config[:options][factory_name][:inline_options]
           end
 

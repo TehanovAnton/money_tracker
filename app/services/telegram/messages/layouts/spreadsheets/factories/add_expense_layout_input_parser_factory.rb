@@ -6,6 +6,14 @@ module Telegram
       module Spreadsheets
         module Factories
           class AddExpenseLayoutInputParserFactory < BaseFactory
+            define(:list_all_actions) do
+              Telegram::ActionInputParser
+            end
+
+            define(:back_to_index) do
+              Telegram::ActionInputParser
+            end
+
             define(:enter_date, value_alias: :date, kind: :date_input) do
               Telegram::AddExpenseInputParser
             end
