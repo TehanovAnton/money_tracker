@@ -7,9 +7,10 @@ module Telegram
         module Layouts
           class New < Base
             string :document_id, default: nil
+            string :expense_range, default: nil
 
+            define_action(:enter_spreadsheets_params, 'Ввести параметры таблицы')
             define_action(:list_all_actions, 'Доступные действия')
-            define_action(:enter_document_id, 'Ввести id таблицы')
             define_action(:back_to_index, 'Назад')
 
             private
@@ -20,9 +21,9 @@ module Telegram
               end
             end
 
-            def enter_document_id
-              unless spreadsheet
-                messages << 'Пустой Id таблицы'
+            def enter_spreadsheets_params
+              unless valid_spreadsheets_params? && spreadsheet.persisted?
+                messages << 'Невалидные данные таблицы'
                 return handle_messages do
                   layouts_factory(layout_name: :new).run!(bot: bot, user: user, action_name: :list_all_actions)
                 end
@@ -34,10 +35,14 @@ module Telegram
               end
             end
 
+            def valid_spreadsheets_params?
+              document_id.present? && expense_range.present?
+            end
+
             def spreadsheet
-              Spreadsheet.create(user: user, document_id: document_id)
+              Spreadsheet.create(user: user, document_id: document_id, expense_range: expense_range)
             rescue StandardError
-              nil
+              Spreadsheet.new
             end
           end
         end

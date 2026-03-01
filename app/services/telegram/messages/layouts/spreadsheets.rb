@@ -14,6 +14,7 @@ module Telegram
 
         def self.layout_input_parser
           @layout_input_parser ||= {
+            Layouts::New.name => Parsers::NewInputParser,
             Layouts::AddExpenseLayout.name => Parsers::AddExpenseInputParser
           }.freeze
         end

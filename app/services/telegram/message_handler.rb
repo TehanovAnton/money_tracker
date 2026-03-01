@@ -3,6 +3,7 @@
 module Telegram
   class MessageHandler < ActiveInteraction::Base
     LAYOUT_INPUT_PARSER = {
+      Telegram::Messages::Layouts::Spreadsheets::Layouts::New.name => :new,
       Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout.name => :add_expense
     }.freeze
 
