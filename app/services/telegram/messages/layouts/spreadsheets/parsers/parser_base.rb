@@ -61,6 +61,18 @@ module Telegram
             def layout_params_builder_name
               raise NotImplementedError, 'Subclasses must implement layout_params_builder_name'
             end
+
+            def parsed_input
+              raise NotImplementedError, 'Subclasses must implement parsed_input'
+            end
+
+            def action_name
+              raise NotImplementedError, 'Subclasses must implement action_name'
+            end
+
+            def input_parser
+              raise NotImplementedError, 'Subclasses must implement input_parser'
+            end
           end
         end
       end
