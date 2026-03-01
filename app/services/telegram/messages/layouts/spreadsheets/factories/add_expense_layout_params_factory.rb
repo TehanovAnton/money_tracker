@@ -42,6 +42,12 @@ module Telegram
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
 
+            define(:enter_all,
+                   [{ name: :action_number }, { name: :date }, { name: :money }, { name: :category },
+                    { name: :comment }]) do
+              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
+            end
+
             define(:publish_expense, [{ name: :action_number }]) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end

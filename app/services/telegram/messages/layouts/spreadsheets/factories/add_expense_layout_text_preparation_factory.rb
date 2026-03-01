@@ -42,6 +42,10 @@ module Telegram
               Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
             end
 
+            define(:enter_all, clean_white_space: false) do
+              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
+            end
+
             define(:publish_expense, clean_white_space: true) do
               Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
             end

@@ -1,7 +1,13 @@
-class WithNamedInputsParameters < Dry::Struct
-  KindType = Types::Symbol.enum(:with_named_inputs)
+# frozen_string_literal: true
 
-  attribute :kind, KindType
-  attribute :inline_parameters, Types::Array.default([].freeze)
-  attribute :named_parameters, Types::Hash.default({}.freeze)
+module Telegram
+  module AddExpenseInputParser
+    class WithNamedInputsParameters < Dry::Struct
+      KindType = Base::Types::Symbol.enum(:with_named_inputs)
+
+      attribute :kind, KindType
+      attribute :inline_parameters, Base::Types::Array.default([].freeze)
+      attribute :named_parameters, Base::Types::Hash.default({}.freeze)
+    end
+  end
 end
