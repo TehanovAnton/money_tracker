@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Telegram::AddExpenseInputParser do
+describe Telegram::AddExpenseInputParser::Default do
   subject { described_class.new(kind: kind).parse(text) }
 
   context 'when date_input' do

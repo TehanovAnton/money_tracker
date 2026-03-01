@@ -15,23 +15,23 @@ module Telegram
             end
 
             define(:enter_date, value_alias: :date, kind: :date_input) do
-              Telegram::AddExpenseInputParser
+              AddExpenseInputParser::Default
             end
 
             define(:enter_range, value_alias: :range, kind: :range_input) do
-              Telegram::AddExpenseInputParser
+              AddExpenseInputParser::Default
             end
 
             define(:enter_money, value_alias: :money, kind: :money_input) do
-              Telegram::AddExpenseInputParser
+              AddExpenseInputParser::Default
             end
 
             define(:enter_category, value_alias: :category, kind: :category_input) do
-              Telegram::AddExpenseInputParser
+              AddExpenseInputParser::Default
             end
 
             define(:enter_comment, value_alias: :comment, kind: :comment_input) do
-              Telegram::AddExpenseInputParser
+              AddExpenseInputParser::Default
             end
 
             define(:publish_expense) do
