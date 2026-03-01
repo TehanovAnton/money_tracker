@@ -82,15 +82,6 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
     let(:message_text) do
       "#{action_number}) --date 01.02.2026 --money 12.01 --category \"Продукты\" --comment \"за хлеб\""
     end
-    let(:params_payload) do
-      ::Spreadsheets::ParamsBuilder::Payload.new(
-        document_id: 'document-id',
-        sheet: ::Spreadsheets::ParamsBuilder::SheetPayload.new(
-          range: 'Sheet1!A:D',
-          values: [['01.01.2026', BigDecimal('250.75'), 'Food', 'Lunch']]
-        )
-      )
-    end
     let(:upsert_result) { instance_double(::Spreadsheets::UpsertService, valid?: true) }
     let(:date_form_input) { DateFormInput.find_by(form_id: spreadsheet_form.id) }
     let(:money_form_input) { MoneyFormInput.find_by(form_id: spreadsheet_form.id) }
@@ -98,7 +89,6 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
     let(:comment_form_input) { CommentFormInput.find_by(form_id: spreadsheet_form.id) }
 
     before do
-      allow(::Spreadsheets::ParamsBuilder).to receive(:run!).and_return(params_payload)
       allow(::Spreadsheets::UpsertService).to receive(:run).and_return(upsert_result)
     end
 
@@ -116,15 +106,6 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
     let(:message_text) do
       "#{action_number})--date01.02.2026--money12.01--category\"Продукты\""
     end
-    let(:params_payload) do
-      ::Spreadsheets::ParamsBuilder::Payload.new(
-        document_id: 'document-id',
-        sheet: ::Spreadsheets::ParamsBuilder::SheetPayload.new(
-          range: 'Sheet1!A:D',
-          values: [['01.01.2026', BigDecimal('250.75'), 'Food', 'Lunch']]
-        )
-      )
-    end
     let(:upsert_result) { instance_double(::Spreadsheets::UpsertService, valid?: true) }
     let(:date_form_input) { DateFormInput.find_by(form_id: spreadsheet_form.id) }
     let(:money_form_input) { MoneyFormInput.find_by(form_id: spreadsheet_form.id) }
@@ -132,7 +113,6 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
     let(:comment_form_input) { CommentFormInput.find_by(form_id: spreadsheet_form.id) }
 
     before do
-      allow(::Spreadsheets::ParamsBuilder).to receive(:run!).and_return(params_payload)
       allow(::Spreadsheets::UpsertService).to receive(:run).and_return(upsert_result)
     end
 
@@ -153,7 +133,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
     end
 
     it 'returns invalid date message' do
-      expect(::Spreadsheets::ParamsBuilder).not_to receive(:run!)
+      expect(::Spreadsheets::ParamsBuilder).not_to have_received(:run!)
       expect(messages).to include('Пустая дата')
     end
   end
@@ -166,7 +146,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
     end
 
     it 'returns invalid category message' do
-      expect(::Spreadsheets::ParamsBuilder).not_to receive(:run!)
+      expect(::Spreadsheets::ParamsBuilder).not_to have_received(:run!)
       expect(messages).to include('Пустая категория')
     end
   end

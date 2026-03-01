@@ -74,7 +74,7 @@ module Spreadsheets
     end
 
     def range
-      get_input(type: 'RangeFormInput', attribute: :range, input_type: RangeType)
+      spreadsheet_form.spreadsheet.expense_range
     end
 
     def values
