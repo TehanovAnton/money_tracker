@@ -77,6 +77,90 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
     end
   end
 
+  context 'when enter_all with valid params and comment' do
+    let(:action_name) { :enter_all }
+    let(:message_text) do
+      "#{action_number}) --date 01.02.2026 --money 12.01 --category \"Продукты\" --comment \"за хлеб\""
+    end
+    let(:upsert_result) { instance_double(::Spreadsheets::UpsertService, valid?: true) }
+    let(:date_form_input) { DateFormInput.find_by(form_id: spreadsheet_form.id) }
+    let(:money_form_input) { MoneyFormInput.find_by(form_id: spreadsheet_form.id) }
+    let(:category_form_input) { CategoryFormInput.find_by(form_id: spreadsheet_form.id) }
+    let(:comment_form_input) { CommentFormInput.find_by(form_id: spreadsheet_form.id) }
+
+    before do
+      allow(::Spreadsheets::UpsertService).to receive(:run).and_return(upsert_result)
+    end
+
+    it 'creates all form inputs and publishes expense' do
+      expect(messages).to include('Расход опубликован')
+      expect(date_form_input.date).to eq('01.02.2026')
+      expect(money_form_input.money).to eq(12.01)
+      expect(category_form_input.category).to eq('Продукты')
+      expect(comment_form_input.comment).to eq('за хлеб')
+    end
+  end
+
+  context 'when enter_all with valid params without whitespaces and comment' do
+    let(:action_name) { :enter_all }
+    let(:message_text) do
+      "#{action_number})--date01.02.2026--money12.01--category\"Продукты\""
+    end
+    let(:upsert_result) { instance_double(::Spreadsheets::UpsertService, valid?: true) }
+    let(:date_form_input) { DateFormInput.find_by(form_id: spreadsheet_form.id) }
+    let(:money_form_input) { MoneyFormInput.find_by(form_id: spreadsheet_form.id) }
+    let(:category_form_input) { CategoryFormInput.find_by(form_id: spreadsheet_form.id) }
+    let(:comment_form_input) { CommentFormInput.find_by(form_id: spreadsheet_form.id) }
+
+    before do
+      allow(::Spreadsheets::UpsertService).to receive(:run).and_return(upsert_result)
+    end
+
+    it 'creates required form inputs and publishes expense' do
+      expect(messages).to include('Расход опубликован')
+      expect(date_form_input.date).to eq('01.02.2026')
+      expect(money_form_input.money).to eq(12.01)
+      expect(category_form_input.category).to eq('Продукты')
+      expect(comment_form_input).to be_nil
+    end
+  end
+
+  context 'when enter_all with invalid params and empty date' do
+    let(:action_name) { :enter_all }
+    let(:message_text) { nil }
+    let(:layout_inputs) do
+      { action_number: action_number, date: nil, money: 12.01, category: 'Продукты', comment: 'за хлеб' }
+    end
+
+    before do
+      allow(::Spreadsheets::ParamsBuilder).to receive(:run!)
+    end
+
+    it 'returns invalid date message' do
+      subject
+      expect(::Spreadsheets::ParamsBuilder).not_to have_received(:run!)
+      expect(messages).to include('Пустая дата')
+    end
+  end
+
+  context 'when enter_all with invalid params and empty category' do
+    let(:action_name) { :enter_all }
+    let(:message_text) { nil }
+    let(:layout_inputs) do
+      { action_number: action_number, date: '01.02.2026', money: 12.01, category: nil, comment: 'за хлеб' }
+    end
+
+    before do
+      allow(::Spreadsheets::ParamsBuilder).to receive(:run!)
+    end
+
+    it 'returns invalid category message' do
+      subject
+      expect(::Spreadsheets::ParamsBuilder).not_to have_received(:run!)
+      expect(messages).to include('Пустая категория')
+    end
+  end
+
   context 'when publish_expense and upsert is unsuccessful' do
     let(:action_name) { :publish_expense }
     let(:message_text) { action_number.to_s }

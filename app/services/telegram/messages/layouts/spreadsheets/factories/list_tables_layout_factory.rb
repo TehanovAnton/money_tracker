@@ -7,21 +7,17 @@ module Telegram
     module Layouts
       module Spreadsheets
         module Factories
-          class ConcreteFactory < AbstractFactory
+          class ListTablesLayoutFactory < AbstractFactory
             def execute; end
 
-            def log_factory_creation(factory_type, factory_name)
-              Rails.logger.debug "[ConcreteFactory] Creating #{factory_type} for: #{factory_name}"
-            end
-
             def input_parser_factory(factory_name)
-              Telegram::Messages::Layouts::Spreadsheets::Factories::InputParserFactory.run!(
+              Telegram::Messages::Layouts::Spreadsheets::Factories::ListTablesLayoutInputParserFactory.run!(
                 factory_name: factory_name, style: :initializer
               )
             end
 
             def text_preparation_factory(factory_name, text)
-              Telegram::Messages::Layouts::Spreadsheets::Factories::TextPreparationFactory.run!(
+              Telegram::Messages::Layouts::Spreadsheets::Factories::ListTablesLayoutTextPreparationFactory.run!(
                 factory_name: factory_name,
                 additional_named_options: { text: text },
                 style: :initializer
@@ -29,7 +25,7 @@ module Telegram
             end
 
             def layout_params_factory(factory_name, parsed_input)
-              Telegram::Messages::Layouts::Spreadsheets::Factories::LayoutParamsFactory.run!(
+              Telegram::Messages::Layouts::Spreadsheets::Factories::ListTablesLayoutParamsFactory.run!(
                 factory_name: factory_name,
                 additional_named_options: { params: parsed_input },
                 style: :initializer

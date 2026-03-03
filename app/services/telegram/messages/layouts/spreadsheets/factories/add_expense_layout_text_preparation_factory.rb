@@ -5,7 +5,23 @@ module Telegram
     module Layouts
       module Spreadsheets
         module Factories
-          class TextPreparationFactory < BaseFactory
+          class AddExpenseLayoutTextPreparationFactory < BaseFactory
+            define(:list_all_actions) do
+              Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
+            end
+
+            define(:back_to_index) do
+              Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
+            end
+
+            define(:action_input, clean_white_space: true) do
+              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
+            end
+
+            define(:value_input, clean_white_space: true) do
+              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
+            end
+
             define(:enter_date, clean_white_space: true) do
               Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
             end
@@ -23,6 +39,10 @@ module Telegram
             end
 
             define(:enter_comment, clean_white_space: false) do
+              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
+            end
+
+            define(:enter_all, clean_white_space: false) do
               Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
             end
 

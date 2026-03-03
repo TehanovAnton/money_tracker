@@ -48,8 +48,9 @@ module Telegram
             define_action(:enter_money, 'Ввести сумму')
             define_action(:enter_category, 'Ввести категорию')
             define_action(:enter_comment, 'Ввести коментарий')
+            define_action(:enter_all, 'Ввести все параметры')
             define_action(:publish_expense, 'Опубликовать рассход')
-            define_action(:back_to_index, 'Опубликовать рассход')
+            define_action(:back_to_index, 'Назад')
 
             private
 
@@ -73,6 +74,19 @@ module Telegram
               form_input(nil, nil, :comment, allow_nil: true)
             end
 
+            def enter_all
+              return add_empty_input_message('Пустая дата') unless inputs[:date]
+              return add_empty_input_message('Пустая сумма') unless inputs[:money]
+              return add_empty_input_message('Пустая категория') unless inputs[:category]
+
+              create_form_input(form_input_factory(:date), :date)
+              create_form_input(form_input_factory(:money), :money)
+              create_form_input(form_input_factory(:category), :category)
+              create_form_input(form_input_factory(:comment), :comment) if inputs[:comment].present?
+
+              publish_expense
+            end
+
             def publish_expense
               params = ::Spreadsheets::ParamsBuilder.run!(spreadsheet_form: spreadsheet_form)
               upsert_result = ::Spreadsheets::UpsertService.run(params: params)
@@ -85,7 +99,17 @@ module Telegram
             end
 
             def back_to_index
-              handle_messages { layouts_factory(layout_name: :index).run!(bot: bot, user: user) }
+              handle_messages { index_layout.run!(bot: bot, user: user, action_name: :list_all_actions) }
+            end
+
+            def add_empty_input_message(message)
+              messages << message
+              list_all_actions
+              messages.flatten!
+            end
+
+            def index_layout
+              layouts_factory(layout_name: :list_tables)
             end
 
             def spreadsheet_form
@@ -101,7 +125,7 @@ module Telegram
             end
 
             def chat_context
-              @chat_context ||= ChatContext.find_by(user_id: user.id)
+              @chat_context ||= user.chat_context
             end
           end
         end

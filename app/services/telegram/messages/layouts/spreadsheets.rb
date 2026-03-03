@@ -9,11 +9,13 @@ module Telegram
         end
 
         def self.default_input_parser
-          Parsers::InputParserBase
+          Parsers::DefaultInputParaser
         end
 
         def self.layout_input_parser
           @layout_input_parser ||= {
+            Layouts::New.name => Parsers::NewInputParser,
+            Layouts::ListTables.name => Parsers::ListTablesInputParser,
             Layouts::AddExpenseLayout.name => Parsers::AddExpenseInputParser
           }.freeze
         end

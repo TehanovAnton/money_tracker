@@ -11,10 +11,11 @@ describe ::Spreadsheets::ParamsBuilder do
   let(:category_value) { 'Food' }
   let(:comment_value) { 'Lunch' }
   let(:user) { FactoryBot.create(:user) }
-  let(:spreadsheet) { FactoryBot.create(:spreadsheet, user: user, document_id: 'document-id') }
+  let(:spreadsheet) do
+    FactoryBot.create(:spreadsheet, user: user, document_id: 'document-id', expense_range: range_value)
+  end
   let(:spreadsheet_form) { FactoryBot.create(:spreadsheet_form, user: user, spreadsheet: spreadsheet) }
 
-  let!(:range_form_input) { RangeFormInput.create!(form_id: spreadsheet_form.id, range: range_value) }
   let!(:date_form_input) { DateFormInput.create!(form_id: spreadsheet_form.id, date: date_value) }
   let!(:money_form_input) { MoneyFormInput.create!(form_id: spreadsheet_form.id, money: money_value) }
   let!(:category_form_input) { CategoryFormInput.create!(form_id: spreadsheet_form.id, category: category_value) }

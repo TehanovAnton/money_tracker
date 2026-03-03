@@ -61,15 +61,16 @@ describe Telegram::MessageHandler do
         expect(user.layout_cursor_action.layout).to eq(New.name)
       end
 
-      context 'when user call enter_document_id' do
+      context 'when user call enter_spreadsheets_params' do
         let(:document_id) { 'MoneyTrackerSpreadsheet' }
+        let(:expense_range) { 'Sheet1!A1:B1' }
         let(:spreadsheet) { Spreadsheet.find_by(user_id: user.id, document_id: document_id) }
 
         let(:step3_choose_enter_document_id) do
-          action_number = New.action_number_for(:enter_document_id)
+          action_number = New.action_number_for(:enter_spreadsheets_params)
           {
             bot: TestBotDecorator.new(
-              { message_text: "#{action_number}) #{document_id}" },
+              { message_text: "#{action_number}) --document_id #{document_id} --expense_range \"#{expense_range}\"" },
               TestMessage.new(username: user.telegram_username)
             )
           }
@@ -81,6 +82,7 @@ describe Telegram::MessageHandler do
           run_steps
           expect(user.layout_cursor_action.layout).to eq(ListTables.name)
           expect(spreadsheet).to be_valid
+          expect(spreadsheet.expense_range).to eq(expense_range)
         end
 
         context 'when user call list_tables' do
@@ -101,6 +103,29 @@ describe Telegram::MessageHandler do
           it do
             run_steps
             expect(user.layout_cursor_action.layout).to eq(ListTables.name)
+          end
+        end
+
+        context 'when user call delete_table with named document_id' do
+          let(:document_id) { 'Money-Tracker-Spreadsheet' }
+          let(:step4_choose_delete_table) do
+            action_number = ListTables.action_number_for(:delete_table)
+            {
+              bot: TestBotDecorator.new(
+                { message_text: "#{action_number}) --document_id \"#{document_id}\"" },
+                TestMessage.new(username: user.telegram_username)
+              )
+            }
+          end
+
+          let(:steps) do
+            [step1_start_dialog, step2_choose_add_table, step3_choose_enter_document_id, step4_choose_delete_table]
+          end
+
+          it do
+            run_steps
+            expect(user.layout_cursor_action.layout).to eq(Index.name)
+            expect(Spreadsheet.find_by(user_id: user.id, document_id: document_id)).to be_nil
           end
         end
 

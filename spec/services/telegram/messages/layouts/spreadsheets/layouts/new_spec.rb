@@ -11,8 +11,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::New do
 
   let(:bot) { Telegram::BotDecorators::BotDecorator.new({}, nil) }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action, layout: described_class) }
-  let(:spreadsheet_id) { nil }
-  let(:message_text) { '1' }
+  let(:message_text) { action_number.to_s }
   let(:layout_inputs) do
     TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text)
   end
@@ -31,10 +30,10 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::New do
     end
   end
 
-  context 'when enter_document_id' do
-    let(:action_name) { :enter_document_id }
-    let(:spreadsheet) { Spreadsheet.find_by(user_id: user) }
-    let(:message_text) { "#{action_number})kjhjkpkjhhj" }
+  context 'when enter_spreadsheets_params with quoted expense_range' do
+    let(:action_name) { :enter_spreadsheets_params }
+    let(:spreadsheet) { Spreadsheet.find_by(user_id: user.id, document_id: 'spreadsheet-id') }
+    let(:message_text) { "#{action_number}) --document_id spreadsheet-id --expense_range \"Sheet1!A1:B1\"" }
 
     before do
       allow(Index).to receive(:run!)
@@ -43,7 +42,36 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::New do
     it do
       expect(subject).to be_valid
       expect(spreadsheet.document_id).to eq(layout_inputs[:document_id])
+      expect(spreadsheet.expense_range).to eq(layout_inputs[:expense_range])
       expect(Index).to have_received(:run!)
+    end
+  end
+
+  context 'when enter_spreadsheets_params with compact format' do
+    let(:action_name) { :enter_spreadsheets_params }
+    let(:spreadsheet) { Spreadsheet.find_by(user_id: user.id, document_id: 'spreadsheet-id') }
+    let(:message_text) { "#{action_number})--document_idspreadsheet-id--expense_rangeSheet1!A1:B1" }
+
+    before do
+      allow(Index).to receive(:run!)
+    end
+
+    it do
+      expect(subject).to be_valid
+      expect(spreadsheet.document_id).to eq(layout_inputs[:document_id])
+      expect(spreadsheet.expense_range).to eq(layout_inputs[:expense_range])
+      expect(Index).to have_received(:run!)
+    end
+  end
+
+  context 'when enter_spreadsheets_params with invalid format' do
+    let(:action_name) { :enter_spreadsheets_params }
+    let(:messages) { subject.result }
+    let(:message_text) { "#{action_number}) --document_id spreadsheet-id" }
+
+    it do
+      expect(subject).to be_valid
+      expect(messages).to include('Невалидные данные таблицы')
     end
   end
 

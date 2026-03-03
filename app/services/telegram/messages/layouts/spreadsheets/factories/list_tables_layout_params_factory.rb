@@ -5,28 +5,28 @@ module Telegram
     module Layouts
       module Spreadsheets
         module Factories
-          class LayoutParamsFactory < BaseFactory
-            define(:enter_date, [{ name: :action_number }, { name: :date }]) do
+          class ListTablesLayoutParamsFactory < BaseFactory
+            define(:list_all_actions, [{ name: :action_number }]) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
 
-            define(:enter_range, [{ name: :action_number }, { name: :range }]) do
+            define(:list_tables, [{ name: :action_number }]) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
 
-            define(:enter_money, [{ name: :action_number }, { name: :money }]) do
+            define(:edit_table, [{ name: :action_number }]) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
 
-            define(:enter_category, [{ name: :action_number }, { name: :category }]) do
+            define(:data_actions, [{ name: :action_number }, { name: :document_id }]) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
 
-            define(:enter_comment, [{ name: :action_number }, { name: :comment }]) do
+            define(:delete_table, [{ name: :action_number }, { name: :document_id }]) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
 
-            define(:publish_expense, [{ name: :action_number }]) do
+            define(:back_to_index, [{ name: :action_number }]) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
           end

@@ -25,10 +25,6 @@ module Telegram
             def layout_params_factory(factory_name, parsed_input)
               raise NotImplementedError, 'Subclasses must implement layout_params_factory'
             end
-
-            def log_factory_creation(factory_type, factory_name)
-              Rails.logger.debug "[AbstractFactory] Creating #{factory_type} for: #{factory_name}"
-            end
           end
         end
       end

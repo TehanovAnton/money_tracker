@@ -3,6 +3,8 @@
 module Telegram
   class MessageHandler < ActiveInteraction::Base
     LAYOUT_INPUT_PARSER = {
+      Telegram::Messages::Layouts::Spreadsheets::Layouts::New.name => :new,
+      Telegram::Messages::Layouts::Spreadsheets::Layouts::ListTables.name => :list_tables,
       Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout.name => :add_expense
     }.freeze
 
@@ -28,7 +30,7 @@ module Telegram
     private
 
     def layout_inputs
-      input_parsers_factory(parser_name: parser_name).run!(text: bot.message_text)
+      input_parser(parser_name: parser_name).run!(text: bot.message_text, layout_klass: layout_klass)
     end
 
     def layout_cursor_action
@@ -36,7 +38,11 @@ module Telegram
     end
 
     def layout
-      layout_cursor_action.layout.constantize
+      layout_klass.constantize
+    end
+
+    def layout_klass
+      layout_cursor_action.layout
     end
 
     def user
@@ -51,7 +57,7 @@ module Telegram
       ::Telegram::Messages::Layouts::Spreadsheets::LayoutsFactory.run!(factory_name: layout_name)
     end
 
-    def input_parsers_factory(parser_name:)
+    def input_parser(parser_name:)
       Messages::Layouts::Spreadsheets::InputParsersFactory.run!(factory_name: parser_name)
     end
 

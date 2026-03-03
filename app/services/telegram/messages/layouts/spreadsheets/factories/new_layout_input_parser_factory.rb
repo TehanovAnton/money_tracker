@@ -1,0 +1,25 @@
+# frozen_string_literal: true
+
+module Telegram
+  module Messages
+    module Layouts
+      module Spreadsheets
+        module Factories
+          class NewLayoutInputParserFactory < BaseFactory
+            define(:list_all_actions) do
+              Telegram::ActionInputParser
+            end
+
+            define(:back_to_index) do
+              Telegram::ActionInputParser
+            end
+
+            define(:enter_spreadsheets_params) do
+              Telegram::NewSpreadsheetInputParser
+            end
+          end
+        end
+      end
+    end
+  end
+end
