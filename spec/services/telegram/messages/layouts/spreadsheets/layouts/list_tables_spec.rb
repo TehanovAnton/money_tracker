@@ -91,7 +91,9 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::ListTables do
 
     context 'when chat_context exists for another spreadsheet' do
       let!(:another_spreadsheet) { FactoryBot.create(:spreadsheet, user: user, document_id: 'another-document-id') }
-      let!(:existing_chat_context) { FactoryBot.create(:chat_context, user: user, spreadsheet_id: another_spreadsheet.id) }
+      let!(:existing_chat_context) do
+        FactoryBot.create(:chat_context, user: user, spreadsheet_id: another_spreadsheet.id)
+      end
 
       it do
         expect { subject }.not_to change(ChatContext, :count)

@@ -44,7 +44,9 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::DataActionsLayout d
 
       it 'runs add expense layout with latest chat context spreadsheet' do
         FactoryBot.create(:chat_context, user_id: user.id, spreadsheet_id: spreadsheet.id, updated_at: 1.day.ago)
-        FactoryBot.create(:chat_context, user_id: user.id, spreadsheet_id: another_spreadsheet.id, updated_at: Time.current)
+        FactoryBot.create(
+          :chat_context, user_id: user.id, spreadsheet_id: another_spreadsheet.id, updated_at: Time.current
+        )
 
         subject
         expect(AddExpenseLayout).to have_received(:run!).with(
