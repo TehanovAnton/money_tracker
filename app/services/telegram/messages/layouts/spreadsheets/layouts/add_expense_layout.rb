@@ -125,7 +125,7 @@ module Telegram
             end
 
             def chat_context
-              @chat_context ||= ChatContext.find_by(user_id: user.id)
+              @chat_context ||= user.chat_context
             end
           end
         end

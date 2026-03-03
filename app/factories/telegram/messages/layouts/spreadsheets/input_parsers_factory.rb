@@ -13,6 +13,10 @@ module Telegram
             Parsers::NewInputParser
           end
 
+          define(:list_tables) do
+            Parsers::ListTablesInputParser
+          end
+
           define(:add_expense) do
             Parsers::AddExpenseInputParser
           end

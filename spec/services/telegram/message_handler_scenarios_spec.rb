@@ -106,6 +106,29 @@ describe Telegram::MessageHandler do
           end
         end
 
+        context 'when user call delete_table with named document_id' do
+          let(:document_id) { 'Money-Tracker-Spreadsheet' }
+          let(:step4_choose_delete_table) do
+            action_number = ListTables.action_number_for(:delete_table)
+            {
+              bot: TestBotDecorator.new(
+                { message_text: "#{action_number}) --document_id \"#{document_id}\"" },
+                TestMessage.new(username: user.telegram_username)
+              )
+            }
+          end
+
+          let(:steps) do
+            [step1_start_dialog, step2_choose_add_table, step3_choose_enter_document_id, step4_choose_delete_table]
+          end
+
+          it do
+            run_steps
+            expect(user.layout_cursor_action.layout).to eq(Index.name)
+            expect(Spreadsheet.find_by(user_id: user.id, document_id: document_id)).to be_nil
+          end
+        end
+
         context 'when user call data_actions' do
           let(:step4_choose_data_actions) do
             action_number = ListTables.action_number_for(:data_actions)

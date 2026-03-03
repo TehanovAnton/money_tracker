@@ -6,13 +6,8 @@ module Telegram
       module Spreadsheets
         module Layouts
           module IDataActionsLayoutLayouts
-            def add_expense_layout(expense_data_input: :field_by_field)
-              case expense_data_input
-              when :field_by_field
-                layouts_factory(layout_name: :add_expense)
-              else
-                raise ArgumentError, "Unknown expense_data_input: #{expense_data_input}"
-              end
+            def add_expense_layout
+              layouts_factory(layout_name: :add_expense)
             end
           end
 
@@ -20,7 +15,6 @@ module Telegram
             include IDataActionsLayoutLayouts
 
             string :document_id, default: nil
-            symbol :expense_data_input, default: :field_by_field
 
             define_action(:list_all_actions, 'Доступные действия')
             define_action(:add_expense, 'Добавить расход')
@@ -32,7 +26,7 @@ module Telegram
               return messages << 'Пустой id таблицы' unless spreadsheet_id
 
               handle_messages do
-                add_expense_layout(expense_data_input: expense_data_input).run!(
+                add_expense_layout.run!(
                   bot: bot,
                   user: user,
                   spreadsheet_id: spreadsheet_id,
@@ -50,11 +44,11 @@ module Telegram
             end
 
             def spreadsheet_id
-              Spreadsheet.where(id: chat_context.spreadsheet_id).select(:id).last.id
+              Spreadsheet.where(id: chat_context&.spreadsheet_id).pick(:id)
             end
 
             def chat_context
-              @chat_context ||= ChatContext.find_by(user_id: user.id)
+              @chat_context ||= user.chat_context
             end
           end
         end

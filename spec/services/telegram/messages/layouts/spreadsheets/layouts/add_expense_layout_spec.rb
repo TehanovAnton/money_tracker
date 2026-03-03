@@ -132,7 +132,12 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
       { action_number: action_number, date: nil, money: 12.01, category: 'Продукты', comment: 'за хлеб' }
     end
 
+    before do
+      allow(::Spreadsheets::ParamsBuilder).to receive(:run!)
+    end
+
     it 'returns invalid date message' do
+      subject
       expect(::Spreadsheets::ParamsBuilder).not_to have_received(:run!)
       expect(messages).to include('Пустая дата')
     end
@@ -145,7 +150,12 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
       { action_number: action_number, date: '01.02.2026', money: 12.01, category: nil, comment: 'за хлеб' }
     end
 
+    before do
+      allow(::Spreadsheets::ParamsBuilder).to receive(:run!)
+    end
+
     it 'returns invalid category message' do
+      subject
       expect(::Spreadsheets::ParamsBuilder).not_to have_received(:run!)
       expect(messages).to include('Пустая категория')
     end

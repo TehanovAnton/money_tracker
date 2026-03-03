@@ -49,6 +49,7 @@ module Telegram
 
             def data_actions
               return messages << 'Пустой id таблицы' unless document_id
+              return messages << 'Таблица не найдена' unless spreadsheet
 
               handle_messages do
                 chat_context
@@ -59,7 +60,11 @@ module Telegram
             def delete_table
               return messages << 'Пустой id таблицы' unless document_id
 
-              handle_messages { delete_layout.run!(bot: bot, user: user, document_id: document_id) }
+              handle_messages do
+                delete_layout.run!(
+                  bot: bot, user: user, document_id: document_id, action_name: :enter_spreadsheets_params
+                )
+              end
             end
 
             def back_to_index
@@ -67,7 +72,13 @@ module Telegram
             end
 
             def chat_context
-              ChatContext.create!(user: user, spreadsheet_id: Spreadsheet.find_by(document_id: document_id).id)
+              return ChatContext.create(spreadsheet_id: spreadsheet.id, user_id: user.id) unless user.chat_context
+
+              user.chat_context.update!(spreadsheet_id: spreadsheet.id)
+            end
+
+            def spreadsheet
+              @spreadsheet ||= Spreadsheet.find_by(user: user, document_id: document_id)
             end
           end
         end

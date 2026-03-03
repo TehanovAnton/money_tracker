@@ -13,6 +13,8 @@ module Telegram
             ABSTRACT_FACTORY_BY_LAYOUT = {
               'Telegram::Messages::Layouts::Spreadsheets::Layouts::New' =>
                 Factories::NewLayoutFactory,
+              'Telegram::Messages::Layouts::Spreadsheets::Layouts::ListTables' =>
+                Factories::ListTablesLayoutFactory,
               'Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout' =>
                 Factories::AddExpenseLayoutFactory
             }.freeze

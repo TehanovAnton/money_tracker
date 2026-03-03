@@ -6,12 +6,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::DataActionsLayout d
   subject { described_class.run(user: user, bot: bot, **layout_inputs) }
 
   let(:message_text) { nil }
-  let(:expense_data_input) { :field_by_field }
-  let(:layout_inputs) do
-    TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text).merge(
-      expense_data_input: expense_data_input
-    )
-  end
+  let(:layout_inputs) { TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text) }
   let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }
   let(:bot) { Telegram::BotDecorators::BotDecorator.new({}, nil) }
@@ -32,20 +27,32 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::DataActionsLayout d
       allow(AddExpenseLayout).to receive(:run!)
     end
 
-    it 'runs default field-by-field layout' do
+    it 'runs add expense layout with spreadsheet from chat context' do
       FactoryBot.create(:chat_context, user_id: user.id, spreadsheet_id: spreadsheet.id)
 
       subject
-      expect(AddExpenseLayout).to have_received(:run!)
+      expect(AddExpenseLayout).to have_received(:run!).with(
+        bot: bot,
+        user: user,
+        spreadsheet_id: spreadsheet.id,
+        action_name: :list_all_actions
+      )
     end
 
-    context 'when expense_data_input is unsupported' do
-      let(:expense_data_input) { :single_message }
+    context 'when user has multiple chat_context records' do
+      let!(:another_spreadsheet) { FactoryBot.create(:spreadsheet, user: user, document_id: 'another-document-id') }
 
-      it 'raises an argument error' do
-        FactoryBot.create(:chat_context, user_id: user.id, spreadsheet_id: spreadsheet.id)
+      it 'runs add expense layout with latest chat context spreadsheet' do
+        FactoryBot.create(:chat_context, user_id: user.id, spreadsheet_id: spreadsheet.id, updated_at: 1.day.ago)
+        FactoryBot.create(:chat_context, user_id: user.id, spreadsheet_id: another_spreadsheet.id, updated_at: Time.current)
 
-        expect { subject }.to raise_error(ArgumentError, 'Unknown expense_data_input: single_message')
+        subject
+        expect(AddExpenseLayout).to have_received(:run!).with(
+          bot: bot,
+          user: user,
+          spreadsheet_id: another_spreadsheet.id,
+          action_name: :list_all_actions
+        )
       end
     end
   end
