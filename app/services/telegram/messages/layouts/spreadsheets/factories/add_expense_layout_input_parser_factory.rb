@@ -15,11 +15,16 @@ module Telegram
             end
 
             multi_define(
-              { factory_name: :enter_date, named_options: { value_alias: :date, kind: :date_input } },
-              { factory_name: :enter_range, named_options: { value_alias: :range, kind: :range_input } },
-              { factory_name: :enter_money, named_options: { value_alias: :money, kind: :money_input } },
-              { factory_name: :enter_category, named_options: { value_alias: :category, kind: :category_input } },
-              { factory_name: :enter_comment, named_options: { value_alias: :comment, kind: :comment_input } }
+              :enter_date,
+              :enter_range,
+              :enter_category,
+              :enter_money,
+              :enter_comment,
+              enter_date: { named_options: { value_alias: :date, kind: :date_input } },
+              enter_range: { named_options: { value_alias: :range, kind: :range_input } },
+              enter_category: { named_options: { value_alias: :category, kind: :category_input } },
+              enter_money: { named_options: { value_alias: :money, kind: :money_input } },
+              enter_comment: { named_options: { value_alias: :comment, kind: :comment_input } }
             ) do
               AddExpenseInputParser::Default
             end

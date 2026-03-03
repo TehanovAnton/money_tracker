@@ -6,15 +6,12 @@ module Telegram
       module Spreadsheets
         module Factories
           class ListTablesLayoutInputParserFactory < BaseFactory
-            define(:list_all_actions) do
-              Telegram::ActionInputParser
-            end
-
-            define(:list_tables) do
-              Telegram::ActionInputParser
-            end
-
-            define(:edit_table) do
+            multi_define(
+              :list_all_actions,
+              :list_tables,
+              :edit_table,
+              :back_to_index
+            ) do
               Telegram::ActionInputParser
             end
 
@@ -24,10 +21,6 @@ module Telegram
 
             define(:delete_table) do
               Telegram::DeleteSpreadsheetInputParser
-            end
-
-            define(:back_to_index) do
-              Telegram::ActionInputParser
             end
           end
         end

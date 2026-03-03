@@ -6,27 +6,25 @@ module Telegram
       module Spreadsheets
         module Factories
           class ListTablesLayoutParamsFactory < BaseFactory
-            define(:list_all_actions, [{ name: :action_number }]) do
+            multi_define(
+              :list_all_actions,
+              :list_tables,
+              :edit_table,
+              :back_to_index,
+              list_all_actions: { inline_options: [[{ name: :action_number }]] },
+              list_tables: { inline_options: [[{ name: :action_number }]] },
+              edit_table: { inline_options: [[{ name: :action_number }]] },
+              back_to_index: { inline_options: [[{ name: :action_number }]] }
+            ) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
 
-            define(:list_tables, [{ name: :action_number }]) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
-            end
-
-            define(:edit_table, [{ name: :action_number }]) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
-            end
-
-            define(:data_actions, [{ name: :action_number }, { name: :document_id }]) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
-            end
-
-            define(:delete_table, [{ name: :action_number }, { name: :document_id }]) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
-            end
-
-            define(:back_to_index, [{ name: :action_number }]) do
+            multi_define(
+              :data_actions,
+              :delete_table,
+              data_actions: { inline_options: [[{ name: :action_number }, { name: :document_id }]] },
+              delete_table: { inline_options: [[{ name: :action_number }, { name: :document_id }]] }
+            ) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
           end

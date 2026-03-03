@@ -13,27 +13,13 @@ module Telegram
             config[:options][factory_name][:named_options] = named_options
           end
 
-          def multi_define(*definitions)
+          def multi_define(*factory_names, **factory_options)
             factorable = yield
 
-            definitions.flatten.each do |definition|
-              factory_name, inline_options, named_options = multi_define_options(definition)
+            factory_names.each do |factory_name|
+              inline_options = factory_options[factory_name]&.fetch(:inline_options, []) || []
+              named_options = factory_options[factory_name]&.fetch(:named_options, {}) || {}
               define(factory_name, *inline_options, **named_options) { factorable }
-            end
-          end
-
-          def multi_define_options(definition)
-            case definition
-            when Symbol, String
-              [definition.to_sym, [], {}]
-            when Hash
-              [
-                definition.fetch(:factory_name).to_sym,
-                Array(definition[:inline_options]),
-                definition.fetch(:named_options, {})
-              ]
-            else
-              raise ArgumentError, "Unsupported multi_define definition: #{definition.inspect}"
             end
           end
 

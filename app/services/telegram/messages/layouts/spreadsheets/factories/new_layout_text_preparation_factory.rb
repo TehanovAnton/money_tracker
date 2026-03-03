@@ -6,11 +6,10 @@ module Telegram
       module Spreadsheets
         module Factories
           class NewLayoutTextPreparationFactory < BaseFactory
-            define(:list_all_actions) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
-            end
-
-            define(:back_to_index) do
+            multi_define(
+              :list_all_actions,
+              :back_to_index
+            ) do
               Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
             end
 

@@ -6,47 +6,38 @@ module Telegram
       module Spreadsheets
         module Factories
           class AddExpenseLayoutTextPreparationFactory < BaseFactory
-            define(:list_all_actions) do
+            multi_define(
+              :list_all_actions,
+              :back_to_index
+            ) do
               Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
             end
 
-            define(:back_to_index) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
-            end
-
-            define(:action_input, clean_white_space: true) do
+            multi_define(
+              :action_input,
+              :value_input,
+              :enter_date,
+              :enter_range,
+              :enter_money,
+              :publish_expense,
+              action_input: { named_options: { clean_white_space: true } },
+              value_input: { named_options: { clean_white_space: true } },
+              enter_date: { named_options: { clean_white_space: true } },
+              enter_range: { named_options: { clean_white_space: true } },
+              enter_money: { named_options: { clean_white_space: true } },
+              publish_expense: { named_options: { clean_white_space: true } }
+            ) do
               Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
             end
 
-            define(:value_input, clean_white_space: true) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
-            end
-
-            define(:enter_date, clean_white_space: true) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
-            end
-
-            define(:enter_range, clean_white_space: true) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
-            end
-
-            define(:enter_money, clean_white_space: true) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
-            end
-
-            define(:enter_category, clean_white_space: false) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
-            end
-
-            define(:enter_comment, clean_white_space: false) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
-            end
-
-            define(:enter_all, clean_white_space: false) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
-            end
-
-            define(:publish_expense, clean_white_space: true) do
+            multi_define(
+              :enter_category,
+              :enter_comment,
+              :enter_all,
+              enter_category: { named_options: { clean_white_space: false } },
+              enter_comment: { named_options: { clean_white_space: false } },
+              enter_all: { named_options: { clean_white_space: false } }
+            ) do
               Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
             end
           end

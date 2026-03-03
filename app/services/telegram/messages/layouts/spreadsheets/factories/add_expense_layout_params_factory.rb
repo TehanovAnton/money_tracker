@@ -6,49 +6,41 @@ module Telegram
       module Spreadsheets
         module Factories
           class AddExpenseLayoutParamsFactory < BaseFactory
-            define(:list_all_actions) do
+            multi_define(
+              :list_all_actions,
+              :back_to_index
+            ) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::DefaultLayoutParamsBuilder
             end
 
-            define(:back_to_index) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::DefaultLayoutParamsBuilder
-            end
-
-            define(:action_input, [{ name: :action_number }]) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
-            end
-
-            define(:value_input, [{ name: :action_number }, { name: :document_id }]) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
-            end
-
-            define(:enter_date, [{ name: :action_number }, { name: :date }]) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
-            end
-
-            define(:enter_range, [{ name: :action_number }, { name: :range }]) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
-            end
-
-            define(:enter_money, [{ name: :action_number }, { name: :money }]) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
-            end
-
-            define(:enter_category, [{ name: :action_number }, { name: :category }]) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
-            end
-
-            define(:enter_comment, [{ name: :action_number }, { name: :comment }]) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
-            end
-
-            define(:enter_all,
-                   [{ name: :action_number }, { name: :date }, { name: :money }, { name: :category },
-                    { name: :comment }]) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
-            end
-
-            define(:publish_expense, [{ name: :action_number }]) do
+            multi_define(
+              :action_input,
+              :value_input,
+              :enter_date,
+              :enter_range,
+              :enter_money,
+              :enter_category,
+              :enter_comment,
+              :enter_all,
+              :publish_expense,
+              action_input: { inline_options: [[{ name: :action_number }]] },
+              value_input: { inline_options: [[{ name: :action_number }, { name: :document_id }]] },
+              enter_date: { inline_options: [[{ name: :action_number }, { name: :date }]] },
+              enter_range: { inline_options: [[{ name: :action_number }, { name: :range }]] },
+              enter_money: { inline_options: [[{ name: :action_number }, { name: :money }]] },
+              enter_category: { inline_options: [[{ name: :action_number }, { name: :category }]] },
+              enter_comment: { inline_options: [[{ name: :action_number }, { name: :comment }]] },
+              enter_all: {
+                inline_options: [[
+                  { name: :action_number },
+                  { name: :date },
+                  { name: :money },
+                  { name: :category },
+                  { name: :comment }
+                ]]
+              },
+              publish_expense: { inline_options: [[{ name: :action_number }]] }
+            ) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::LayoutParamsBuilder
             end
           end
