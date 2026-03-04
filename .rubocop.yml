@@ -6,6 +6,8 @@ plugins:
 
 require:
   - ./lib/rubocop/cop/money_tracker/decorator_file_name.rb
+  - ./lib/rubocop/cop/money_tracker/decorators_telegram_structure.rb
+  - ./lib/rubocop/cop/money_tracker/decorators_folder_naming.rb
 
 AllCops:
   NewCops: disable
@@ -61,6 +63,16 @@ Rails/Exit:
     - 'spec/rails_helper.rb'
 
 MoneyTracker/DecoratorFileName:
+  Enabled: true
+  Include:
+    - 'app/decorators/**/*.rb'
+
+MoneyTracker/DecoratorsTelegramStructure:
+  Enabled: true
+  Include:
+    - 'app/decorators/**/*.rb'
+
+MoneyTracker/DecoratorsFolderNaming:
   Enabled: true
   Include:
     - 'app/decorators/**/*.rb'
