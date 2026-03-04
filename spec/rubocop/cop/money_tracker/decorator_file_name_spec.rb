@@ -13,7 +13,7 @@ RSpec.describe RuboCop::Cop::MoneyTracker::DecoratorFileName, :config do
   let(:source) { 'class Example; end' }
 
   context 'when file is inside app/decorators and has invalid suffix' do
-    let(:file_path) { 'app/decorators/telegram/bot/base.rb' }
+    let(:file_path) { 'app/decorators/telegram/base.rb' }
 
     it 'registers an offense' do
       expect(offenses.size).to eq(1)
@@ -21,7 +21,7 @@ RSpec.describe RuboCop::Cop::MoneyTracker::DecoratorFileName, :config do
   end
 
   context 'when file is inside app/decorators and has valid suffix' do
-    let(:file_path) { 'app/decorators/telegram/bot/base_decorator.rb' }
+    let(:file_path) { 'app/decorators/telegram/base_decorator.rb' }
 
     it 'does not register offenses' do
       expect(offenses).to be_empty

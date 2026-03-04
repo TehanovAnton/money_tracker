@@ -8,7 +8,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::Delete do
   let(:layout_inputs) { { action_name: action_name, document_id: document_id } }
   let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }
-  let(:bot) { Telegram::Bot::BotDecorator.new({}, nil) }
+  let(:bot) { Telegram::BotDecorator.new({}, nil) }
   let!(:spreadsheet) { FactoryBot.create(:spreadsheet, user: user) }
   let(:document_id) { spreadsheet.document_id }
 

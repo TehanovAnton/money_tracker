@@ -9,7 +9,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::DataActionsLayout d
   let(:layout_inputs) { TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text) }
   let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }
-  let(:bot) { Telegram::Bot::BotDecorator.new({}, nil) }
+  let(:bot) { Telegram::BotDecorator.new({}, nil) }
 
   let(:action_name) { nil }
   let(:action_number) { described_class.action_number_for(action_name) }

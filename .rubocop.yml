@@ -8,6 +8,7 @@ require:
   - ./lib/rubocop/cop/money_tracker/decorator_file_name.rb
   - ./lib/rubocop/cop/money_tracker/decorators_telegram_structure.rb
   - ./lib/rubocop/cop/money_tracker/decorators_folder_naming.rb
+  - ./lib/rubocop/cop/money_tracker/redundant_module_name_in_class.rb
 
 AllCops:
   NewCops: disable
@@ -73,6 +74,11 @@ MoneyTracker/DecoratorsTelegramStructure:
     - 'app/decorators/**/*.rb'
 
 MoneyTracker/DecoratorsFolderNaming:
+  Enabled: true
+  Include:
+    - 'app/decorators/**/*.rb'
+
+MoneyTracker/RedundantModuleNameInClass:
   Enabled: true
   Include:
     - 'app/decorators/**/*.rb'
