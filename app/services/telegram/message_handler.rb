@@ -8,7 +8,7 @@ module Telegram
       Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout.name => :add_expense
     }.freeze
 
-    object :bot, class: BotDecorators::BotDecorator
+    object :bot, class: Bot::BotDecorator
 
     def execute
       layout_messages = \

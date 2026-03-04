@@ -37,7 +37,7 @@ module Telegram
           integer :action_number, default: nil
           symbol :action_name, default: nil
           record :user
-          object :bot, class: BotDecorators::BotDecorator
+          object :bot, class: Bot::BotDecorator
           string :spreadsheet_id, default: nil
 
           validate :check_action_number

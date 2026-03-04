@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Telegram::MessageHandler do
   subject { described_class.run(bot: bot) }
 
-  let(:bot) { Telegram::BotDecorators::BotDecorator.new({}, nil) }
+  let(:bot) { Telegram::Bot::BotDecorator.new({}, nil) }
   let(:user) { FactoryBot.create(:user) }
   let(:message_text) { '1' }
 

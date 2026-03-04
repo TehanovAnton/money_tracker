@@ -3,7 +3,7 @@
 
 require 'rails_helper'
 
-class TestBotDecorator < Telegram::BotDecorators::BotDecorator
+class TestBotDecorator < Telegram::Bot::BotDecorator
   def message_text
     __getobj__[:message_text]
   end

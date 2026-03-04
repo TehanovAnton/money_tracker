@@ -14,7 +14,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
   end
   let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }
-  let(:bot) { Telegram::BotDecorators::BotDecorator.new({}, nil) }
+  let(:bot) { Telegram::Bot::BotDecorator.new({}, nil) }
 
   let(:action_name) { nil }
   let(:action_number) { described_class.action_number_for(action_name) }

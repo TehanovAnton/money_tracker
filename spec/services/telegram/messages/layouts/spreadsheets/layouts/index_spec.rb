@@ -12,7 +12,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::Index do
   end
   let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }
-  let(:bot) { Telegram::BotDecorators::BotDecorator.new({}, nil) }
+  let(:bot) { Telegram::Bot::BotDecorator.new({}, nil) }
 
   before do
     allow(bot).to receive(:send_message)

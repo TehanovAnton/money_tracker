@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Telegram
-  module BotDecorators
-    class BotDecorator < Base
+  module Bot
+    class BotDecorator < BaseDecorator
       attr_reader :message
 
       def initialize(bot, message)
