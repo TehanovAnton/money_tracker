@@ -4,6 +4,9 @@ plugins:
   - rubocop-rspec
   - rubocop-rspec_rails
 
+require:
+  - ./lib/rubocop/cop/money_tracker/decorator_file_name.rb
+
 AllCops:
   NewCops: disable
   Exclude:
@@ -56,3 +59,8 @@ RSpec/LetSetup:
 Rails/Exit:
   Exclude:
     - 'spec/rails_helper.rb'
+
+MoneyTracker/DecoratorFileName:
+  Enabled: true
+  Include:
+    - 'app/decorators/**/*.rb'
