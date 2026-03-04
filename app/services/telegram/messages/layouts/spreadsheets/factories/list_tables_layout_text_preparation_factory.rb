@@ -6,28 +6,22 @@ module Telegram
       module Spreadsheets
         module Factories
           class ListTablesLayoutTextPreparationFactory < BaseFactory
-            define(:list_all_actions) do
+            multi_define(
+              :list_all_actions,
+              :list_tables,
+              :edit_table,
+              :back_to_index
+            ) do
               Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
             end
 
-            define(:list_tables) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
-            end
-
-            define(:edit_table) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
-            end
-
-            define(:data_actions, clean_white_space: true) do
+            multi_define(
+              :data_actions,
+              :delete_table,
+              data_actions: { named_options: { clean_white_space: true } },
+              delete_table: { named_options: { clean_white_space: true } }
+            ) do
               Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
-            end
-
-            define(:delete_table, clean_white_space: true) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
-            end
-
-            define(:back_to_index) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
             end
           end
         end

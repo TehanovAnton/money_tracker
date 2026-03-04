@@ -6,11 +6,10 @@ module Telegram
       module Spreadsheets
         module Factories
           class NewLayoutParamsFactory < BaseFactory
-            define(:list_all_actions) do
-              Telegram::Messages::Layouts::Spreadsheets::Builders::DefaultLayoutParamsBuilder
-            end
-
-            define(:back_to_index) do
+            multi_define(
+              :list_all_actions,
+              :back_to_index
+            ) do
               Telegram::Messages::Layouts::Spreadsheets::Builders::DefaultLayoutParamsBuilder
             end
 

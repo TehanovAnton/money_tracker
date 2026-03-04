@@ -13,6 +13,16 @@ module Telegram
             config[:options][factory_name][:named_options] = named_options
           end
 
+          def multi_define(*factory_names, **factory_options)
+            factorable = yield
+
+            factory_names.each do |factory_name|
+              inline_options = factory_options[factory_name]&.fetch(:inline_options, []) || []
+              named_options = factory_options[factory_name]&.fetch(:named_options, {}) || {}
+              define(factory_name, *inline_options, **named_options) { factorable }
+            end
+          end
+
           def config
             @config ||= { factories: {}, options: {} }
           end
