@@ -6,7 +6,9 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::DataActionsLayout d
   subject { described_class.run(user: user, bot: bot, **layout_inputs) }
 
   let(:message_text) { nil }
-  let(:layout_inputs) { TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text) }
+  let(:layout_inputs) do
+    TelegramSpreadsheets::InputParsersFactory.run!(factory_name: :base).run!(text: message_text)
+  end
   let(:messages) { subject.result }
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action) }
   let(:bot) { Telegram::BotDecorator.new({}, nil) }

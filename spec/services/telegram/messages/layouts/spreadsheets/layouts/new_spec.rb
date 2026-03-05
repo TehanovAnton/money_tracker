@@ -13,7 +13,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::New do
   let(:user) { FactoryBot.create(:user, :with_layout_cursor_action, layout: described_class) }
   let(:message_text) { action_number.to_s }
   let(:layout_inputs) do
-    TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text)
+    TelegramSpreadsheets::InputParsersFactory.run!(factory_name: :new).run!(text: message_text)
   end
 
   before do

@@ -7,7 +7,7 @@ describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
 
   let(:message_text) { nil }
   let(:layout_inputs) do
-    TelegramSpreadsheets.input_parsers(described_class).run!(text: message_text)
+    TelegramSpreadsheets::InputParsersFactory.run!(factory_name: :add_expense).run!(text: message_text)
   end
   let(:chat_context_inputs) do
     { spreadsheet_id: chat_context.spreadsheet_id }
