@@ -69,11 +69,11 @@ module Telegram
       end
 
       def parameters_type
-        Telegram::ParametersFactory.run!(factory_name: kind, style: :const_keeper)
+        ::Parsers::ParametersFactory.run!(factory_name: kind, style: :const_keeper)
       end
 
       def value_input_rule_name
-        Telegram::ValueInputFactory.run!(factory_name: kind, style: :const_keeper)
+        ::Parsers::ValueInputFactory.run!(factory_name: kind, style: :const_keeper)
       end
 
       private
