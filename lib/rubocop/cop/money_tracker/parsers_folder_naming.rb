@@ -3,8 +3,8 @@
 module RuboCop
   module Cop
     module MoneyTracker
-      class DecoratorsFolderNaming < FolderNamingBase
-        TARGET_FOLDER = 'decorators'
+      class ParsersFolderNaming < FolderNamingBase
+        TARGET_FOLDER = 'parsers'
       end
     end
   end

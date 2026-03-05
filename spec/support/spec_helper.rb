@@ -3,9 +3,17 @@
 require_relative 'factory_bot'
 require 'webmock/rspec'
 require 'telegram/bot'
+require 'fileutils'
+require 'tmpdir'
+require 'rubocop'
+require 'rubocop/rspec/support'
 
 # Load all support dir
 Dir['./spec/support/**/*.rb'].each { |file| require file }
+
+Dir[File.expand_path('../../lib/rubocop/cop/money_tracker/**/*.rb', __dir__)].sort.each do |file|
+  require file
+end
 
 TelegramSpreadsheets = Telegram::Messages::Layouts::Spreadsheets
 Index = TelegramSpreadsheets::Layouts::Index

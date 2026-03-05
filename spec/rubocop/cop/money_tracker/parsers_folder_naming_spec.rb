@@ -3,23 +3,23 @@
 
 require 'rails_helper'
 
-describe RuboCop::Cop::MoneyTracker::DecoratorsFolderNaming, :config do
+describe RuboCop::Cop::MoneyTracker::ParsersFolderNaming, :config do
   include CopHelper
 
   subject(:offenses) { inspect_source(source, file_path) }
 
   let(:source) { 'class Example; end' }
 
-  context 'when decorators subdirectories do not end with _decorators' do
-    let(:file_path) { 'app/decorators/message_body_decorator.rb' }
+  context 'when parsers subdirectories do not end with _parsers' do
+    let(:file_path) { 'app/parsers/telegram/layout_input_parser.rb' }
 
     it 'does not register offenses' do
       expect(offenses).to be_empty
     end
   end
 
-  context 'when file is inside decorators subdirectory ending with _decorators' do
-    let(:file_path) { 'app/decorators/telegram/bot_decorators/base.rb' }
+  context 'when file is inside parsers subdirectory ending with _parsers' do
+    let(:file_path) { 'app/parsers/telegram/add_expense_input_parsers/base_parser.rb' }
 
     it 'registers an offense' do
       expect(offenses.size).to eq(1)
