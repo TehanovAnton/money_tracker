@@ -10,7 +10,7 @@ module Telegram
               :list_all_actions,
               :back_to_index
             ) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::ActionNumberTextPreparation
+              Support::ActionNumberTextPreparation
             end
 
             multi_define(
@@ -27,7 +27,7 @@ module Telegram
               enter_money: { named_options: { clean_white_space: true } },
               publish_expense: { named_options: { clean_white_space: true } }
             ) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
+              Support::TextPreparation
             end
 
             multi_define(
@@ -38,7 +38,7 @@ module Telegram
               enter_comment: { named_options: { clean_white_space: false } },
               enter_all: { named_options: { clean_white_space: false } }
             ) do
-              Telegram::Messages::Layouts::Spreadsheets::Support::TextPreparation
+              Support::TextPreparation
             end
           end
         end
