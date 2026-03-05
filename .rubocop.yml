@@ -9,6 +9,8 @@ require:
   - ./lib/rubocop/cop/money_tracker/decorator_file_name.rb
   - ./lib/rubocop/cop/money_tracker/decorators_telegram_structure.rb
   - ./lib/rubocop/cop/money_tracker/decorators_folder_naming.rb
+  - ./lib/rubocop/cop/money_tracker/factory_file_name.rb
+  - ./lib/rubocop/cop/money_tracker/factories_folder_naming.rb
   - ./lib/rubocop/cop/money_tracker/parser_file_name.rb
   - ./lib/rubocop/cop/money_tracker/parsers_folder_naming.rb
   - ./lib/rubocop/cop/money_tracker/service_file_name.rb
@@ -82,6 +84,16 @@ MoneyTracker/DecoratorsFolderNaming:
   Enabled: true
   Include:
     - 'app/decorators/**/*.rb'
+
+MoneyTracker/FactoryFileName:
+  Enabled: true
+  Include:
+    - 'app/factories/**/*.rb'
+
+MoneyTracker/FactoriesFolderNaming:
+  Enabled: true
+  Include:
+    - 'app/factories/**/*.rb'
 
 MoneyTracker/ParserFileName:
   Enabled: true
