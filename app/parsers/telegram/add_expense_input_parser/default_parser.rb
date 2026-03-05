@@ -2,7 +2,7 @@
 
 module Telegram
   module AddExpenseInputParser
-    class Default < Base
+    class DefaultParser < BaseParser
       attr_reader :value_alias, :kind
 
       def initialize(kind:, value_alias: :input_value)

@@ -2,7 +2,7 @@
 
 module Telegram
   module AddExpenseInputParser
-    class WithNamedInputs < Base
+    class WithNamedInputsParser < BaseParser
       DEFAULT_NAMED_PARAMETER_ALIASES = {
         date: '--date',
         money: '--money',

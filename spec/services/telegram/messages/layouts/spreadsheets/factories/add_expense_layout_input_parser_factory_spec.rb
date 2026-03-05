@@ -30,11 +30,11 @@ describe Telegram::Messages::Layouts::Spreadsheets::Factories::AddExpenseLayoutI
 
         expect(parser_signatures).to eq(
           [
-            [Telegram::AddExpenseInputParser::Default, :date, :date_input],
-            [Telegram::AddExpenseInputParser::Default, :range, :range_input],
-            [Telegram::AddExpenseInputParser::Default, :money, :money_input],
-            [Telegram::AddExpenseInputParser::Default, :category, :category_input],
-            [Telegram::AddExpenseInputParser::Default, :comment, :comment_input]
+            [Telegram::AddExpenseInputParser::DefaultParser, :date, :date_input],
+            [Telegram::AddExpenseInputParser::DefaultParser, :range, :range_input],
+            [Telegram::AddExpenseInputParser::DefaultParser, :money, :money_input],
+            [Telegram::AddExpenseInputParser::DefaultParser, :category, :category_input],
+            [Telegram::AddExpenseInputParser::DefaultParser, :comment, :comment_input]
           ]
         )
       end

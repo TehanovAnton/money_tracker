@@ -2,7 +2,7 @@
 
 module Telegram
   module AddExpenseInputParser
-    class Base < ::Parslet::Parser
+    class BaseParser < ::Parslet::Parser
       module Types
         include Dry.Types()
       end
