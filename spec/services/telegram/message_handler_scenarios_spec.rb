@@ -15,7 +15,7 @@ end
 
 TestMessage = Struct.new(:username, keyword_init: true)
 
-describe Telegram::MessageHandler do
+describe Telegram::MessageHandlerService do
   subject(:run_steps) do
     steps.each do |step|
       described_class.run(bot: step[:bot])

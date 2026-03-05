@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module Telegram
-  class MessageHandler < ActiveInteraction::Base
+  class MessageHandlerService < ActiveInteraction::Base
     LAYOUT_INPUT_PARSER = {
-      Telegram::MessageLayouts::New.name => :new,
-      Telegram::MessageLayouts::ListTables.name => :list_tables,
-      Telegram::MessageLayouts::AddExpenseLayout.name => :add_expense
+      Telegram::MessageLayouts::NewService.name => :new,
+      Telegram::MessageLayouts::ListTablesService.name => :list_tables,
+      Telegram::MessageLayouts::AddExpenseLayoutService.name => :add_expense
     }.freeze
 
     object :bot, class: ::Telegram::BotDecorator

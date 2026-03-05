@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Telegram::MessageLayouts::ListTables do
+describe Telegram::MessageLayouts::ListTablesService do
   subject { described_class.run(user: user, bot: bot, **layout_inputs) }
 
   let(:message_text) { nil }

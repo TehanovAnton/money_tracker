@@ -3,7 +3,7 @@
 module Telegram
   module MessageLayouts
         class ListTablesInputParser < BaseParser
-          string :layout_klass, default: 'Telegram::MessageLayouts::ListTables'
+          string :layout_klass, default: 'Telegram::MessageLayouts::ListTablesService'
 
           private
 

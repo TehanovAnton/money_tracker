@@ -28,7 +28,7 @@ module Telegram
       end
     end
 
-    class Base < ActiveInteraction::Base
+    class BaseService < ActiveInteraction::Base
       extend IDefineAction
       include IChooseAction
 

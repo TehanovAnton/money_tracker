@@ -8,7 +8,7 @@ module Telegram
               :list_all_actions,
               :back_to_index
             ) do
-              Support::ActionNumberTextPreparation
+              Support::ActionNumberTextPreparationService
             end
 
             multi_define(
@@ -25,7 +25,7 @@ module Telegram
               enter_money: { named_options: { clean_white_space: true } },
               publish_expense: { named_options: { clean_white_space: true } }
             ) do
-              Support::TextPreparation
+              Support::TextPreparationService
             end
 
             multi_define(
@@ -36,7 +36,7 @@ module Telegram
               enter_comment: { named_options: { clean_white_space: false } },
               enter_all: { named_options: { clean_white_space: false } }
             ) do
-              Support::TextPreparation
+              Support::TextPreparationService
             end
           end
         end

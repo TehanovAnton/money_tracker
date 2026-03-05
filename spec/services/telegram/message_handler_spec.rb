@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Telegram::MessageHandler do
+describe Telegram::MessageHandlerService do
   subject { described_class.run(bot: bot) }
 
   let(:bot) { Telegram::BotDecorator.new({}, nil) }

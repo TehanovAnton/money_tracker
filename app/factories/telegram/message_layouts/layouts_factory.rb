@@ -4,27 +4,27 @@ module Telegram
   module MessageLayouts
     class LayoutsFactory < BaseFactory
       define(:index) do
-        Index
+        IndexService
       end
 
       define(:new) do
-        New
+        NewService
       end
 
       define(:delete) do
-        Delete
+        DeleteService
       end
 
       define(:list_tables) do
-        ListTables
+        ListTablesService
       end
 
       define(:data_actions) do
-        DataActionsLayout
+        DataActionsLayoutService
       end
 
       define(:add_expense) do
-        AddExpenseLayout
+        AddExpenseLayoutService
       end
     end
   end

@@ -3,7 +3,7 @@
 module Telegram
   module MessageLayouts
         class NewInputParser < BaseParser
-          string :layout_klass, default: 'Telegram::MessageLayouts::New'
+          string :layout_klass, default: 'Telegram::MessageLayouts::NewService'
 
           private
 

@@ -7,9 +7,9 @@ describe ::Spreadsheets::UpsertService do
   subject(:result) { described_class.run(params: params) }
 
   let(:params) do
-    ::Spreadsheets::ParamsBuilder::Payload.new(
+    ::Spreadsheets::ParamsBuilderService::Payload.new(
       document_id: 'document-id',
-      sheet: ::Spreadsheets::ParamsBuilder::SheetPayload.new(
+      sheet: ::Spreadsheets::ParamsBuilderService::SheetPayload.new(
         range: 'Sheet1!A:D',
         values: [['01.01.2026', BigDecimal('250.75'), 'Food', 'Lunch']]
       )

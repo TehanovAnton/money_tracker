@@ -2,7 +2,7 @@
 
 module Telegram
   module MessageLayouts
-    class Index < Base
+    class IndexService < BaseService
       define_action(:list_all_actions, 'Доступные действия')
       define_action(:list_tables, 'Мои таблицы')
       define_action(:add_table, 'Добавить таблицу')

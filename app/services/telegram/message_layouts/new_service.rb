@@ -2,7 +2,7 @@
 
 module Telegram
   module MessageLayouts
-    class New < Base
+    class NewService < BaseService
       string :document_id, default: nil
       string :expense_range, default: nil
 

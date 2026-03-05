@@ -10,7 +10,7 @@ module Telegram
               :edit_table,
               :back_to_index
             ) do
-              Support::ActionNumberTextPreparation
+              Support::ActionNumberTextPreparationService
             end
 
             multi_define(
@@ -19,7 +19,7 @@ module Telegram
               data_actions: { named_options: { clean_white_space: true } },
               delete_table: { named_options: { clean_white_space: true } }
             ) do
-              Support::TextPreparation
+              Support::TextPreparationService
             end
           end
         end

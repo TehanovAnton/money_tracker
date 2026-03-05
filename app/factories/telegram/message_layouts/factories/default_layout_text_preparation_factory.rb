@@ -5,11 +5,11 @@ module Telegram
         module Factories
           class DefaultLayoutTextPreparationFactory < BaseFactory
             define(:action_number) do
-              Support::ActionNumberTextPreparation
+              Support::ActionNumberTextPreparationService
             end
 
             define(:value_input, clean_white_space: true) do
-              Support::TextPreparation
+              Support::TextPreparationService
             end
           end
         end

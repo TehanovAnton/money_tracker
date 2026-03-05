@@ -4,7 +4,7 @@ module Telegram
   module MessageLayouts
         class AddExpenseInputParser < BaseParser
           string :text
-          string :layout_klass, default: 'Telegram::MessageLayouts::AddExpenseLayout'
+          string :layout_klass, default: 'Telegram::MessageLayouts::AddExpenseLayoutService'
 
           private
 

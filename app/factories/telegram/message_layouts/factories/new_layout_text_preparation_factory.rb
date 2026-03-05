@@ -8,11 +8,11 @@ module Telegram
               :list_all_actions,
               :back_to_index
             ) do
-              Support::ActionNumberTextPreparation
+              Support::ActionNumberTextPreparationService
             end
 
             define(:enter_spreadsheets_params, clean_white_space: true) do
-              Support::TextPreparation
+              Support::TextPreparationService
             end
           end
         end

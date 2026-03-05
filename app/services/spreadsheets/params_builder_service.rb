@@ -3,7 +3,7 @@
 require 'dry/types'
 
 module Spreadsheets
-  class ParamsBuilder < ActiveInteraction::Base
+  class ParamsBuilderService < ActiveInteraction::Base
     module Types
       include Dry.Types()
     end

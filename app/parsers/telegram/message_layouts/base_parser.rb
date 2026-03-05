@@ -8,11 +8,11 @@ module Telegram
 
           DEFAULT_ABSTRACT_FACTORY = Factories::DefaultLayoutFactory
           ABSTRACT_FACTORY_BY_LAYOUT = {
-            'Telegram::MessageLayouts::New' =>
+            'Telegram::MessageLayouts::NewService' =>
               Factories::NewLayoutFactory,
-            'Telegram::MessageLayouts::ListTables' =>
+            'Telegram::MessageLayouts::ListTablesService' =>
               Factories::ListTablesLayoutFactory,
-            'Telegram::MessageLayouts::AddExpenseLayout' =>
+            'Telegram::MessageLayouts::AddExpenseLayoutService' =>
               Factories::AddExpenseLayoutFactory
           }.freeze
 

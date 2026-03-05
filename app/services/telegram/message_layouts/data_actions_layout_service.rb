@@ -8,7 +8,7 @@ module Telegram
       end
     end
 
-    class DataActionsLayout < Base
+    class DataActionsLayoutService < BaseService
       include IDataActionsLayoutLayouts
 
       string :document_id, default: nil

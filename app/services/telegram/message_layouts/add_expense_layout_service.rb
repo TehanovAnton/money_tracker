@@ -21,7 +21,7 @@ module Telegram
       end
     end
 
-    class AddExpenseLayout < Base
+    class AddExpenseLayoutService < BaseService
       include IFormInput
 
       FIELD_FORM_INPUT_MAP = {
@@ -85,7 +85,7 @@ module Telegram
       end
 
       def publish_expense
-        params = ::Spreadsheets::ParamsBuilder.run!(spreadsheet_form: spreadsheet_form)
+        params = ::Spreadsheets::ParamsBuilderService.run!(spreadsheet_form: spreadsheet_form)
         upsert_result = ::Spreadsheets::UpsertService.run(params: params)
 
         handle_messages do

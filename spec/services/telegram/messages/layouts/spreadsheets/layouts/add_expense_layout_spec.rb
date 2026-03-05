@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Telegram::MessageLayouts::AddExpenseLayout do
+describe Telegram::MessageLayouts::AddExpenseLayoutService do
   subject { described_class.run(user: user, bot: bot, **layout_inputs, **chat_context_inputs) }
 
   let(:message_text) { nil }
@@ -133,12 +133,12 @@ describe Telegram::MessageLayouts::AddExpenseLayout do
     end
 
     before do
-      allow(::Spreadsheets::ParamsBuilder).to receive(:run!)
+      allow(::Spreadsheets::ParamsBuilderService).to receive(:run!)
     end
 
     it 'returns invalid date message' do
       subject
-      expect(::Spreadsheets::ParamsBuilder).not_to have_received(:run!)
+      expect(::Spreadsheets::ParamsBuilderService).not_to have_received(:run!)
       expect(messages).to include('Пустая дата')
     end
   end
@@ -151,12 +151,12 @@ describe Telegram::MessageLayouts::AddExpenseLayout do
     end
 
     before do
-      allow(::Spreadsheets::ParamsBuilder).to receive(:run!)
+      allow(::Spreadsheets::ParamsBuilderService).to receive(:run!)
     end
 
     it 'returns invalid category message' do
       subject
-      expect(::Spreadsheets::ParamsBuilder).not_to have_received(:run!)
+      expect(::Spreadsheets::ParamsBuilderService).not_to have_received(:run!)
       expect(messages).to include('Пустая категория')
     end
   end
@@ -165,9 +165,9 @@ describe Telegram::MessageLayouts::AddExpenseLayout do
     let(:action_name) { :publish_expense }
     let(:message_text) { action_number.to_s }
     let(:params_payload) do
-      ::Spreadsheets::ParamsBuilder::Payload.new(
+      ::Spreadsheets::ParamsBuilderService::Payload.new(
         document_id: 'document-id',
-        sheet: ::Spreadsheets::ParamsBuilder::SheetPayload.new(
+        sheet: ::Spreadsheets::ParamsBuilderService::SheetPayload.new(
           range: 'Sheet1!A:D',
           values: [['01.01.2026', BigDecimal('250.75'), 'Food', 'Lunch']]
         )
@@ -176,7 +176,7 @@ describe Telegram::MessageLayouts::AddExpenseLayout do
     let(:upsert_result) { instance_double(::Spreadsheets::UpsertService, valid?: false) }
 
     before do
-      allow(::Spreadsheets::ParamsBuilder).to receive(:run!).and_return(params_payload)
+      allow(::Spreadsheets::ParamsBuilderService).to receive(:run!).and_return(params_payload)
       allow(::Spreadsheets::UpsertService).to receive(:run).and_return(upsert_result)
     end
 

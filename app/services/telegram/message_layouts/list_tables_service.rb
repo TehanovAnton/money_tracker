@@ -16,7 +16,7 @@ module Telegram
       end
     end
 
-    class ListTables < Base
+    class ListTablesService < BaseService
       include IListTablesLayouts
 
       string :document_id, default: nil

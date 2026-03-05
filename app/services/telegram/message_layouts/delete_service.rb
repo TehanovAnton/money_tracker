@@ -2,7 +2,7 @@
 
 module Telegram
   module MessageLayouts
-    class Delete < Base
+    class DeleteService < BaseService
       string :document_id, default: nil
 
       define_action(:enter_spreadsheets_params, 'Удалить')

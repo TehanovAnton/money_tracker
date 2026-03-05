@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe ::Spreadsheets::ParamsBuilder do
+describe ::Spreadsheets::ParamsBuilderService do
   subject(:built_params) { described_class.run!(spreadsheet_form: spreadsheet_form) }
 
   let(:range_value) { 'Sheet1!A:D' }

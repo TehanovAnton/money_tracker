@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Telegram::MessageLayouts::DataActionsLayout do
+describe Telegram::MessageLayouts::DataActionsLayoutService do
   subject { described_class.run(user: user, bot: bot, **layout_inputs) }
 
   let(:message_text) { nil }
