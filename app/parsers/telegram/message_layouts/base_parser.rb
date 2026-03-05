@@ -6,14 +6,14 @@ module Telegram
       string :text
       string :layout_klass, default: nil
 
-      DEFAULT_ABSTRACT_FACTORY = Factories::DefaultLayoutFactory
+      DEFAULT_ABSTRACT_FACTORY = DefaultLayoutFactory
       ABSTRACT_FACTORY_BY_LAYOUT = {
         'Telegram::MessageLayouts::NewService' =>
-          Factories::NewLayoutFactory,
+          NewLayoutFactory,
         'Telegram::MessageLayouts::ListTablesService' =>
-          Factories::ListTablesLayoutFactory,
+          ListTablesLayoutFactory,
         'Telegram::MessageLayouts::AddExpenseLayoutService' =>
-          Factories::AddExpenseLayoutFactory
+          AddExpenseLayoutFactory
       }.freeze
 
       def execute

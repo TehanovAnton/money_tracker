@@ -104,7 +104,7 @@ module RuboCop
         end
 
         def forbidden_suffix
-          "_#{target_folder}"
+          target_folder
         end
 
         def folder_message

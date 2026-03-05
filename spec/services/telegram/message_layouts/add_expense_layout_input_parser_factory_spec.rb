@@ -3,7 +3,7 @@
 
 require 'rails_helper'
 
-describe Telegram::MessageLayouts::Factories::AddExpenseLayoutInputParserFactory do
+describe Telegram::MessageLayouts::AddExpenseLayoutInputParserFactory do
   describe '.run!' do
     subject(:resolved_parsers) do
       factory_names.map do |factory_name|
