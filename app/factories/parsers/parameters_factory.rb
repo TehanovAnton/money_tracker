@@ -3,11 +3,11 @@
 module Parsers
   class ParametersFactory < Telegram::Messages::Layouts::Spreadsheets::BaseFactory
     define(:default) do
-      Telegram::AddExpenseInputParser::DefaultParameters
+      Parsers::DefaultParameters
     end
 
     define(:with_named_inputs) do
-      Telegram::AddExpenseInputParser::WithNamedInputsParameters
+      Parsers::WithNamedInputsParameters
     end
   end
 end
