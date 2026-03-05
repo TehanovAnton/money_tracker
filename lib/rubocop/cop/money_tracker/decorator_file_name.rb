@@ -7,6 +7,7 @@ module RuboCop
     module MoneyTracker
       class DecoratorFileName < FileNameBase
         TARGET_FOLDER = 'decorators'
+        TARGET_SINGULAR = 'decorator'
       end
     end
   end

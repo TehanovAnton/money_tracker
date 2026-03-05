@@ -25,4 +25,12 @@ describe RuboCop::Cop::MoneyTracker::ParsersFolderNaming, :config do
       expect(offenses.size).to eq(1)
     end
   end
+
+  context 'when file is inside parsers subdirectory containing parser in singular form' do
+    let(:file_path) { 'app/parsers/telegram/add_expense_input_parser/base_parser.rb' }
+
+    it 'registers an offense' do
+      expect(offenses.size).to eq(1)
+    end
+  end
 end

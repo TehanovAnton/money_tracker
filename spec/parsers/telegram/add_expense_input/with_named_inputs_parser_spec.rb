@@ -3,7 +3,7 @@
 
 require 'rails_helper'
 
-describe Telegram::AddExpenseInputParser::WithNamedInputsParser do
+describe Telegram::AddExpenseInput::WithNamedInputsParser do
   subject(:parsed_input) do
     described_class
       .new(:with_named_inputs, :date_input, :money_input, :category_input, :comment_input, **parser_named_parameters)

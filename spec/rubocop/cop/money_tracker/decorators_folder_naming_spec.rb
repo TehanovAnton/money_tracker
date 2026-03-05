@@ -25,4 +25,12 @@ describe RuboCop::Cop::MoneyTracker::DecoratorsFolderNaming, :config do
       expect(offenses.size).to eq(1)
     end
   end
+
+  context 'when file is inside decorators subdirectory containing decorator in singular form' do
+    let(:file_path) { 'app/decorators/telegram/bot_decorator/base.rb' }
+
+    it 'registers an offense' do
+      expect(offenses.size).to eq(1)
+    end
+  end
 end

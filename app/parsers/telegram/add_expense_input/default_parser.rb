@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Telegram
-  module AddExpenseInputParser
+  module AddExpenseInput
     class DefaultParser < BaseParser
       attr_reader :value_alias, :kind
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Telegram
-  module AddExpenseInputParser
+  module AddExpenseInput
     class WithNamedInputsParser < BaseParser
       DEFAULT_NAMED_PARAMETER_ALIASES = {
         date: '--date',

@@ -26,11 +26,11 @@ module Telegram
               enter_money: { named_options: { value_alias: :money, kind: :money_input } },
               enter_comment: { named_options: { value_alias: :comment, kind: :comment_input } }
             ) do
-              AddExpenseInputParser::DefaultParser
+              AddExpenseInput::DefaultParser
             end
 
             define(:enter_all, :with_named_inputs, :date_input, :money_input, :category_input, :comment_input) do
-              AddExpenseInputParser::WithNamedInputsParser
+              AddExpenseInput::WithNamedInputsParser
             end
           end
         end

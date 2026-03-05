@@ -16,8 +16,10 @@ module RuboCop
           @target_root_directory ||= "app/#{target_folder}"
         end
 
-        def singular_target
-          @singular_target ||= target_folder.sub(/s\z/, '')
+        def target_singular
+          return self.class::TARGET_SINGULAR if self.class.const_defined?(:TARGET_SINGULAR, false)
+
+          raise NotImplementedError, "#{self.class} must define TARGET_SINGULAR or override #target_singular"
         end
 
         def normalized_file_path
@@ -54,7 +56,7 @@ module RuboCop
         end
 
         def required_suffix
-          "_#{singular_target}.rb"
+          "_#{target_singular}.rb"
         end
 
         def file_name_message
@@ -73,7 +75,14 @@ module RuboCop
           super
           return unless (invalid_directory = invalid_directory_for_current_file)
 
-          add_global_offense(format(folder_message, directory: invalid_directory, suffix: forbidden_suffix))
+          add_global_offense(
+            format(
+              folder_message,
+              directory: invalid_directory,
+              suffix: forbidden_suffix,
+              singular: target_singular
+            )
+          )
         end
 
         private
@@ -84,10 +93,14 @@ module RuboCop
           current_path_parts = target_root_directory.split('/')
           path_parts_inside_target.each do |part|
             current_path_parts << part
-            return current_path_parts.join('/') if part.end_with?(forbidden_suffix)
+            return current_path_parts.join('/') if invalid_folder_part?(part)
           end
 
           nil
+        end
+
+        def invalid_folder_part?(part)
+          part.end_with?(forbidden_suffix) || part.include?(target_singular)
         end
 
         def forbidden_suffix
@@ -95,7 +108,7 @@ module RuboCop
         end
 
         def folder_message
-          'Directory `%<directory>s` must not end with `%<suffix>s`.'
+          'Directory `%<directory>s` must not end with `%<suffix>s` or include `%<singular>s`.'
         end
       end
     end

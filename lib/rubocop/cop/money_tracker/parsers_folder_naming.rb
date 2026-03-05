@@ -5,6 +5,7 @@ module RuboCop
     module MoneyTracker
       class ParsersFolderNaming < FolderNamingBase
         TARGET_FOLDER = 'parsers'
+        TARGET_SINGULAR = 'parser'
       end
     end
   end
