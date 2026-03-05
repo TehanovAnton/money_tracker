@@ -6,19 +6,19 @@ module Telegram
       module Spreadsheets
         class InputParsersFactory < BaseFactory
           define(:base) do
-            Parsers::DefaultInputParaser
+            DefaultInputParser
           end
 
           define(:new) do
-            Parsers::NewInputParser
+            NewInputParser
           end
 
           define(:list_tables) do
-            Parsers::ListTablesInputParser
+            ListTablesInputParser
           end
 
           define(:add_expense) do
-            Parsers::AddExpenseInputParser
+            AddExpenseInputParser
           end
         end
       end

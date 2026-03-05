@@ -11,6 +11,8 @@ require:
   - ./lib/rubocop/cop/money_tracker/decorators_folder_naming.rb
   - ./lib/rubocop/cop/money_tracker/parser_file_name.rb
   - ./lib/rubocop/cop/money_tracker/parsers_folder_naming.rb
+  - ./lib/rubocop/cop/money_tracker/service_file_name.rb
+  - ./lib/rubocop/cop/money_tracker/services_folder_naming.rb
   - ./lib/rubocop/cop/money_tracker/redundant_module_name_in_class.rb
 
 AllCops:
@@ -90,6 +92,16 @@ MoneyTracker/ParsersFolderNaming:
   Enabled: true
   Include:
     - 'app/parsers/**/*.rb'
+
+MoneyTracker/ServiceFileName:
+  Enabled: true
+  Include:
+    - 'app/services/**/*.rb'
+
+MoneyTracker/ServicesFolderNaming:
+  Enabled: true
+  Include:
+    - 'app/services/**/*.rb'
 
 MoneyTracker/RedundantModuleNameInClass:
   Enabled: true

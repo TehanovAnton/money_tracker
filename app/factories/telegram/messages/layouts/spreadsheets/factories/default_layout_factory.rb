@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'abstract_factory'
-
 module Telegram
   module Messages
     module Layouts
       module Spreadsheets
         module Factories
-          class DefaultLayoutFactory < AbstractFactory
+          class DefaultLayoutFactory < ::Abstract::AbstractFactory
             def execute; end
 
             def input_parser_factory(factory_name)
