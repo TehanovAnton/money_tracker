@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Parsers
-  class ValueInputFactory < Telegram::Messages::Layouts::Spreadsheets::BaseFactory
+  class ValueInputFactory < Telegram::MessageLayouts::BaseFactory
     define(:default) do
       :default_value_input
     end

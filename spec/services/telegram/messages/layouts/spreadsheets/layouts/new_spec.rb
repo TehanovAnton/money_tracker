@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Telegram::Messages::Layouts::Spreadsheets::Layouts::New do
+describe Telegram::MessageLayouts::New do
   subject do
     described_class.run(user: user, bot: bot, **layout_inputs)
   end

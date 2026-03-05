@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Telegram::Messages::Layouts::Spreadsheets::Layouts::Index do
+describe Telegram::MessageLayouts::Index do
   subject { described_class.run(user: user, bot: bot, **layout_inputs) }
 
   let(:action_number) { described_class.action_number_for(action_name) }

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Parsers
-  class ParametersFactory < Telegram::Messages::Layouts::Spreadsheets::BaseFactory
+  class ParametersFactory < Telegram::MessageLayouts::BaseFactory
     define(:default) do
       Parsers::DefaultParameters
     end

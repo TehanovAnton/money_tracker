@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Telegram::Messages::Layouts::Spreadsheets::Layouts::Delete do
+describe Telegram::MessageLayouts::Delete do
   subject { described_class.run(user: user, bot: bot, **layout_inputs) }
 
   let(:layout_inputs) { { action_name: action_name, document_id: document_id } }

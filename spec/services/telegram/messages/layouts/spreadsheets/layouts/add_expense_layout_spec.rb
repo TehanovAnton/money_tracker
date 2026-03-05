@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout do
+describe Telegram::MessageLayouts::AddExpenseLayout do
   subject { described_class.run(user: user, bot: bot, **layout_inputs, **chat_context_inputs) }
 
   let(:message_text) { nil }

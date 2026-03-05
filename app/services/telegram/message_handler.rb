@@ -3,9 +3,9 @@
 module Telegram
   class MessageHandler < ActiveInteraction::Base
     LAYOUT_INPUT_PARSER = {
-      Telegram::Messages::Layouts::Spreadsheets::Layouts::New.name => :new,
-      Telegram::Messages::Layouts::Spreadsheets::Layouts::ListTables.name => :list_tables,
-      Telegram::Messages::Layouts::Spreadsheets::Layouts::AddExpenseLayout.name => :add_expense
+      Telegram::MessageLayouts::New.name => :new,
+      Telegram::MessageLayouts::ListTables.name => :list_tables,
+      Telegram::MessageLayouts::AddExpenseLayout.name => :add_expense
     }.freeze
 
     object :bot, class: ::Telegram::BotDecorator
@@ -54,11 +54,11 @@ module Telegram
     end
 
     def layouts_factory(layout_name:)
-      ::Telegram::Messages::Layouts::Spreadsheets::LayoutsFactory.run!(factory_name: layout_name)
+      ::Telegram::MessageLayouts::LayoutsFactory.run!(factory_name: layout_name)
     end
 
     def input_parser(parser_name:)
-      Messages::Layouts::Spreadsheets::InputParsersFactory.run!(factory_name: parser_name)
+      MessageLayouts::InputParsersFactory.run!(factory_name: parser_name)
     end
 
     def parser_name
