@@ -23,7 +23,7 @@ module Telegram
 
       define_action(:list_all_actions, 'Доступные действия')
       define_action(:list_tables, 'Список табилц')
-      define_action(:data_actions, 'Внести данные в таблицу # <n>) <doc_id>')
+      define_action(:data_actions, 'Внести данные в таблицу # <n>) --document_id <doc_id>')
       define_action(:delete_table, 'Удалить')
       define_action(:back_to_index, 'Назад')
 

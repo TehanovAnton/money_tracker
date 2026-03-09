@@ -29,6 +29,30 @@ describe Telegram::MessageLayouts::DeleteService do
     end
   end
 
+  context 'when enter_spreadsheets_params with named document_id' do
+    let(:action_name) { :enter_spreadsheets_params }
+    let(:document_id) { "--document_id #{spreadsheet.document_id}" }
+
+    it do
+      expect(subject).to be_valid
+      expect(messages).to include('Таблица удалена')
+      expect(Spreadsheet.where(user: user)).to be_empty
+      expect(Index).to have_received(:run!)
+    end
+  end
+
+  context 'when enter_spreadsheets_params with long-dash named and quoted document_id' do
+    let(:action_name) { :enter_spreadsheets_params }
+    let(:document_id) { "—document_id \"#{spreadsheet.document_id}\"" }
+
+    it do
+      expect(subject).to be_valid
+      expect(messages).to include('Таблица удалена')
+      expect(Spreadsheet.where(user: user)).to be_empty
+      expect(Index).to have_received(:run!)
+    end
+  end
+
   context 'when enter_spreadsheets_params with empty document_id' do
     let(:action_name) { :enter_spreadsheets_params }
     let(:document_id) { nil }

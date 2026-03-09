@@ -45,6 +45,11 @@ module Telegram
       string :comment, default: nil
 
       define_action(:list_all_actions, 'Доступные действия')
+      define_action(:enter_date, 'Ввести дату')
+      define_action(:enter_range, 'Ввести диапазон')
+      define_action(:enter_money, 'Ввести сумму')
+      define_action(:enter_category, 'Ввести категорию')
+      define_action(:enter_comment, 'Ввести комментарий')
       define_action(:enter_all, ENTER_PARAMS_MSG)
       define_action(:publish_expense, 'Опубликовать рассход')
       define_action(:back_to_index, 'Назад')
