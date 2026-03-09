@@ -9,11 +9,8 @@ require:
   - ./lib/rubocop/cop/money_tracker/file_name_base.rb
   - ./lib/rubocop/cop/money_tracker/decorators_telegram_structure.rb
   - ./lib/rubocop/cop/money_tracker/decorators_folder_naming.rb
-  - ./lib/rubocop/cop/money_tracker/factory_file_name.rb
   - ./lib/rubocop/cop/money_tracker/factories_folder_naming.rb
-  - ./lib/rubocop/cop/money_tracker/parser_file_name.rb
   - ./lib/rubocop/cop/money_tracker/parsers_folder_naming.rb
-  - ./lib/rubocop/cop/money_tracker/service_file_name.rb
   - ./lib/rubocop/cop/money_tracker/services_folder_naming.rb
   - ./lib/rubocop/cop/money_tracker/redundant_module_name_in_class.rb
 
@@ -74,6 +71,9 @@ MoneyTracker/FileNameBase:
   Enabled: true
   Include:
     - 'app/decorators/**/*.rb'
+    - 'app/factories/**/*.rb'
+    - 'app/parsers/**/*.rb'
+    - 'app/services/**/*.rb'
 
 MoneyTracker/DecoratorsTelegramStructure:
   Enabled: true
@@ -85,30 +85,15 @@ MoneyTracker/DecoratorsFolderNaming:
   Include:
     - 'app/decorators/**/*.rb'
 
-MoneyTracker/FactoryFileName:
-  Enabled: true
-  Include:
-    - 'app/factories/**/*.rb'
-
 MoneyTracker/FactoriesFolderNaming:
   Enabled: true
   Include:
     - 'app/factories/**/*.rb'
 
-MoneyTracker/ParserFileName:
-  Enabled: true
-  Include:
-    - 'app/parsers/**/*.rb'
-
 MoneyTracker/ParsersFolderNaming:
   Enabled: true
   Include:
     - 'app/parsers/**/*.rb'
-
-MoneyTracker/ServiceFileName:
-  Enabled: true
-  Include:
-    - 'app/services/**/*.rb'
 
 MoneyTracker/ServicesFolderNaming:
   Enabled: true
