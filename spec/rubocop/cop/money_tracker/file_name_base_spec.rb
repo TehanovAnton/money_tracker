@@ -3,14 +3,14 @@
 
 require 'rails_helper'
 
-describe RuboCop::Cop::MoneyTracker::DecoratorFileName, :config do
+describe RuboCop::Cop::MoneyTracker::FileNameBase, :config do
   include CopHelper
 
   subject(:offenses) { inspect_source(source, file_path) }
 
   let(:source) { 'class Example; end' }
 
-  context 'when file is inside app/decorators and has invalid suffix' do
+  context 'when folder is present in naming_config.yml and file name has invalid suffix' do
     let(:file_path) { 'app/decorators/telegram/base.rb' }
 
     it 'registers an offense' do
@@ -26,8 +26,8 @@ describe RuboCop::Cop::MoneyTracker::DecoratorFileName, :config do
     end
   end
 
-  context 'when file is outside app/decorators and has invalid suffix' do
-    let(:file_path) { 'app/services/base.rb' }
+  context 'when folder is absent in naming_config.yml and file name has invalid suffix' do
+    let(:file_path) { 'app/builders/telegram/base.rb' }
 
     it 'does not register offenses' do
       expect(offenses).to be_empty

@@ -1,0 +1,9 @@
+folders:
+  decorators:
+    singular_name: decorator
+  factories:
+    singular_name: factory
+  parsers:
+    singular_name: parser
+  services:
+    singular_name: service
