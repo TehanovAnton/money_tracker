@@ -22,9 +22,8 @@ module Telegram
       string :document_id, default: nil
 
       define_action(:list_all_actions, 'Доступные действия')
-      define_action(:list_tables, 'Показать все')
-      define_action(:edit_table, 'Изменить табилцу')
-      define_action(:data_actions, 'Внести данные в таблицу')
+      define_action(:list_tables, 'Список табилц')
+      define_action(:data_actions, 'Внести данные в таблицу # <n>) <doc_id>')
       define_action(:delete_table, 'Удалить')
       define_action(:back_to_index, 'Назад')
 
@@ -41,8 +40,6 @@ module Telegram
         cursor_action
         messages << spreadsheets_ids
       end
-
-      def edit_table; end
 
       def data_actions
         return messages << 'Пустой id таблицы' unless document_id

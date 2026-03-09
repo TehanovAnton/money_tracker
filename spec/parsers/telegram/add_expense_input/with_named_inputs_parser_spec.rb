@@ -92,4 +92,35 @@ describe Telegram::AddExpenseInput::WithNamedInputsParser do
       )
     end
   end
+
+  context 'when one named parameter is passed with a long dash' do
+    let(:text) do
+      '1) —date 09.03.2026 --money 12.01 --category "Продукты" --comment "за хлеб"'
+    end
+
+    it 'returns parsed values with comment' do
+      expect(parsed_input.transform_values(&:to_s)).to eq(
+        action_number: '1',
+        date: '09.03.2026',
+        money: '12.01',
+        category: 'Продукты',
+        comment: 'за хлеб'
+      )
+    end
+  end
+
+  context 'when two named parameters are passed with a long dash' do
+    let(:text) do
+      '1) —date 09.03.2026 —money 12.01 --category "Продукты"'
+    end
+
+    it 'returns parsed values without comment' do
+      expect(parsed_input.transform_values(&:to_s)).to eq(
+        action_number: '1',
+        date: '09.03.2026',
+        money: '12.01',
+        category: 'Продукты'
+      )
+    end
+  end
 end

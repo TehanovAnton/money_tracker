@@ -12,8 +12,8 @@ module Telegram
         messages.flatten!
       end
 
-      def create_form_input(form_input_mpdel, field)
-        form_input_mpdel.create(form_id: spreadsheet_form.id, field => inputs[field])
+      def create_form_input(form_input_model, field)
+        form_input_model.find_or_create_by(form_id: spreadsheet_form.id).update(field => inputs[field])
       end
 
       def form_input_factory(_field)
@@ -32,6 +32,11 @@ module Telegram
         comment: CommentFormInput
       }.freeze
 
+      ENTER_PARAMS_MSG = <<~MSG
+        Ввести параметры #
+        n) --date 01.02.2025 --money 1.2 --category "Продукты" --comment "за хлеб""
+      MSG
+
       integer :spreadsheet_id, default: nil
       string :date, default: nil
       string :range, default: nil
@@ -40,12 +45,7 @@ module Telegram
       string :comment, default: nil
 
       define_action(:list_all_actions, 'Доступные действия')
-      define_action(:enter_date, 'Ввести дату')
-      define_action(:enter_range, 'Ввести диапазон')
-      define_action(:enter_money, 'Ввести сумму')
-      define_action(:enter_category, 'Ввести категорию')
-      define_action(:enter_comment, 'Ввести коментарий')
-      define_action(:enter_all, 'Ввести все параметры')
+      define_action(:enter_all, ENTER_PARAMS_MSG)
       define_action(:publish_expense, 'Опубликовать рассход')
       define_action(:back_to_index, 'Назад')
 

@@ -45,25 +45,25 @@ module Telegram
       rule(:space) { match('\s').repeat }
 
       rule(:date_parameter) do
-        str(named_parameter_alias(:date)) >>
+        named_parameter(:date) >>
           space >>
           (match('\d').repeat(2) >> str('.') >> match('\d').repeat(2) >> str('.') >> match('\d').repeat(4)).as(:date)
       end
 
       rule(:money_parameter) do
-        str(named_parameter_alias(:money)) >>
+        named_parameter(:money) >>
           space >>
           (match('\d').repeat(1, 4) >> (str('.') >> match('\d').repeat(nil, 2)).maybe).as(:money)
       end
 
       rule(:category_parameter) do
-        str(named_parameter_alias(:category)) >>
+        named_parameter(:category) >>
           space >>
           quoted_input(:category)
       end
 
       rule(:comment_parameter) do
-        str(named_parameter_alias(:comment)) >>
+        named_parameter(:comment) >>
           space >>
           quoted_input(:comment)
       end
@@ -78,8 +78,16 @@ module Telegram
 
       private
 
-      def named_parameter_alias(alias_name)
-        named_parameters.fetch(alias_name).to_s
+      def named_parameter(alias_name)
+        aliases = named_parameter_aliases(alias_name)
+        aliases.map { |value| str(value) }.reduce { |combined, alias_rule| combined | alias_rule }
+      end
+
+      def named_parameter_aliases(alias_name)
+        alias_value = named_parameters.fetch(alias_name).to_s
+        return [alias_value] unless alias_value.start_with?('--')
+
+        [alias_value, alias_value.sub(/\A--/, '—'), alias_value.sub(/\A--/, '–')].uniq
       end
 
       def named_parameters
