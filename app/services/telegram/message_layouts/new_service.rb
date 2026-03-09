@@ -6,7 +6,11 @@ module Telegram
       string :document_id, default: nil
       string :expense_range, default: nil
 
-      define_action(:enter_spreadsheets_params, 'Ввести параметры таблицы')
+      ENTER_TABLE_PARAMS_MSG = <<~MSG
+        Ввести параметры таблицы # n) --document_id <value> --expense_range <value>
+      MSG
+
+      define_action(:enter_spreadsheets_params, ENTER_TABLE_PARAMS_MSG)
       define_action(:list_all_actions, 'Доступные действия')
       define_action(:back_to_index, 'Назад')
 

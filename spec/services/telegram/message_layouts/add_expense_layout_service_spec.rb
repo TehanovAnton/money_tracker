@@ -29,54 +29,6 @@ describe Telegram::MessageLayouts::AddExpenseLayoutService do
     allow(bot).to receive(:send_message)
   end
 
-  context 'when enter_date' do
-    let(:action_name) { :enter_date }
-    let(:message_text) { "#{action_number}) 01.01.2026" }
-    let(:date_form_input) { DateFormInput.find_by(form_id: spreadsheet_form.id) }
-
-    it do
-      subject
-      expect(spreadsheet_form).to be_valid
-      expect(date_form_input.date).to eq('01.01.2026')
-    end
-  end
-
-  context 'when enter_money' do
-    let(:action_name) { :enter_money }
-    let(:message_text) { "#{action_number}) 2.75" }
-    let(:money_form_input) { MoneyFormInput.find_by(form_id: spreadsheet_form.id) }
-
-    it do
-      subject
-      expect(spreadsheet_form).to be_valid
-      expect(money_form_input.money).to eq(2.75)
-    end
-  end
-
-  context 'when enter_category' do
-    let(:action_name) { :enter_category }
-    let(:message_text) { "#{action_number}) 'Домашний интернет'" }
-    let(:category_form_input) { CategoryFormInput.find_by(form_id: spreadsheet_form.id) }
-
-    it do
-      subject
-      expect(spreadsheet_form).to be_valid
-      expect(category_form_input.category).to eq('Домашний интернет')
-    end
-  end
-
-  context 'when enter_comment' do
-    let(:action_name) { :enter_comment }
-    let(:message_text) { "#{action_number}) 'Купил тапки'" }
-    let(:comment_form_input) { CommentFormInput.find_by(form_id: spreadsheet_form.id) }
-
-    it do
-      subject
-      expect(spreadsheet_form).to be_valid
-      expect(comment_form_input.comment).to eq('Купил тапки')
-    end
-  end
-
   context 'when enter_all with valid params and comment' do
     let(:action_name) { :enter_all }
     let(:message_text) do

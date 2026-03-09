@@ -45,36 +45,11 @@ module Telegram
       string :comment, default: nil
 
       define_action(:list_all_actions, 'Доступные действия')
-      define_action(:enter_date, 'Ввести дату')
-      define_action(:enter_range, 'Ввести диапазон')
-      define_action(:enter_money, 'Ввести сумму')
-      define_action(:enter_category, 'Ввести категорию')
-      define_action(:enter_comment, 'Ввести комментарий')
       define_action(:enter_all, ENTER_PARAMS_MSG)
       define_action(:publish_expense, 'Опубликовать рассход')
       define_action(:back_to_index, 'Назад')
 
       private
-
-      def enter_date
-        form_input('Пустая дата', 'Дата введена', :date)
-      end
-
-      def enter_range
-        form_input('Пустой диапазон', 'Диапазон введен', :range)
-      end
-
-      def enter_money
-        form_input('Пустая сумма', 'Сумма введена', :money)
-      end
-
-      def enter_category
-        form_input('Пустая категория', 'категория введена', :category)
-      end
-
-      def enter_comment
-        form_input(nil, nil, :comment, allow_nil: true)
-      end
 
       def enter_all
         return add_empty_input_message('Пустая дата') unless inputs[:date]
