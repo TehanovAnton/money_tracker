@@ -3,7 +3,7 @@
 
 require 'rails_helper'
 
-describe RuboCop::Cop::MoneyTracker::DecoratorsFolderNaming, :config do
+describe RuboCop::Cop::MoneyTracker::FolderNamingBase, :config do
   include CopHelper
 
   subject(:offenses) { inspect_source(source, file_path) }

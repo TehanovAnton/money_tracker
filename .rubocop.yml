@@ -7,8 +7,8 @@ plugins:
 require:
   - ./lib/rubocop/cop/money_tracker/naming_base.rb
   - ./lib/rubocop/cop/money_tracker/file_name_base.rb
+  - ./lib/rubocop/cop/money_tracker/folder_naming_base.rb
   - ./lib/rubocop/cop/money_tracker/decorators_telegram_structure.rb
-  - ./lib/rubocop/cop/money_tracker/decorators_folder_naming.rb
   - ./lib/rubocop/cop/money_tracker/factories_folder_naming.rb
   - ./lib/rubocop/cop/money_tracker/parsers_folder_naming.rb
   - ./lib/rubocop/cop/money_tracker/services_folder_naming.rb
@@ -80,7 +80,7 @@ MoneyTracker/DecoratorsTelegramStructure:
   Include:
     - 'app/decorators/**/*.rb'
 
-MoneyTracker/DecoratorsFolderNaming:
+MoneyTracker/FolderNamingBase:
   Enabled: true
   Include:
     - 'app/decorators/**/*.rb'
