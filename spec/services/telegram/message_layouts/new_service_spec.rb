@@ -64,6 +64,23 @@ describe Telegram::MessageLayouts::NewService do
     end
   end
 
+  context 'when enter_spreadsheets_params with long dash format' do
+    let(:action_name) { :enter_spreadsheets_params }
+    let(:spreadsheet) { Spreadsheet.find_by(user_id: user.id, document_id: 'spreadsheet-id') }
+    let(:message_text) { "#{action_number}) —document_id spreadsheet-id —expense_range \"Sheet1!A1:B1\"" }
+
+    before do
+      allow(Index).to receive(:run!)
+    end
+
+    it do
+      expect(subject).to be_valid
+      expect(spreadsheet.document_id).to eq(layout_inputs[:document_id])
+      expect(spreadsheet.expense_range).to eq(layout_inputs[:expense_range])
+      expect(Index).to have_received(:run!)
+    end
+  end
+
   context 'when enter_spreadsheets_params with invalid format' do
     let(:action_name) { :enter_spreadsheets_params }
     let(:messages) { subject.result }

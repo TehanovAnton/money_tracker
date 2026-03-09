@@ -2,6 +2,11 @@
 
 module Telegram
   class NewSpreadsheetInputParser < Parslet::Parser
+    DEFAULT_PARAMETER_ALIASES = {
+      document_id: '--document_id',
+      expense_range: '--expense_range'
+    }.freeze
+
     root(:value_input)
 
     rule(:value_input) do
@@ -11,15 +16,15 @@ module Telegram
     rule(:action_number) { match('\d').repeat(1).as(:action_number) >> str(')') }
 
     rule(:document_id_parameter) do
-      str('--document_id') >> space >> document_id_value
+      named_parameter(:document_id) >> space >> document_id_value
     end
 
     rule(:document_id_value) do
-      (str('--expense_range').absent? >> any).repeat(1).as(:document_id)
+      (named_parameter(:expense_range).absent? >> any).repeat(1).as(:document_id)
     end
 
     rule(:expense_range_parameter) do
-      str('--expense_range') >> space >> expense_range_value
+      named_parameter(:expense_range) >> space >> expense_range_value
     end
 
     rule(:expense_range_value) do
@@ -34,6 +39,24 @@ module Telegram
       ) | (
         str("'") >> match("[^']").repeat(1).as(value_alias) >> str("'")
       )
+    end
+
+    private
+
+    def named_parameter(alias_name)
+      aliases = named_parameter_aliases(alias_name)
+      aliases.map { |value| str(value) }.reduce { |combined, alias_rule| combined | alias_rule }
+    end
+
+    def named_parameter_aliases(alias_name)
+      alias_value = named_parameters.fetch(alias_name).to_s
+      return [alias_value] unless alias_value.start_with?('--')
+
+      [alias_value, alias_value.sub(/\A--/, '—'), alias_value.sub(/\A--/, '–')].uniq
+    end
+
+    def named_parameters
+      @named_parameters ||= DEFAULT_PARAMETER_ALIASES
     end
   end
 end
