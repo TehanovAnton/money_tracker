@@ -12,8 +12,8 @@ module Telegram
         Telegram::ActionInputParser
       end
 
-      define(:data_actions, :document_id) do
-        Telegram::LayoutInputParser
+      define(:data_actions) do
+        Telegram::ListTablesDataActionsInputParser
       end
 
       define(:delete_table) do

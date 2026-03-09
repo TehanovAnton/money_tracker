@@ -16,7 +16,7 @@ module Telegram
           input_parser(parser_name: parser_factory_name),
           text_preparation(preparation_name: text_preparation_factory_name).prepared_text
         ) || {}
-        return parsed unless action_name == :delete_table
+        return parsed unless %i[data_actions delete_table].include?(action_name)
 
         parsed.merge(action_number: parsed[:action_number] || action_number.to_s)
       end

@@ -101,4 +101,19 @@ describe Telegram::MessageLayouts::ListTablesService do
       end
     end
   end
+
+  context 'when data_actions with named document_id' do
+    let!(:spreadsheet) { FactoryBot.create(:spreadsheet, user: user) }
+    let(:action_name) { :data_actions }
+    let(:message_text) { "#{action_number}) --document_id \"#{spreadsheet.document_id}\"" }
+
+    before do
+      allow(DataActionsLayout).to receive(:run!)
+    end
+
+    it do
+      subject
+      expect(DataActionsLayout).to have_received(:run!)
+    end
+  end
 end
