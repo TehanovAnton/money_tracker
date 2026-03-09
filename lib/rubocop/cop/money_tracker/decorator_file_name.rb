@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'naming_base'
+require_relative 'file_name_base'
 
 module RuboCop
   module Cop
