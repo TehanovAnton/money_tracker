@@ -26,8 +26,8 @@ module Telegram
         AddExpenseInput::DefaultParser
       end
 
-      define(:enter_all, :with_named_inputs, :date_input, :money_input, :category_input, :comment_input) do
-        AddExpenseInput::WithNamedInputsParser
+      define(:enter_all) do
+        Telegram::CommonParser
       end
     end
   end

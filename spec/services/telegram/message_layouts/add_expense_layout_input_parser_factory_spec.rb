@@ -39,5 +39,14 @@ describe Telegram::MessageLayouts::AddExpenseLayoutInputParserFactory do
         )
       end
     end
+
+    context 'when enter_all parser is requested' do
+      let(:style) { :initializer }
+      let(:factory_names) { %i[enter_all] }
+
+      it 'returns common parser instance' do
+        expect(resolved_parsers.map(&:class)).to eq([Telegram::CommonParser])
+      end
+    end
   end
 end
