@@ -3,17 +3,31 @@
 require_relative 'factory_bot'
 require 'webmock/rspec'
 require 'telegram/bot'
+require 'fileutils'
+require 'tmpdir'
+require 'rubocop'
+require 'rubocop/rspec/support'
 
 # Load all support dir
 Dir['./spec/support/**/*.rb'].each { |file| require file }
 
-TelegramSpreadsheets = Telegram::Messages::Layouts::Spreadsheets
-Index = TelegramSpreadsheets::Layouts::Index
-New = TelegramSpreadsheets::Layouts::New
-Delete = TelegramSpreadsheets::Layouts::Delete
-ListTables = TelegramSpreadsheets::Layouts::ListTables
-DataActionsLayout = TelegramSpreadsheets::Layouts::DataActionsLayout
-AddExpenseLayout = TelegramSpreadsheets::Layouts::AddExpenseLayout
+Dir[File.expand_path('../../lib/rubocop/cop/money_tracker/**/*.rb', __dir__)].sort.each do |file|
+  require file
+end
+
+TelegramSpreadsheets = Telegram::MessageLayouts
+IndexService = TelegramSpreadsheets::IndexService
+NewService = TelegramSpreadsheets::NewService
+DeleteService = TelegramSpreadsheets::DeleteService
+ListTablesService = TelegramSpreadsheets::ListTablesService
+DataActionsLayoutService = TelegramSpreadsheets::DataActionsLayoutService
+AddExpenseLayoutService = TelegramSpreadsheets::AddExpenseLayoutService
+Index = IndexService
+New = NewService
+Delete = DeleteService
+ListTables = ListTablesService
+DataActionsLayout = DataActionsLayoutService
+AddExpenseLayout = AddExpenseLayoutService
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

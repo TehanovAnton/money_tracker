@@ -6,7 +6,7 @@ FactoryBot.define do
 
     trait :with_layout_cursor_action do
       transient do
-        layout { Telegram::Messages::Layouts::Spreadsheets::Layouts::Index.name }
+        layout { Telegram::MessageLayouts::IndexService.name }
       end
 
       after(:create) do |user, evaluator|

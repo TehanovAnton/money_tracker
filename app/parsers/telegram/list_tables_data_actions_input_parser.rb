@@ -1,34 +1,29 @@
 # frozen_string_literal: true
 
 module Telegram
-  class NewSpreadsheetInputParser < Parslet::Parser
+  class ListTablesDataActionsInputParser < Parslet::Parser
     DEFAULT_PARAMETER_ALIASES = {
-      document_id: '--document_id',
-      expense_range: '--expense_range'
+      document_id: '--document_id'
     }.freeze
 
     root(:value_input)
 
     rule(:value_input) do
-      space >> action_number >> space >> document_id_parameter >> space >> expense_range_parameter >> space
+      space >> action_number >> space >> document_id_parameter >> space
     end
 
     rule(:action_number) { match('\d').repeat(1).as(:action_number) >> str(')') }
 
     rule(:document_id_parameter) do
+      named_document_id_parameter | document_id_value
+    end
+
+    rule(:named_document_id_parameter) do
       named_parameter(:document_id) >> space >> document_id_value
     end
 
     rule(:document_id_value) do
-      (named_parameter(:expense_range).absent? >> any).repeat(1).as(:document_id)
-    end
-
-    rule(:expense_range_parameter) do
-      named_parameter(:expense_range) >> space >> expense_range_value
-    end
-
-    rule(:expense_range_value) do
-      quoted_value(:expense_range) | match('[^\s]').repeat(1).as(:expense_range)
+      quoted_value(:document_id) | match('[^\s]').repeat(1).as(:document_id)
     end
 
     rule(:space) { match('\s').repeat }

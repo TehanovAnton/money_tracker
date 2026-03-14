@@ -2,7 +2,7 @@
 
 module Spreadsheets
   class UpsertService < ActiveInteraction::Base
-    object :params, class: Spreadsheets::ParamsBuilder::Payload
+    object :params, class: Spreadsheets::ParamsBuilderService::Payload
 
     def execute
       spreadsheets.append_spreadsheet_value(

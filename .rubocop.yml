@@ -4,6 +4,13 @@ plugins:
   - rubocop-rspec
   - rubocop-rspec_rails
 
+require:
+  - ./lib/rubocop/cop/money_tracker/naming_base.rb
+  - ./lib/rubocop/cop/money_tracker/file_name_base.rb
+  - ./lib/rubocop/cop/money_tracker/folder_naming_base.rb
+  - ./lib/rubocop/cop/money_tracker/decorators_telegram_structure.rb
+  - ./lib/rubocop/cop/money_tracker/redundant_module_name_in_class.rb
+
 AllCops:
   NewCops: disable
   Exclude:
@@ -56,3 +63,29 @@ RSpec/LetSetup:
 Rails/Exit:
   Exclude:
     - 'spec/rails_helper.rb'
+
+MoneyTracker/FileNameBase:
+  Enabled: true
+  Include:
+    - 'app/decorators/**/*.rb'
+    - 'app/factories/**/*.rb'
+    - 'app/parsers/**/*.rb'
+    - 'app/services/**/*.rb'
+
+MoneyTracker/DecoratorsTelegramStructure:
+  Enabled: true
+  Include:
+    - 'app/decorators/**/*.rb'
+
+MoneyTracker/FolderNamingBase:
+  Enabled: true
+  Include:
+    - 'app/decorators/**/*.rb'
+    - 'app/factories/**/*.rb'
+    - 'app/parsers/**/*.rb'
+    - 'app/services/**/*.rb'
+
+MoneyTracker/RedundantModuleNameInClass:
+  Enabled: true
+  Include:
+    - 'app/decorators/**/*.rb'

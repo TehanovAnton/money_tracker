@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :layout_action do
     association :user
-    layout { Telegram::Messages::Layouts::Spreadsheets::Index.name }
+    layout { Telegram::MessageLayouts::IndexService.name }
   end
 end
