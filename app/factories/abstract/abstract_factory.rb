@@ -6,7 +6,9 @@ module Abstract
   # Абстрактная фабрика для создания парсеров и обработчиков ввода
   class AbstractFactory < ActiveInteraction::Base
     string :factory_name
-    hash :parsed_input, default: {}
+    hash :parsed_input
+
+    def execute; end
 
     private
 

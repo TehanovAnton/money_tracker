@@ -46,7 +46,6 @@ module Telegram
 
       define_action(:list_all_actions, 'Доступные действия')
       define_action(:enter_all, ENTER_PARAMS_MSG)
-      define_action(:publish_expense, 'Опубликовать рассход')
       define_action(:back_to_index, 'Назад')
 
       private

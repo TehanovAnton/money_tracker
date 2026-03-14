@@ -3,8 +3,6 @@
 module Telegram
   module MessageLayouts
     class DefaultLayoutFactory < ::Abstract::AbstractFactory
-      def execute; end
-
       def input_parser_factory(factory_name)
         Telegram::MessageLayouts::DefaultLayoutInputParserFactory.run!(
           factory_name: factory_name, style: :initializer

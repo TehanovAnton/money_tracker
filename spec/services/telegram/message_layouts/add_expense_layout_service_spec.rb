@@ -113,7 +113,7 @@ describe Telegram::MessageLayouts::AddExpenseLayoutService do
     end
   end
 
-  context 'when publish_expense and upsert is unsuccessful' do
+  context 'when publish_expense and upsert is unsuccessful', skip: 'Separate publish_expense action removed' do
     let(:action_name) { :publish_expense }
     let(:message_text) { action_number.to_s }
     let(:params_payload) do

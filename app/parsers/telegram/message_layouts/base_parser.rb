@@ -4,7 +4,7 @@ module Telegram
   module MessageLayouts
     class BaseParser < ActiveInteraction::Base
       string :text
-      string :layout_klass, default: nil
+      string :layout_klass
 
       DEFAULT_ABSTRACT_FACTORY = DefaultLayoutFactory
       ABSTRACT_FACTORY_BY_LAYOUT = {
