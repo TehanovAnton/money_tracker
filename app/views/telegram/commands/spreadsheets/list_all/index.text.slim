@@ -1,0 +1,4 @@
+- if spreadsheets.empty?
+  | Таблиц нет
+- else
+  = spreadsheets.each.with_index(1).map { |spreadsheet, index| "#{index}) #{spreadsheet.document_id}" }.join("\n")

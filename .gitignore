@@ -43,6 +43,8 @@
 
 .codex/*
 .notes/*
+.claude/*
+.agents/skills/rspecexpert/SKILL.md
 
 AGENTS.md
 
