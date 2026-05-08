@@ -228,6 +228,10 @@ describe Telegram::CommandMessageParser do
         {
           text: "/namespace --show --some_flag=''",
           expected_parameters: [{ name: 'some_flag', value: '' }]
+        },
+        {
+          text: "/namespace --show --some_flag='-1'",
+          expected_parameters: [{ name: 'some_flag', value: '-1' }]
         }
       ]
     end

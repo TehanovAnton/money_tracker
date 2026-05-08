@@ -6,7 +6,7 @@ module Telegram
     string :message_text
 
     def execute
-      commands_registry[command_params.name].call
+      commands_registry[command_params.command].call
     end
 
     private
@@ -15,7 +15,8 @@ module Telegram
       @commands_registry ||= {
         list_all: method(:list_all_command),
         add: method(:add_command),
-        delete: method(:delete_command)
+        delete: method(:delete_command),
+        add_expense: method(:add_expense_command)
       }
     end
 
@@ -35,6 +36,19 @@ module Telegram
     def delete_command
       Commands::Spreadsheets::DeleteService.run!(
         user: user, document_id: command_params.document_id
+      )
+    end
+
+    def add_expense_command
+      Commands::Spreadsheets::AddExpenseService.run!(
+        user: user,
+        document_id: command_params.document_id,
+        expense_data: Commands::Spreadsheets::ExpenseType.new(
+          date: command_params.date,
+          amount: command_params.amount,
+          category: command_params.category,
+          comment: command_params.comment
+        )
       )
     end
 
