@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_05_01_103528) do
+ActiveRecord::Schema[7.0].define(version: 2026_05_11_084644) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -44,6 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_05_01_103528) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "expense_range"
+    t.string "rest_balance_cell"
     t.index ["document_id"], name: "index_spreadsheets_on_document_id", unique: true
   end
 

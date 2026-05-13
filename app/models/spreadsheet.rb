@@ -3,7 +3,7 @@
 class Spreadsheet < ApplicationRecord
   belongs_to :user
 
-  has_many :expenses
+  has_many :expenses, dependent: nil
 
   validates :document_id, presence: true
   validates :expense_range, presence: true

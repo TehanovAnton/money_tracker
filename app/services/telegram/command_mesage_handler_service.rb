@@ -7,6 +7,9 @@ module Telegram
 
     def execute
       commands_registry[command_params.command].call
+    rescue ActiveInteraction::InvalidInteractionError, StandardError => e
+      Rails.logger.debug e
+      render_view(:fail)
     end
 
     private
@@ -16,7 +19,8 @@ module Telegram
         list_all: method(:list_all_command),
         add: method(:add_command),
         delete: method(:delete_command),
-        add_expense: method(:add_expense_command)
+        add_expense: method(:add_expense_command),
+        rest_balance: method(:rest_balance_command)
       }
     end
 
@@ -26,8 +30,11 @@ module Telegram
 
     def add_command
       interaction = Commands::Spreadsheets::AddService.run(
-        user: user, document_id: command_params.document_id, expense_range: command_params.expense_range
+        user: user,
+        document_id: command_params.document_id,
+        expense_range: command_params.expense_range
       )
+
       return Commands::Spreadsheets::Add::RenderService.run!(view: :fail) unless interaction.valid?
 
       interaction.result
@@ -52,8 +59,29 @@ module Telegram
       )
     end
 
+    def rest_balance_command
+      Commands::Spreadsheets::RestBalanceService.run!(
+        user: user,
+        document_id: command_params.document_id,
+        expected_balance: command_params.expected_balance,
+        flag: command_params.flag
+      )
+    end
+
     def command_params
       CommandMessageParserService.run!(text: message_text)
+    end
+
+    def render_view(view, **locals)
+      Commands::Spreadsheets::RenderService.run!(
+        template: template(view),
+        formats: [:text],
+        locals: locals
+      )
+    end
+
+    def template(view)
+      "telegram/commands/spreadsheets/#{view}"
     end
   end
 end
