@@ -9,7 +9,7 @@ module Telegram
       params = Array(parsed[:parameters]).each_with_object({}) do |param, hash|
         hash[param[:name].to_s.to_sym] = param[:value].to_s
       end
-      OpenStruct.new(name: parsed.fetch(:command).to_s.to_sym, **params)
+      OpenStruct.new(command: parsed.fetch(:command).to_s.to_sym, **params)
     end
   end
 end

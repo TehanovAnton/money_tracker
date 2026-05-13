@@ -15,20 +15,6 @@ Dir[File.expand_path('../../lib/rubocop/cop/money_tracker/**/*.rb', __dir__)].so
   require file
 end
 
-TelegramSpreadsheets = Telegram::MessageLayouts
-IndexService = TelegramSpreadsheets::IndexService
-NewService = TelegramSpreadsheets::NewService
-DeleteService = TelegramSpreadsheets::DeleteService
-ListTablesService = TelegramSpreadsheets::ListTablesService
-DataActionsLayoutService = TelegramSpreadsheets::DataActionsLayoutService
-AddExpenseLayoutService = TelegramSpreadsheets::AddExpenseLayoutService
-Index = IndexService
-New = NewService
-Delete = DeleteService
-ListTables = ListTablesService
-DataActionsLayout = DataActionsLayoutService
-AddExpenseLayout = AddExpenseLayoutService
-
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true

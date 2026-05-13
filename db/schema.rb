@@ -10,27 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_03_01_141013) do
+ActiveRecord::Schema[7.0].define(version: 2026_05_11_084644) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "chat_contexts", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "spreadsheet_id"
+  create_table "expenses", force: :cascade do |t|
+    t.bigint "spreadsheet_id", null: false
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.date "date", null: false
+    t.string "category", null: false
+    t.text "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "form_inputs", force: :cascade do |t|
-    t.bigint "form_id", null: false
-    t.string "type", null: false
-    t.string "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.decimal "money", precision: 6, scale: 2
-    t.string "category"
-    t.string "comment"
-    t.string "range"
   end
 
   create_table "layout_actions", force: :cascade do |t|
@@ -53,6 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_01_141013) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "expense_range"
+    t.string "rest_balance_cell"
     t.index ["document_id"], name: "index_spreadsheets_on_document_id", unique: true
   end
 
