@@ -4,20 +4,22 @@ require 'rails_helper'
 
 describe Telegram::Commands::Spreadsheets::AddExpenseService do
   subject(:result) do
-    described_class.run!(
+    described_class.run(
       user: user,
       document_id: document_id,
-      expense_data: expense_data
-    )
+      expense_data: expense_data,
+      show_rest_balance: show_rest_balance
+    ).result
   end
 
   let(:user) { FactoryBot.create(:user) }
   let(:spreadsheet) { FactoryBot.create(:spreadsheet, user: user) }
   let(:document_id) { spreadsheet.document_id }
   let(:expense_data) { FactoryBot.build(:expense_type) }
+  let(:show_rest_balance) { false }
 
   before do
-    allow(Telegram::Commands::Spreadsheets::UpsertExpenseService).to receive(:run!)
+    allow(Telegram::Commands::Spreadsheets::UpsertExpenseService).to receive(:run!).and_return(true)
   end
 
   shared_examples 'render view' do |args|
@@ -34,10 +36,28 @@ describe Telegram::Commands::Spreadsheets::AddExpenseService do
 
   describe 'success cases' do
     it_behaves_like 'render view', template: 'telegram/commands/spreadsheets/add_expense/success'
+
+    describe 'show_rest_balance' do
+      let(:show_rest_balance) { true }
+      let(:rest_balance) { '5000.0' }
+
+      before do
+        allow(Telegram::Commands::Spreadsheets::DocumentRestBalanceService)
+          .to receive(:run!)
+          .with(document_id: document_id, cell: spreadsheet.rest_balance_cell)
+          .and_return(rest_balance)
+      end
+
+      it 'calls DocumentRestBalanceService' do
+        result
+        expect(Telegram::Commands::Spreadsheets::DocumentRestBalanceService)
+          .to have_received(:run!).once
+      end
+    end
   end
 
   describe 'fail cases' do
-    shared_context 'when unkonwn document_id' do
+    shared_context 'when unkown document_id' do
       let(:document_id) { 'unknown' }
     end
 
@@ -62,8 +82,8 @@ describe Telegram::Commands::Spreadsheets::AddExpenseService do
 
     it_behaves_like 'render view scenarios', scenarios: [
       {
-        name: 'when unknonw spreadsheet',
-        context: 'when unkonwn document_id',
+        name: 'when unknown spreadsheet',
+        context: 'when unkown document_id',
         template: 'telegram/commands/spreadsheets/add_expense/could_not_find_spreadsheet'
       },
       {
