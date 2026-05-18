@@ -1,0 +1,12 @@
+/spreadsheets —add_expense
+  —document_id="1Pdq3bemOwovZLiFDWoNfb6XO0HJt9RHz8LpwZBjeXJs"
+  —date="06.05.2026"
+  —amount="100"
+  —category="Продукты"
+
+/spreadsheets —add_expense
+  --show_rest_balance
+  —document_id="1Pdq3bemOwovZLiFDWoNfb6XO0HJt9RHz8LpwZBjeXJs"
+  —date="06.05.2026"
+  —amount="100"
+  —category="Продукты"

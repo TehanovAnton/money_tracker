@@ -50,6 +50,7 @@ module Telegram
       Commands::Spreadsheets::AddExpenseService.run!(
         user: user,
         document_id: command_params.document_id,
+        show_rest_balance: command_params.show_rest_balance,
         expense_data: Commands::Spreadsheets::ExpenseType.new(
           date: command_params.date,
           amount: command_params.amount,
