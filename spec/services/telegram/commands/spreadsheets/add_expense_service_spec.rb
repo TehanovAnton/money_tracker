@@ -13,6 +13,10 @@ describe Telegram::Commands::Spreadsheets::AddExpenseService do
   end
 
   let(:user) { FactoryBot.create(:user) }
+  let!(:saved_input) do
+    FactoryBot.create(:add_expense_saved_input, document_id: document_id)
+  end
+  let!(:add_expense_command_setting) { user.create_add_expense_command_setting!(savable_input: saved_input) }
   let(:spreadsheet) { FactoryBot.create(:spreadsheet, user: user) }
   let(:document_id) { spreadsheet.document_id }
   let(:expense_data) { FactoryBot.build(:expense_type) }

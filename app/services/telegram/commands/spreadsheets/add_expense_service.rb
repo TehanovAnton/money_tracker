@@ -12,6 +12,7 @@ module Telegram
         object :expense_data, class: ExpenseType
         object :upsert_expense_service, default: UpsertExpenseService, class: UpsertExpenseService.class.name
         object :document_rest_balance_service, class: 'Class', default: DocumentRestBalanceService
+        object :save_input_service, class: 'Class', default: AddExpenseSaveInputService
 
         def execute
           errors.add(:could_not_find_spreadsheet, 'No Spreadsheet') unless spreadsheet
@@ -35,6 +36,10 @@ module Telegram
 
             @expense = new_expense
           end
+
+          error.add(:save_input, 'Fail to save inputs') unless save_input_service.run(
+            user: user, document_id: spreadsheet.document_id, expense_data: expense_data
+          ).valid?
         end
 
         def rest_balance
