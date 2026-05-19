@@ -9,4 +9,9 @@ class User < ApplicationRecord
           class_name: 'LayoutAction',
           dependent: :destroy
   has_many :spreadsheets, dependent: :nullify
+
+  has_one :add_expense_command_setting, -> { where(type: 'AddExpenseCommandSetting') }, dependent: nil,
+                                                                                        inverse_of: :user
+  has_one :add_expense_saved_input, through: :add_expense_command_setting, source: :savable_input,
+                                    source_type: 'AddExpenseSavedInput'
 end

@@ -18,7 +18,7 @@ describe Telegram::CommandMesageHandlerService do
     end
 
     before do
-      allow(Telegram::Commands::Spreadsheets::UpsertExpenseService).to receive(:run!)
+      allow(Telegram::Commands::Spreadsheets::UpsertExpenseService).to receive(:run!).and_return(true)
     end
 
     context 'when --show_rest_balance flag is present' do
@@ -34,6 +34,48 @@ describe Telegram::CommandMesageHandlerService do
 
       it 'includes rest_balance in response' do
         expect(result).to include("Остаток: #{rest_balance}")
+      end
+    end
+
+    describe 'save_input_service work' do
+      context 'when saves input' do
+        let(:text) { "/#{base_text}" }
+
+        it do
+          result
+          user.reload
+
+          saved_input = user.add_expense_saved_input
+          expect(saved_input).to be_present
+          expect(saved_input.document_id).to eq(document_id)
+          expect(saved_input.amount).to be_present
+          expect(saved_input.category).to eq('Продукты')
+        end
+      end
+
+      context 'when saved_inputs are used' do
+        let(:saved_category) { 'Продукты' }
+        let(:text) { '/spreadsheets --add_expense --date="17.05.2026" --amount="100"' }
+        let!(:saved_input) do
+          FactoryBot.create(:add_expense_saved_input, document_id: document_id, category: saved_category)
+        end
+
+        before do
+          user.create_add_expense_command_setting!(savable_input: saved_input)
+
+          allow(Telegram::Commands::Spreadsheets::AddExpenseService).to receive(:run!)
+        end
+
+        it 'uses document_id and category from saved_input' do
+          result
+
+          expect(Telegram::Commands::Spreadsheets::AddExpenseService).to have_received(:run!).with(
+            hash_including(
+              document_id: document_id,
+              expense_data: having_attributes(category: saved_category)
+            )
+          )
+        end
       end
     end
   end

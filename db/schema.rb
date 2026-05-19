@@ -10,9 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_05_11_084644) do
+ActiveRecord::Schema[7.0].define(version: 2026_05_18_190204) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "add_expense_saved_inputs", force: :cascade do |t|
+    t.string "document_id"
+    t.string "date"
+    t.string "amount"
+    t.string "category"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "command_settings", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "savable_input_type"
+    t.bigint "savable_input_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "type"
+  end
 
   create_table "expenses", force: :cascade do |t|
     t.bigint "spreadsheet_id", null: false

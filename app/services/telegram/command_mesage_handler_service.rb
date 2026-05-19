@@ -47,15 +47,18 @@ module Telegram
     end
 
     def add_expense_command
+      command_setting = user.add_expense_command_setting || AddExpenseCommandSetting.create!(user: user)
+      command_setting.savable_input || AddExpenseSavedInput.create(command_setting: command_setting)
+
       Commands::Spreadsheets::AddExpenseService.run!(
         user: user,
-        document_id: command_params.document_id,
+        document_id: command_params.document_id || saved_input.document_id,
         show_rest_balance: command_params.show_rest_balance,
         expense_data: Commands::Spreadsheets::ExpenseType.new(
-          date: command_params.date,
-          amount: command_params.amount,
-          category: command_params.category,
-          comment: command_params.comment
+          date: command_params.date || saved_input.date,
+          amount: command_params.amount || saved_input.amount,
+          category: command_params.category || saved_input.category,
+          comment: command_params.comment || saved_input.comment
         )
       )
     end
@@ -67,6 +70,14 @@ module Telegram
         expected_balance: command_params.expected_balance,
         flag: command_params.flag
       )
+    end
+
+    def saved_input
+      @saved_input ||= method("#{command_params.command}_saved_input").call
+    end
+
+    def add_expense_saved_input
+      user.add_expense_saved_input
     end
 
     def command_params
