@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 module Telegram
-  class CommandMesageHandlerService < ActiveInteraction::Base
+  class CommandMesageHandlerService < ApplicationInteraction
     record :user
     string :message_text
 
     def execute
       commands_registry[command_params.command].call
     rescue ActiveInteraction::InvalidInteractionError, StandardError => e
-      Rails.logger.debug e
+      ErrorLogger.log(e, context: { interaction: self.class.name })
       render_view(:fail)
     end
 

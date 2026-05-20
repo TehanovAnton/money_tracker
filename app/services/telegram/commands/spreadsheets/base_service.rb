@@ -3,7 +3,7 @@
 module Telegram
   module Commands
     module Spreadsheets
-      class BaseService < ActiveInteraction::Base
+      class BaseService < ApplicationInteraction
         private
 
         def render_view(view, **locals)

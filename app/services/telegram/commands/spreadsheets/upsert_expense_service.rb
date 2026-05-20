@@ -3,7 +3,7 @@
 module Telegram
   module Commands
     module Spreadsheets
-      class UpsertExpenseService < ActiveInteraction::Base
+      class UpsertExpenseService < ApplicationInteraction
         ValueRange = ::Google::Apis::SheetsV4::ValueRange
         SheetsService = ::Google::Apis::SheetsV4::SheetsService
         ServiceAccountCredentials = Google::Auth::ServiceAccountCredentials

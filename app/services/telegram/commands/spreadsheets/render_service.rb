@@ -3,7 +3,7 @@
 module Telegram
   module Commands
     module Spreadsheets
-      class RenderService < ActiveInteraction::Base
+      class RenderService < ApplicationInteraction
         array :formats, default: []
         hash :locals, strip: false, default: {}
         string :template, default: nil
