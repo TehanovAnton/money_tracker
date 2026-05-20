@@ -19,18 +19,14 @@ module SqlLogger
   # Порог медленного запроса в миллисекундах.
   SLOW_QUERY_THRESHOLD_MS = 100
 
-  SAVE_TEST_SQL_LOGS = true
-
   FILE_PATH = {
-    'default' => "log/sql.log",
-    'development' => "log/developmnt_sql.log",
-    'test' => "log/test_sql.log",
+    'default' => "log/sql.log"
   }
 
   class << self
     def logger
       @logger ||= begin
-        log_path = Rails.root.join(FILE_PATH[Rails.env] || FILE_PATH[:default])
+        log_path = Rails.root.join(FILE_PATH['default'])
         logger = ActiveSupport::Logger.new(log_path, 10, 100.megabytes)
         logger.formatter = ->(_, _, _, msg) { "#{msg}\n" }
         logger
@@ -64,8 +60,6 @@ module SqlLogger
     end
   end
 end
-
-return if Rails.env.test? && !SqlLogger::SAVE_TEST_SQL_LOGS
 
 ActiveSupport::Notifications.subscribe("sql.active_record") do |*args|
   event = ActiveSupport::Notifications::Event.new(*args)
