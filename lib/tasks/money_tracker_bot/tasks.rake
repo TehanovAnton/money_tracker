@@ -11,6 +11,8 @@ namespace :money_tracker do
       puts 'Start bot'
 
       bot.listen do |message|
+        HttpLogger.log(message)
+
         user = User.find_or_create_by(telegram_username: message.from.username)
         output = Telegram::CommandMesageHandlerService.run!(user: user, message_text: message.text)
         chat_id = message.chat.id

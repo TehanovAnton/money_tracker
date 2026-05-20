@@ -14,6 +14,18 @@ filebeat.inputs:
 
     # Если строка не является JSON (например, стек трейс) — не ломаемся, просто пропускаем
     ignore_older: 24h
+  
+  - type: log
+    enabled: true
+    paths:
+      - /app/log/http.log
+    json.keys_under_root: true
+    json.overwrite_keys: true
+    json.add_error_key: true
+    json.message_key: timestamp
+    ignore_older: 24h
+    fields:
+      log_type: http
 
 # Добавляем мета-поле, чтобы в Kibana можно было отличить источник
 processors:
@@ -21,7 +33,6 @@ processors:
       target: ''
       fields:
         app: money_tracker
-        log_type: sql
 
 output.elasticsearch:
   hosts: ["http://elasticsearch:9200"]
