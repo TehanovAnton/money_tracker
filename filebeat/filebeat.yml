@@ -1,0 +1,56 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /app/log/sql.log  # путь внутри контейнера (смотрит в ./log на хосте)
+
+    # Каждая строка файла — самостоятельный JSON-документ
+    json.keys_under_root: true   # поля JSON кладутся в корень документа, не в поле "json"
+    json.overwrite_keys: true    # если Filebeat и JSON содержат одно поле — побеждает JSON
+    json.add_error_key: true     # при ошибке парсинга добавляется поле "error.message"
+
+    # Поле для определения времени события — берём из нашего "timestamp"
+    json.message_key: timestamp
+
+    # Если строка не является JSON (например, стек трейс) — не ломаемся, просто пропускаем
+    ignore_older: 24h
+
+  - type: log
+    enabled: true
+    paths:
+      - /app/log/telegram.log
+    json.keys_under_root: true
+    json.overwrite_keys: true
+    json.add_error_key: true
+    json.message_key: timestamp
+    ignore_older: 24h
+    fields:
+      log_type: telegram_update
+
+  - type: log
+    enabled: true
+    paths:
+      - /app/log/errors.log
+    json.keys_under_root: true
+    json.overwrite_keys: true
+    json.add_error_key: true
+    json.message_key: timestamp
+    ignore_older: 24h
+    fields:
+      log_type: error
+
+# Добавляем мета-поле, чтобы в Kibana можно было отличить источник
+processors:
+  - add_fields:
+      target: ''
+      fields:
+        app: money_tracker
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+  index: "money-tracker-logs-%{+yyyy.MM.dd}"  # индекс с датой — удобно для ротации
+
+# Filebeat 8.x по умолчанию пытается создать data stream и загрузить шаблон.
+# Отключаем оба — Elasticsearch сам создаст обычный индекс при первом документе.
+setup.ilm.enabled: false
+setup.template.enabled: false

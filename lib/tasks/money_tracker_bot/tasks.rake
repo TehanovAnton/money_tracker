@@ -11,11 +11,15 @@ namespace :money_tracker do
       puts 'Start bot'
 
       bot.listen do |message|
+        TelegramLogger.log(message)
+
         user = User.find_or_create_by(telegram_username: message.from.username)
         output = Telegram::CommandMesageHandlerService.run!(user: user, message_text: message.text)
         chat_id = message.chat.id
 
         bot.api.send_message(chat_id: chat_id, text: output)
+      rescue StandardError => e
+        ErrorLogger.log(e, context: { message_id: message&.message_id, username: message&.from&.username })
       end
     end
   end

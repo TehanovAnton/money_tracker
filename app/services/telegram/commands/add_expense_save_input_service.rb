@@ -2,7 +2,7 @@
 
 module Telegram
   module Commands
-    class AddExpenseSaveInputService < ActiveInteraction::Base
+    class AddExpenseSaveInputService < ApplicationInteraction
       record :user
       string :document_id
       object :expense_data, class: Spreadsheets::ExpenseType
