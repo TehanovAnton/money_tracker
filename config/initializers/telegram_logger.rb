@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-# HTTP Logger — пишет JSON-лог каждого входящего Telegram-апдейта в log/http.log.
+# Telegram Logger — пишет JSON-лог каждого входящего Telegram-апдейта в log/http.log.
 #
 # Вызывается вручную из bot.listen — в long polling нет HTTP-сервера,
 # поэтому нотификации Action Controller не публикуются.
 
-module HttpLogger
+module TelegramLogger
   class << self
     def logger
       @logger ||= begin
-        log_path = Rails.root.join("log/http.log")
+        log_path = Rails.root.join("log/telegram.log")
         logger = ActiveSupport::Logger.new(log_path, 10, 100.megabytes)
         logger.formatter = ->(_, _, _, msg) { "#{msg}\n" }
         logger
