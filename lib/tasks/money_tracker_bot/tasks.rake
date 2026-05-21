@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'telegram/bot'
+require 'prometheus/client/push'
 
 namespace :money_tracker do
   desc 'Starts moeny traker bot'
@@ -20,6 +21,13 @@ namespace :money_tracker do
         bot.api.send_message(chat_id: chat_id, text: output)
       rescue StandardError => e
         ErrorLogger.log(e, context: { message_id: message&.message_id, username: message&.from&.username })
+      ensure
+        # Пушим метрики после каждого сообщения независимо от результата.
+        # Prometheus::Client.registry содержит все метрики зарегистрированные через yabeda.
+        Prometheus::Client::Push.new(
+          job: 'money_tracker_bot',
+          gateway: Settings.app.metrics.pushgateway_url
+        ).add(Prometheus::Client.registry)
       end
     end
   end

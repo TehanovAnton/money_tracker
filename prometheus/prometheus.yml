@@ -1,0 +1,33 @@
+# Глобальные настройки применяются ко всем job-ам если не переопределены локально.
+global:
+  # Как часто Prometheus ходит к таргетам и снимает метрики.
+  # 15s — хороший баланс между свежестью данных и нагрузкой.
+  scrape_interval: 15s
+
+  # Как часто пересчитываются правила алертов (если они есть).
+  evaluation_interval: 15s
+
+# scrape_configs — список таргетов с которых собираются метрики.
+scrape_configs:
+  # Rails веб-сервер — метрики yabeda-rails (HTTP запросы, время ответа и т.д.)
+  - job_name: 'money_tracker_web'
+    metrics_path: '/metrics'
+    scheme: http
+    static_configs:
+      - targets:
+          # host.docker.internal резолвится в IP хост-машины изнутри Docker-контейнера.
+          # Нужно потому что Rails запущен локально, а Prometheus — в контейнере.
+          - 'host.docker.internal:3000'
+
+  # Pushgateway — метрики rake-таски бота (interaction_calls, interaction_duration и т.д.)
+  # Бот сам пушит метрики после каждого сообщения, Prometheus забирает их отсюда.
+  - job_name: 'money_tracker_bot'
+
+    # honor_labels: true — сохраняет лейблы выставленные клиентом при пуше.
+    # Без этого Prometheus перезаписал бы лейбл job своим значением.
+    honor_labels: true
+
+    static_configs:
+      - targets:
+          # Pushgateway запущен в том же docker-compose, поэтому доступен по имени сервиса.
+          - 'pushgateway:9091'
