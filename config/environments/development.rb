@@ -67,4 +67,8 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+
+  # Разрешаем запросы от Prometheus, который обращается к /metrics через host.docker.internal.
+  # Без этого Rails блокирует такие запросы защитой от DNS rebinding атак.
+  config.hosts << 'host.docker.internal'
 end

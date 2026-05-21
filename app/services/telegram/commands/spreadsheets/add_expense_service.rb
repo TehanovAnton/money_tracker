@@ -16,9 +16,7 @@ module Telegram
 
         def execute
           errors.add(:could_not_find_spreadsheet, 'No Spreadsheet') unless spreadsheet
-
           call if errors.empty?
-
           render_view(view, expense: expense, rest_balance: rest_balance)
         end
 

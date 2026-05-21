@@ -70,6 +70,11 @@ gem 'telegram-bot-ruby', '~> 2.4'
 gem 'dry-monads', '~> 1.9'
 gem 'dry-types', '~> 1.9', '>= 1.9.1'
 
+# Метрики
+gem 'yabeda'            # ядро: DSL для объявления счётчиков, гистограмм, gauge
+gem 'yabeda-prometheus' # адаптер: экспортирует метрики в формате Prometheus на /metrics
+gem 'yabeda-rails'      # автоматически собирает метрики Rails (HTTP запросы, статус-коды, время ответа)
+
 group :development, :test, :docker_test do
   gem 'rubocop', '~> 1.81', '>= 1.81.1'
   gem 'rubocop-factory_bot', '~> 2.28'

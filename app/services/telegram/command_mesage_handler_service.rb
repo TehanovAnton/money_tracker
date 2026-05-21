@@ -8,6 +8,7 @@ module Telegram
     def execute
       commands_registry[command_params.command].call
     rescue ActiveInteraction::InvalidInteractionError, StandardError => e
+      Yabeda.interaction_errors_total.increment(interaction: self.class.name.demodulize.underscore, type: e.class.name)
       ErrorLogger.log(e, context: { interaction: self.class.name })
       render_view(:fail)
     end
